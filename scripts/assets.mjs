@@ -1,4 +1,4 @@
-import {readdir,readFile,writeFile,mkdir} from 'node:fs/promises';
+import {readdir,readFile,writeFile,mkdir,rm} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 
 // Every build gets a content-derived namespace. HTML and lazy imports always
@@ -10,6 +10,10 @@ async function files(dir){
   if(entry.isDirectory())paths.push(...await files(path));else paths.push(path);
  }
  return paths.sort();
+}
+// Repeated builds must not hash or nest a previous generated release.
+for(const entry of await readdir('dist/assets',{withFileTypes:true})){
+ if(entry.isDirectory()&&/^release-[a-f0-9]{16}$/.test(entry.name))await rm(`dist/assets/${entry.name}`,{recursive:true,force:true});
 }
 const originals=await files('dist/assets');
 const hash=createHash('sha256');
