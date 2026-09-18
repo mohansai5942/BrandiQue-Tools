@@ -1,0 +1,21 @@
+{
+  "name": "brandique-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node scripts/build.mjs && node scripts/overrides.mjs && node scripts/presentation.mjs && node scripts/seo.mjs && node scripts/assets.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "lint": "node scripts/lint.mjs",
+    "qa": "node scripts/qa.mjs && node scripts/seo-qa.mjs",
+    "check": "npm run lint && npm test && npm run build && npm run qa"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

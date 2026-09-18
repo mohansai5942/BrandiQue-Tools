@@ -1,0 +1,43 @@
+export const categories=['Image Tools','Video Tools','PDF Tools','Document Tools','Converters','Calculators','Resume Tools','Utilities'];
+const t=(slug,name,category,description,formats,kind='generic',popular=false)=>({slug,name,category,description,formats,kind,popular,keywords:[name.toLowerCase(),category.toLowerCase(),...formats.map(x=>x.toLowerCase())],howTo:[`Open ${name} and choose your input.`,`Review the available settings for your browser.`,`Process locally, verify the result, then download it.`],faqs:[['Is this tool free?','Yes. No account is required for normal use.'],['Are my files uploaded?','No. User-selected files are processed in your browser. Page assets may still use normal network requests.'],['Will it work on every device?','Capability and maximum file size depend on browser support, memory, and device performance.']]});
+export const tools=[
+t('image-resizer','Free Image Resizer','Image Tools','Resize JPG, PNG, WebP and browser-supported images in batches with aspect-ratio controls and real downloads.',['JPG','PNG','WebP','AVIF*'],'image',true),
+t('image-compressor','Free Image Compressor','Image Tools','Compress images locally with format-aware quality controls, previews and batch ZIP downloads.',['JPG','PNG*','WebP','AVIF*'],'image',true),
+t('screenshot-editor','Screenshot Editor','Image Tools','Paste or upload a screenshot, annotate, rotate, resize and export it without a watermark.',['PNG','JPG','WebP'],'canvas',true),
+t('image-to-pdf','Image to PDF','PDF Tools','Combine browser-readable images into a downloadable PDF entirely on your device.',['JPG','PNG','WebP'],'imagePdf'),
+t('video-resizer','Free Video Resizer','Video Tools','Resize compatible videos locally using Canvas and MediaRecorder, with honest WebM output support.',['Browser-decodable video','WebM output'],'video',true),
+t('video-compressor','Free Video Compressor','Video Tools','Reduce compatible video resolution, frame rate and recording bitrate locally in the browser.',['Browser-decodable video','WebM output'],'video',true),
+t('video-to-audio','Video to Audio','Video Tools','Extract an audio track from compatible video into a browser-supported WebM audio file.',['Browser-decodable video','WebM/Opus'],'videoAudio'),
+t('document-format-converter','Document Format Converter','Document Tools','Detect supported files and convert documents, page images and spreadsheets locally with clear layout options.',['PDF','DOCX','XLSX','CSV','HTML','TXT','Images'],'documentFormats',true),
+t('pdf-merger','PDF Merger','PDF Tools','Merge multiple PDF documents in a chosen order using local browser processing.',['PDF'],'pdf'),
+t('pdf-splitter','PDF Splitter','PDF Tools','Extract selected page ranges from a PDF into a new local PDF.',['PDF'],'pdf'),
+t('pdf-compressor','PDF Optimizer','PDF Tools','Optimize PDF object structure locally. Image-heavy PDFs may see limited reduction without lossy re-encoding.',['PDF'],'pdf'),
+t('document-converter','Document Converter','Document Tools','Convert supported text-based formats through an explicit, honest conversion matrix.',['TXT','CSV','JSON','HTML','Markdown'],'document'),
+t('file-converter','Universal File Converter','Converters','Convert only supported browser-side image and text formats; unsupported paths are clearly disabled.',['Images','Text formats','Limited media'],'file',true),
+t('age-calculator','Exact Age Calculator','Calculators','Calculate calendar age, totals, next birthday and adjustable life estimates with a live counter.',['Date','Optional time'],'age',true),
+t('unit-converter','Unit Converter','Converters','Convert length, area, temperature, volume and mass with verified conversion factors.',['Length','Area','Temperature','Volume','Mass'],'units',true),
+t('length-converter','Length Converter','Converters','Convert millimetres, centimetres, metres, kilometres, inches, feet, yards and miles.',['mm','cm','m','km','in','ft','yd','mi'],'units'),
+t('area-converter','Area Converter','Converters','Convert metric and imperial area units including acres and hectares.',['m²','km²','ft²','acre','hectare'],'units'),
+t('temperature-converter','Temperature Converter','Converters','Convert Celsius, Fahrenheit and Kelvin with correct offset formulas.',['°C','°F','K'],'units'),
+t('volume-converter','Volume Converter','Converters','Convert metric volume and common US liquid measures.',['mL','L','m³','gal','qt','pt','cup'],'units'),
+t('weight-converter','Weight Converter','Converters','Convert mass and weight units from milligrams to tonnes, pounds and stone.',['mg','g','kg','tonne','oz','lb','stone'],'units'),
+t('power-converter','Power Converter','Converters','Convert watts, kilowatts, megawatts and mechanical horsepower.',['W','kW','MW','hp'],'power'),
+t('speed-converter','Speed Converter','Converters','Convert metres per second, kilometres per hour, miles per hour, knots and feet per second.',['m/s','km/h','mph','knot','ft/s'],'speed'),
+t('resume-ats-checker','Resume ATS Score Checker','Resume Tools','Upload a PDF, DOCX or TXT resume for a transparent readiness score, actionable feedback and job keyword coverage.',['PDF','DOCX','TXT'],'resume',true),
+t('json-formatter','JSON Formatter','Utilities','Format, minify and inspect JSON locally with precise parse errors.',['JSON'],'json'),
+t('json-validator','JSON Validator','Utilities','Validate JSON syntax locally and locate parsing errors without sending content away.',['JSON'],'json'),
+t('base64-encoder-decoder','Base64 Encoder & Decoder','Utilities','Encode or decode Unicode text and small files using browser APIs.',['Text','Files'],'base64'),
+t('url-encoder-decoder','URL Encoder & Decoder','Utilities','Safely encode and decode URL components in your browser.',['Text','URL components'],'url'),
+t('password-generator','Password Generator','Utilities','Generate strong passwords locally with configurable length and character sets.',['Text'],'password'),
+t('word-counter','Word & Character Counter','Utilities','Count words, characters, sentences, paragraphs and estimated reading time live.',['Text'],'text'),
+t('case-converter','Case Converter','Utilities','Convert text to upper, lower, title, sentence, camel, snake and kebab case.',['Text'],'case'),
+t('color-converter','HEX, RGB & HSL Color Converter','Utilities','Convert CSS colors between HEX, RGB and HSL with an accessible live preview.',['HEX','RGB','HSL'],'color'),
+t('timestamp-converter','Unix Timestamp Converter','Utilities','Convert Unix seconds or milliseconds to local and UTC dates, or generate a timestamp.',['Unix','ISO 8601'],'timestamp'),
+t('qr-code-generator','QR Code Generator','Utilities','Generate standards-compliant QR codes locally with PNG and SVG downloads and symbol validation.',['Text','URL','PNG','SVG'],'qr'),
+t('percentage-calculator','Percentage Calculator','Calculators','Calculate percentages, percentage change and reverse percentages.',['Numbers'],'percentage'),
+t('emi-calculator','EMI Calculator','Calculators','Estimate monthly loan payments, total interest and repayment with a standard amortization formula.',['Currency values'],'emi'),
+t('discount-calculator','Discount Calculator','Calculators','Calculate final price, savings and combined discount/tax results.',['Currency values'],'discount'),
+t('gst-calculator','GST Calculator','Calculators','Add or remove GST and see base amount, tax amount and total.',['Currency values'],'gst')
+];
+export const legal=[['about','About BrandiQue Tools'],['privacy','Privacy Policy'],['terms','Terms of Service'],['contact','Contact']];
+export const bySlug=s=>tools.find(x=>x.slug===s);

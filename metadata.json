@@ -1,0 +1,8 @@
+{
+  "name": "BrandiQue Tools",
+  "description": "Free private browser tools for images, video, PDF, documents and calculations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

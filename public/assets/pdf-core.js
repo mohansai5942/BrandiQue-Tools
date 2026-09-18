@@ -1,0 +1,5 @@
+export function safePdfName(value){const name=(value||'merged').trim().replace(/\.pdf$/i,'').replace(/[^\p{L}\p{N}._-]+/gu,'-').replace(/^-+|-+$/g,'').slice(0,120)||'merged';return `${name}.pdf`}
+export function moveItem(list,from,to){if(!Array.isArray(list)||from<0||to<0||from>=list.length||to>=list.length)return list.slice();const out=list.slice(),[item]=out.splice(from,1);out.splice(to,0,item);return out}
+export function selectedPages(pages){return pages.filter(p=>p.selected&&!p.deleted)}
+export function mergeSummary(files,pages){const selected=selectedPages(pages);return{fileCount:files.length,totalPages:pages.filter(p=>!p.deleted).length,selectedPages:selected.length,rotatedPages:selected.filter(p=>p.rotation%360!==0).length}}
+export function applyMetadata(doc,meta){if(meta.title)doc.setTitle(meta.title);if(meta.author)doc.setAuthor(meta.author);if(meta.subject)doc.setSubject(meta.subject);if(meta.keywords)doc.setKeywords(meta.keywords.split(',').map(x=>x.trim()).filter(Boolean));doc.setProducer('BrandiQue Tools — local browser processing');doc.setModificationDate(new Date())}

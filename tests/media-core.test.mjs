@@ -1,0 +1,9 @@
+import test from'node:test';import assert from'node:assert/strict';import{calculateAge,convertDocument,csvRows,even,fitDimensions,safeOutputName}from'../public/assets/media-core.js';
+test('video dimensions preserve ratio and even rounding',()=>{assert.deepEqual(fitDimensions(1920,1080,1280,999,true),{width:1280,height:720});assert.equal(even(719),720)});
+test('dimension safety limit rejects huge output',()=>assert.throws(()=>fitDimensions(10,10,20000,20000,false),/120 megapixel/));
+test('calendar age handles leap dates and month borrowing',()=>{assert.deepEqual(calculateAge('2000-02-29','2025-02-28'),{years:24,months:11,days:30,totalDays:9131,totalWeeks:1304,nextBirthday:'2025-03-01',daysToBirthday:1});const a=calculateAge('1990-06-15','2025-09-17');assert.equal(a.years,35);assert.equal(a.months,3);assert.equal(a.days,2)});
+test('csv parser handles quoted commas',()=>assert.deepEqual(csvRows('name,note\nA,"x,y"'),[['name','note'],['A','x,y']]));
+test('document conversions are deterministic',()=>{assert.equal(convertDocument('hello','txt','json'),'{\n  "text": "hello"\n}');assert.equal(convertDocument('# Hi','md','txt'),'Hi');assert.match(convertDocument('[{"a":1}]','json','csv'),/"a"\n"1"/);assert.throws(()=>convertDocument('x','md','csv'),/not supported/)});
+test('safe filenames remove path punctuation',()=>assert.equal(safeOutputName('../bad name.mp4','-audio','webm'),'..-bad-name-audio.webm'));
+
+test('next birthday keeps its calendar date in non-UTC timezones',()=>{const old=process.env.TZ;try{process.env.TZ='Asia/Kolkata';assert.equal(calculateAge('2000-02-29','2025-02-28').nextBirthday,'2025-03-01');process.env.TZ='America/Los_Angeles';assert.equal(calculateAge('2000-02-29','2025-02-28').nextBirthday,'2025-03-01')}finally{if(old===undefined)delete process.env.TZ;else process.env.TZ=old}});

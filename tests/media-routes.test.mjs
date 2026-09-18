@@ -1,0 +1,5 @@
+import test from'node:test';import assert from'node:assert/strict';import{readFile}from'node:fs/promises';
+const routes=['image-compressor','video-resizer','video-compressor','video-to-audio','age-calculator','file-converter','document-converter'];
+for(const route of routes)test(`${route} has dedicated assets and privacy copy`,async()=>{const [html,js]=await Promise.all([readFile(new URL(`../public/${route}.html`,import.meta.url),'utf8'),readFile(new URL(`../public/assets/tool-${route}.js`,import.meta.url),'utf8')]);assert.ok(html.includes(`/assets/tool-${route}.js`));assert.ok(html.includes('/assets/media-tools.css'));assert.match(html,/local|Local/);assert.ok(js.includes('tool-media-suite.js'))});
+
+test('legacy PDF to Word route loads the new document format converter',async()=>{const html=await readFile(new URL('../public/pdf-to-word.html',import.meta.url),'utf8');assert.ok(html.includes('/assets/tool-document-format-converter.js'));assert.ok(html.includes('/tools/document-format-converter/'))});
