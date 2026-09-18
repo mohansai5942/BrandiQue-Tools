@@ -87,7 +87,7 @@ body[data-ui="compact"]{--y:#f5df32;--bg:#0d0d0d;--s:#181818;--b:#333;--t:#f5f5f
 
 /* Workspace controls must size to their own panels, independently of marketing buttons. */
 [data-ui] .tool{container-type:inline-size}
-[data-ui] .tool :is(button,.btn){box-sizing:border-box;max-width:100%;min-width:0;min-height:34px;padding:7px 11px;font-size:13px;line-height:1.35;white-space:normal;overflow-wrap:anywhere;flex-shrink:0}
+[data-ui] .tool :is(button,.btn){box-sizing:border-box;max-width:100%;min-width:0;min-height:34px;padding:7px 11px;font-size:13px;line-height:1.35;white-space:normal;overflow-wrap:normal;word-break:normal;hyphens:none;flex-shrink:0}
 [data-ui] .tool :is(input,select,textarea){box-sizing:border-box;max-width:100%;min-width:0}
 [data-ui] .tool :is(input[type=checkbox],input[type=radio]){width:16px;height:16px;min-height:0;margin:0 6px 0 0;padding:0;flex:0 0 16px;vertical-align:middle}
 [data-ui] .tool label:has(>input[type=checkbox]),[data-ui] .tool label:has(>input[type=radio]){display:flex;align-items:center;gap:5px;flex-direction:row;line-height:1.5}
@@ -109,7 +109,7 @@ body[data-ui="compact"]{--y:#f5df32;--bg:#0d0d0d;--s:#181818;--b:#333;--t:#f5f5f
 [data-ui] .tool-grid{grid-template-columns:180px minmax(0,1fr) 230px;align-items:start}
 [data-ui] .toolbox{display:flex;flex-wrap:wrap;gap:6px;align-content:start}
 [data-ui] .toolbox>h2,[data-ui] .toolbox>.editor-field,[data-ui] .toolbox>.editor-actions{flex-basis:100%}
-[data-ui] .toolbox>button{flex:1 1 65px;margin:0}
+[data-ui] .toolbox>button{flex:1 0 auto;width:auto;margin:0;white-space:nowrap}
 [data-ui] .editor-panel{padding:14px;min-width:0;align-self:start}
 [data-ui] .editor-panel h2{font-size:16px;margin:6px 0 12px}
 [data-ui] .editor-field{font-size:12px;margin-bottom:10px;min-width:0}
@@ -125,3 +125,28 @@ body[data-ui="compact"]{--y:#f5df32;--bg:#0d0d0d;--s:#181818;--b:#333;--t:#f5f5f
 @media(max-width:560px){[data-ui] .tool :is(button,.btn){font-size:12px;min-height:34px;padding:7px 9px}[data-ui] .tool :is(.editor-panel,.ir-pane){padding:12px}[data-ui] .ir-actions{position:static}[data-ui] .tool .ir-two{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .split-workspace{display:grid;gap:20px}.split-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}.split-options,.split-plan{border:1px solid #363636;border-radius:10px;padding:18px;min-width:0}.split-output-list{max-height:250px;overflow:auto;padding-left:22px}.split-output-list li{margin-bottom:12px;overflow-wrap:anywhere}.split-output-list span{display:block;color:#aaa;font-size:13px}.split-pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;max-height:360px;overflow:auto}.split-page{display:grid!important;gap:6px;text-align:center}.split-page img{width:100%;height:135px;object-fit:contain}.split-page[aria-pressed=true]{border:1px solid #f5df32!important}.split-page[aria-pressed=false]{opacity:.6}.split-page:disabled{cursor:default;opacity:1}.split-page:disabled small{display:none}.split-page small{color:#bbb}@container(max-width:650px){.split-grid{grid-template-columns:1fr}.split-options,.split-plan{padding:12px}}
 .format-workspace{display:grid;gap:20px}.format-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}.format-options,.format-result{padding:18px;border:1px solid #363636;border-radius:10px;min-width:0}.format-note{font-size:14px!important;padding:12px;border-left:3px solid var(--y);background:#101010}.format-preview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-height:360px;overflow:auto}.format-preview figure{margin:0;min-width:0}.format-preview img{width:100%;height:180px;object-fit:contain;background:#eee}.format-preview figcaption{font-size:12px;text-align:center}.conversion-render-frame{position:fixed;left:-100000px;top:0;width:1100px;height:1400px;border:0;pointer-events:none;z-index:-1}@container(max-width:650px){.format-grid{grid-template-columns:1fr}.format-options,.format-result{padding:12px}}
+
+/* Stable desktop type: no viewport-proportional zoom or scaling of tool output. */
+[data-ui] .wrap{max-width:1200px}
+[data-ui] .tool :is(button,.btn){overflow-wrap:normal;word-break:normal;hyphens:none}
+[data-ui] .toolbox>button{flex:1 0 auto;white-space:nowrap}
+[data-ui] .tool :is(.toolbar,.actions,.editor-actions,.editor-bar,.ir-toolbar,.ir-row,.pm-mini,.pm-actions,.media-actions,.calc-actions)>button{flex:0 0 auto}
+[data-ui] .tool :is(.field,.editor-field){overflow-wrap:normal;word-break:normal}
+[data-ui] .tool :is(.drop-target,.ir-drop,.pm-drop,.pdfw-drop) input[type=file]{width:100%;max-width:360px}
+[data-ui] .toolbox button[aria-pressed=true]{background:var(--y);color:#111;border-color:var(--y)}
+[data-ui] .brand-mark{width:38px;height:38px;flex:0 0 38px;background:none;border-radius:0}
+[data-ui] .brand-mark svg{width:38px;height:38px}
+@media(min-width:821px){
+ body[data-ui="compact"]{font-size:16.8px}
+ [data-ui] h1{font-size:48.3px}[data-ui] h2{font-size:33.6px}[data-ui] h3{font-size:16.8px}
+ [data-ui] .head h1{font-size:39.9px}[data-ui] .hero-copy h1{font-size:60px!important}
+ [data-ui] .lead,.hero-copy>p{font-size:17.85px}
+ [data-ui] [data-nav],.text-link,[data-ui] .btn,[data-ui] button,[data-ui] .field,[data-ui] label,.footer-links a{font-size:14.7px}
+ [data-ui] input,[data-ui] select,[data-ui] textarea,[data-ui] .card p,[data-ui] .panel p,[data-ui] .panel li,[data-ui] summary{font-size:15.75px}
+ [data-ui] .tool :is(button,.btn){font-size:13.65px}
+ [data-ui] .editor-panel h2{font-size:16.8px}[data-ui] .editor-field{font-size:12.6px}
+ [data-ui] .card h3{font-size:17.85px}[data-ui] .panel h2,[data-ui] .tool h2{font-size:21px}
+ [data-ui] .tool .editor-panel h2{font-size:16.8px}
+ [data-ui] .calc-total,[data-ui] .age-value{font-size:39.9px}
+}
+@media(min-width:821px) and (max-width:1050px){[data-ui] .hero-copy h1{font-size:48.3px!important}}

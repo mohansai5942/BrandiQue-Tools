@@ -20,3 +20,6 @@ Sources:
 https://support.google.com/adsense/answer/1346295
 https://support.google.com/adsense/answer/13554116
 https://support.google.com/adsense/answer/12171612
+
+## September 2026 layout refinement
+Tool pages place the first horizontal unit after the complete workspace. Two 160px vertical units use the outer gutters only at viewport widths of at least 1600px; they never shrink the tool itself. In-article and multiplex units remain below the workspace. Google-reported `unfilled` units collapse via CSS; unfill-optimized units remain untouched. Observed live requests returned `unfilled`, so increasing inventory cannot guarantee creatives. Check site approval, coverage, policy notices and consent in the publisher account. If Auto ads are enabled, exclude the workspace and top-of-page areas in the AdSense preview to retain this manual placement layout.

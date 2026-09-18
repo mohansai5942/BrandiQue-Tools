@@ -37,7 +37,7 @@ async function enhance(dir) {
     const slug = html.match(/rel="canonical" href="https:\/\/tools\.brandique\.in\/tools\/([^/]+)\//)?.[1];
     const tool = tools.find(t => t.slug === slug);
     html = html.replace('<body', '<body data-ui="compact"');
-    html = html.replace('</head>', '<link rel="stylesheet" href="/assets/presentation.css"></head>');
+    html = html.replace('</head>', '<link rel="stylesheet" href="/assets/presentation.css"><link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg"></head>');
     html = html.replace(/(<body[^>]*>)/, `$1${strip}`);
     html = html.replace(/<header[\s\S]*?<\/header>/, header);
     if (html.includes('<footer')) html = html.replace(/<footer[\s\S]*?<\/footer>/,footer);

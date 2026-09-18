@@ -7,7 +7,14 @@ for(const route of ['/','/tools/',...extraPaths,...tools.map(t=>`/tools/${t.slug
  assert.equal((html.match(/<script async src="https:\/\/pagead2.googlesyndication.com/g)||[]).length,1,route);
  assert(!/Advertisement space/.test(html));
  assert(html.includes('ca-pub-9587188804206049'));
- const slots=[...html.matchAll(/data-ad-slot="(\d+)"/g)].map(m=>m[1]);assert(slots.length>0&&slots.length<=4,route);
+ const slots=[...html.matchAll(/data-ad-slot="(\d+)"/g)].map(m=>m[1]);assert(slots.length>0&&slots.length<=5,route);
+ if(/^\/tools\/[^/]+\/$/.test(route)){
+  const workspace=html.indexOf('<article class="tool"');
+  assert(workspace>0,route);
+  assert(html.indexOf('class="ad-placement')>workspace,`Ad above tool: ${route}`);
+  assert(html.includes('ad-after-tool'),`Missing below-tool ad: ${route}`);
+  assert(html.includes('ad-rail-left')&&html.includes('ad-rail-right'),`Missing side ads: ${route}`);
+ }
  assert(slots.every(s=>['1781948278','2366860495','9328856681','2426738115'].includes(s)));
  for(const body of html.matchAll(/<article class="tool"[^>]*>([\s\S]*?)<\/article>/g))assert(!body[1].includes('adsbygoogle'),'Ad inside interactive tool');
 }

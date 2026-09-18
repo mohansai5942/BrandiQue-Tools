@@ -24,3 +24,8 @@ for(const line of redirects.trim().split('\n'))assert(line.split(/\s+/)[0].start
 console.log(`SEO QA passed: ${paths.length} unique titles, descriptions, canonicals, JSON-LD, social images and sitemap entries`);
 
 assert((await readFile('dist/index.html','utf8')).includes('yabpCgv5BOpOpfkzwsekwwHq1DGyhdGIsjG_UHh5Wb4'));
+
+assert.deepEqual((await readFile('dist/sitemap.txt','utf8')).trim().split('\n'),paths.map(p=>origin+p));
+assert((await readFile('dist/_headers','utf8')).includes('Content-Type: application/xml; charset=utf-8'));
+for(const path of paths)assert((await readFile(`dist${path}index.html`,'utf8')).includes('href="/favicon.svg"'));
+await readFile('dist/favicon.svg');

@@ -1,7 +1,10 @@
-.ad-placement{box-sizing:border-box;min-width:0;max-width:100%;margin:40px auto;padding:16px 0;border-top:1px solid #303030;border-bottom:1px solid #303030;text-align:center;clear:both;contain:layout style}
-.ad-label{display:block;margin:0 0 14px;color:#929292;font:10px/1.4 Arial,sans-serif;letter-spacing:1px;text-transform:uppercase}
-.ad-placement ins{width:100%;min-width:0}.ad-banner{min-height:140px}.ad-article,.ad-feed{min-height:280px}.ad-multiplex{min-height:280px}
-.ad-editorial,.ad-catalog{grid-column:1/-1;width:100%;max-width:900px}.ad-related-layout{display:block}.ad-related-layout>.related-tools{min-width:0;width:100%;padding-inline:0}.ad-side{display:none}
-.ad-unavailable{display:none}
-@media(min-width:1500px){.ad-related-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:40px;align-items:start}.ad-side{display:block;width:300px;min-height:300px;margin-top:65px}.ad-related-layout .related-tools .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.ad-placement{margin:32px auto;padding:12px 0}.ad-banner{min-height:280px}.ad-multiplex{min-height:300px}}
+/* Ads are separated from editing controls and never cover the workspace. */
+.ad-placement{box-sizing:border-box;min-width:0;max-width:100%;margin:32px auto;padding:12px 0;border-block:1px solid #303030;text-align:center;clear:both}
+.ad-label{display:block;margin:0 0 12px;color:#929292;font:10px/1.4 Arial,sans-serif;letter-spacing:1px;text-transform:uppercase}
+.ad-placement ins{width:100%;min-width:0}.ad-banner{min-height:140px}.ad-article,.ad-feed,.ad-multiplex{min-height:250px}
+.ad-editorial,.ad-catalog{grid-column:1/-1;width:100%;max-width:900px}
+.ad-workspace{position:relative}.ad-rail{display:none}
+.ad-unavailable,.ad-placement:has(ins[data-ad-status="unfilled"]){display:none!important}
+@media(min-width:1600px){.ad-rail{display:block;position:absolute;top:0;width:160px;min-height:600px;margin:0}.ad-rail-left{right:calc(100% + 24px)}.ad-rail-right{left:calc(100% + 24px)}}
+@media(max-width:600px){.ad-placement{margin:24px auto}.ad-banner{min-height:250px}}
+@media print{.ad-placement{display:none!important}}
