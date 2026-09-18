@@ -45,7 +45,7 @@ app.use((req, res) => {
   }
   const rootIndex = path.join(distDir, 'index.html');
   if (existsSync(rootIndex)) {
-    return res.status(200).sendFile(rootIndex);
+    return res.status(404).send('Page not found. Visit /tools/ to browse available tools.');
   }
   return res.status(404).send('Not Found');
 });

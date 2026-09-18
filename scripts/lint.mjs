@@ -7,7 +7,7 @@ const walk=async dir=>(await Promise.all((await readdir(dir,{withFileTypes:true}
  return entry.isDirectory()?walk(path):path;
 }))).flat();
 
-const sourceFiles=['src/tools.mjs','src/site.mjs','scripts/seo.mjs','scripts/seo-qa.mjs','scripts/build.mjs','scripts/overrides.mjs','scripts/presentation.mjs','scripts/design.mjs','scripts/assets.mjs',...(await walk('public/assets')).filter(path=>path.endsWith('.js'))];
+const sourceFiles=['src/tools.mjs','src/site.mjs','src/seo-content.mjs','scripts/ads.mjs','scripts/ads-qa.mjs','scripts/seo.mjs','scripts/seo-qa.mjs','scripts/build.mjs','scripts/overrides.mjs','scripts/presentation.mjs','scripts/design.mjs','scripts/assets.mjs',...(await walk('public/assets')).filter(path=>path.endsWith('.js'))];
 for(const file of sourceFiles){
  const source=await readFile(file,'utf8');
  if(/eval\s*\(|new Function\s*\(/.test(source))throw new Error(`Unsafe dynamic code in ${file}`);

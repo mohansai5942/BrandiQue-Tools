@@ -1,8 +1,9 @@
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
+import {extraPaths} from '../src/seo-content.mjs';
 import {tools,legal} from '../src/tools.mjs';
 import {siteOrigin,previousOrigin,futureOrigin} from '../src/site.mjs';
-const origin=siteOrigin(),paths=['/','/tools/',...tools.map(t=>`/tools/${t.slug}/`),...legal.map(([s])=>`/${s}/`)];
+const origin=siteOrigin(),paths=[...extraPaths,'/','/tools/',...tools.map(t=>`/tools/${t.slug}/`),...legal.map(([s])=>`/${s}/`)];
 const sitemap=await readFile('dist/sitemap.xml','utf8'),titles=new Set();
 assert.equal([...sitemap.matchAll(/<loc>/g)].length,paths.length);
 for(const path of paths){
@@ -21,3 +22,5 @@ const redirects=await readFile('dist/_redirects','utf8');
 assert(redirects.includes('/tools/pdf-to-word/ /tools/document-format-converter/ 301'));
 if(origin===futureOrigin)assert(redirects.includes(`${previousOrigin}/* ${futureOrigin}/:splat 301`));
 console.log(`SEO QA passed: ${paths.length} unique titles, descriptions, canonicals, JSON-LD, social images and sitemap entries`);
+
+assert((await readFile('dist/index.html','utf8')).includes('yabpCgv5BOpOpfkzwsekwwHq1DGyhdGIsjG_UHh5Wb4'));

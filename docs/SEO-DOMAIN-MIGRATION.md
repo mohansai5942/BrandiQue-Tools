@@ -1,31 +1,18 @@
-# BrandiQue SEO and custom-domain activation
+# Production SEO: tools.brandique.in
 
-The build defaults to the currently working Workers domain. Do not point canonical links at an unavailable domain.
+Repository: mohansai5942/BrandiQue-Tools. Production default: https://tools.brandique.in.
+The existing Google Search Console verification token is preserved. Bing verification remains optional. No placeholder verification codes are used.
 
-## Connect tools.brandique.in
+## Deployment
 
-1. In the existing Cloudflare Worker, add tools.brandique.in as a custom domain. Complete DNS setup and wait for HTTPS to work. Keep the same project and routes.
-2. Set the Cloudflare **build environment variable** SITE_URL to https://tools.brandique.in and redeploy. Alternatively change the default in src/site.mjs. This changes every canonical, Open Graph URL, structured-data URL, robots sitemap reference and sitemap entry together.
-3. The build generates a permanent old-host redirect preserving the path. Verify the old Workers URL and a deep tool URL return 301 to the new domain. If the deployment does not honor cross-host _redirects, configure the same host-specific redirect in the Worker/Cloudflare; do not redirect the new host to itself.
-4. Verify both origins in Google Search Console. Supply the real HTML verification token through GOOGLE_SITE_VERIFICATION if using URL-prefix properties, or verify the domain through DNS. BING_SITE_VERIFICATION supports Bing's real token. No verification token or ownership claim is fabricated.
-5. Submit https://tools.brandique.in/sitemap.xml in Search Console and Bing Webmaster Tools. Inspect the homepage and several tools with URL Inspection; request indexing where needed. Use Search Console's Change of Address tool if available for the verified move.
-6. Keep the old-host redirects for at least a year. Monitor indexing, selected canonical URLs, crawl errors and search queries. Rankings can fluctuate during a move.
+Build command: npm run build. Static output: dist. Set SITE_URL=https://tools.brandique.in in the live hosting build environment if a previous value exists. The default also uses this domain. Run npm run check before publication.
 
-## Verification
+## Search Console
 
-Run npm run check for the active build. Run SITE_URL=https://tools.brandique.in npm run build followed by SITE_URL=https://tools.brandique.in npm run qa to validate the future-domain variant before activation. Restore the normal build before deploying on the old domain.
+In the verified https://tools.brandique.in/ property, open Sitemaps and submit sitemap.xml. The full URL is https://tools.brandique.in/sitemap.xml. The sitemap lists 52 canonical URLs: 37 tools, eight category hubs, the homepage, directory, human sitemap and four company/policy pages. Human sitemap: https://tools.brandique.in/sitemap/.
 
-## What is implemented
+Use URL Inspection to check the homepage, a category page and representative tools. Search Console submission remains an account-side action; building a sitemap does not submit it. Monitor indexing, queries, selected canonicals and Core Web Vitals after real traffic is available. No keyword stuffing, fake ratings or guaranteed rankings are included.
 
-- Unique descriptive titles and descriptions across all 37 tools and six site pages.
-- Static canonical links and readable page content; WebSite, Organization, WebPage, BreadcrumbList and WebApplication JSON-LD. No fake reviews, ratings or ranking claims.
-- Directory ItemList, existing related-tool links and crawlable tool cards.
-- Open Graph/Twitter cards with a local 1200×630 social image.
-- Sitemap containing only canonical pages, crawlable robots.txt and permanent redirects for old HTML/renamed tool URLs.
-- Automated checks for duplicate/missing metadata, schema validity, mixed origins, social image files and migration redirects.
+The old Workers origin remains only in migration configuration. Redirect requests on the OLD hosting to the same path on tools.brandique.in, retaining legacy tool redirects. A redirect in this new repository cannot control the old hosting/account. Keep old-origin redirects for at least a year. Do not blindly replace previousOrigin with the new host; that can introduce loops.
 
-Search Console submission and ownership verification require account access and have not been performed by the code build. Search rankings, AI recommendations and rich results cannot be guaranteed. Useful original content, reliable tools, legitimate links and continued improvements remain necessary.
-
-References:
-- https://developers.google.com/search/docs/fundamentals/seo-starter-guide
-- https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes
+SEO builds include descriptive tool titles, descriptions, WebSite/Organization/WebPage/WebApplication/BreadcrumbList data, category ItemLists, social cards, canonical links, sitemap.xml, robots.txt and old-path redirects. Category content is static and crawlable. The Node preview server returns 404 for unknown pages instead of a false-success homepage.
