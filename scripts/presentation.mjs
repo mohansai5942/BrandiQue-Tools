@@ -50,6 +50,13 @@ async function enhance(dir) {
       // Replace legacy recommendation blocks so each page gets one relevant set.
       html = html.replace(/<section\b[^>]*>\s*<h2>(?:Related tools|Try our other tools)<\/h2>[\s\S]*?<\/section>/gi, '');
       html = html.replace('</main>', `${recommendations(tool)}</main>`);
+
+      const headBar = `<div class="head-bar"><p class="head-crumbs"><a href="/">Home</a> / <a href="/tools/">Tools</a> / ${escape(tool.name)}</p><button type="button" class="btn-share" data-share-tool aria-label="Share ${escape(tool.name)}" title="Share this tool"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="share-btn-text">Share</span></button></div>`;
+      if (/<section class="head wrap">\s*<p><a href="\/"/i.test(html)) {
+        html = html.replace(/<section class="head wrap">\s*<p><a href="\/">[\s\S]*?<\/p>/i, `<section class="head wrap">${headBar}`);
+      } else if (html.includes('<section class="head wrap">')) {
+        html = html.replace('<section class="head wrap">', `<section class="head wrap">${headBar}`);
+      }
     }
     await writeFile(file, html);
   }

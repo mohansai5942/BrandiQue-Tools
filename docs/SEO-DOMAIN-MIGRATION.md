@@ -1,7 +1,7 @@
 # Production SEO: tools.brandique.in
 
 Repository: mohansai5942/BrandiQue-Tools. Production default: https://tools.brandique.in.
-The existing Google Search Console verification token is preserved. Bing verification remains optional. No placeholder verification codes are used.
+The existing Google Search Console verification token is preserved. No placeholder verification codes are used.
 
 ## Deployment
 

@@ -6,5 +6,5 @@
 .ad-workspace{position:relative}.ad-rail{display:none}
 .ad-unavailable,.ad-placement:has(ins[data-ad-status="unfilled"]){display:none!important}
 @media(min-width:1600px){.ad-rail{display:block;position:absolute;top:0;width:160px;min-height:600px;margin:0}.ad-rail-left{right:calc(100% + 24px)}.ad-rail-right{left:calc(100% + 24px)}}
-@media(max-width:600px){.ad-placement{margin:24px auto}.ad-banner{min-height:250px}}
+@media(max-width:600px){.ad-placement{margin:16px auto;padding:8px 0}.ad-banner{min-height:60px}.ad-article,.ad-feed,.ad-multiplex{min-height:140px}}
 @media print{.ad-placement{display:none!important}}
