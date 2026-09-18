@@ -1,4 +1,5 @@
 import {readFile,writeFile,readdir,rm,mkdir} from 'node:fs/promises';
+import {card} from './design.mjs';
 import {collections,extraPaths} from '../src/seo-content.mjs';
 import {tools,legal} from '../src/tools.mjs';
 import {siteOrigin,previousOrigin} from '../src/site.mjs';
@@ -25,7 +26,7 @@ const shell=await readFile('dist/tools/index.html','utf8');
 const links=items=>`<ul>${items.map(t=>`<li><a href="/tools/${t.slug}/">${esc(t.name)}</a> — ${esc(t.description)}</li>`).join('')}</ul>`;
 for(const path of extraPaths){
  const c=collections.find(([slug])=>path===`/collections/${slug}/`);
- const body=c?`<section class="section wrap"><p><a href="/">Home</a> / <a href="/tools/">Tools</a> / ${esc(c[1])}</p><h1>${esc(c[2])}</h1><p class="lead">${esc(c[3])}</p>${links(tools.filter(t=>t.category===c[1]))}</section>`:`<section class="section wrap"><h1>BrandiQue Tools Sitemap</h1><p>Browse every tool by category. All tools are free to use without an account.</p>${collections.map(([slug,name])=>`<h2><a href="/collections/${slug}/">${name}</a></h2>${links(tools.filter(t=>t.category===name))}`).join('')}<h2>Website information</h2><ul>${legal.map(([slug,title])=>`<li><a href="/${slug}/">${title}</a></li>`).join('')}</ul><p><a href="/sitemap.xml">XML sitemap for search engines</a> · <a href="/sitemap.txt">Plain-text sitemap</a></p></section>`;
+ const body=c?`<section class="section wrap"><p><a href="/">Home</a> / <a href="/tools/">Tools</a> / ${esc(c[1])}</p><h1>${esc(c[2])}</h1><p class="lead">${esc(c[3])}</p><div class="catalog-meta"><h2>${esc(c[1])}</h2><span>${tools.filter(t=>t.category===c[1]).length} tools</span></div><div class="grid">${tools.filter(t=>t.category===c[1]).map(card).join('')}</div></section>`:`<section class="section wrap"><h1>BrandiQue Tools Sitemap</h1><p>Browse every tool by category. All tools are free to use without an account.</p>${collections.map(([slug,name])=>`<h2><a href="/collections/${slug}/">${name}</a></h2>${links(tools.filter(t=>t.category===name))}`).join('')}<h2>Website information</h2><ul>${legal.map(([slug,title])=>`<li><a href="/${slug}/">${title}</a></li>`).join('')}</ul><p><a href="/sitemap.xml">XML sitemap for search engines</a> · <a href="/sitemap.txt">Plain-text sitemap</a></p></section>`;
  await mkdir('dist'+path,{recursive:true});
  await writeFile('dist'+path+'index.html',shell.replace(/<main\b[^>]*>[\s\S]*?<\/main>/,`<main id="main">${body}</main>`).replace(/(<link rel="canonical" href=")[^"]+/,`$1${origin}${path}`));
 }
