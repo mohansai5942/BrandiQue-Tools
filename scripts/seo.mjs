@@ -63,6 +63,7 @@ async function walk(dir){for(const entry of await readdir(dir,{withFileTypes:tru
 await walk('dist');
 await writeFile('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${canonicalPaths.map(p=>`  <url><loc>${esc(origin+p)}</loc></url>`).join('\n')}\n</urlset>\n`);
 await writeFile('dist/robots.txt',`User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`);
-const migration=origin!==previousOrigin?`${previousOrigin}/* ${origin}/:splat 301\n`:'';
-await writeFile('dist/_redirects',migration+[...redirects].filter(([a,b])=>a!==b).map(([a,b])=>`${a} ${b} 301`).join('\n')+'\n');
+// Workers static-asset redirect sources must be relative paths.
+// Configure old-host migration separately on the old hosting account.
+await writeFile('dist/_redirects',[...redirects].filter(([a,b])=>a!==b).map(([a,b])=>`${a} ${b} 301`).join('\n')+'\n');
 console.log(`SEO: ${canonicalPaths.length} canonical pages at ${origin}; ${redirects.size} legacy redirects`);

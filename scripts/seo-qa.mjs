@@ -20,7 +20,7 @@ for(const path of paths){
 assert((await readFile('dist/robots.txt','utf8')).includes(`${origin}/sitemap.xml`));
 const redirects=await readFile('dist/_redirects','utf8');
 assert(redirects.includes('/tools/pdf-to-word/ /tools/document-format-converter/ 301'));
-if(origin===futureOrigin)assert(redirects.includes(`${previousOrigin}/* ${futureOrigin}/:splat 301`));
+for(const line of redirects.trim().split('\n'))assert(line.split(/\s+/)[0].startsWith('/'),'Workers redirect sources must be relative paths');
 console.log(`SEO QA passed: ${paths.length} unique titles, descriptions, canonicals, JSON-LD, social images and sitemap entries`);
 
 assert((await readFile('dist/index.html','utf8')).includes('yabpCgv5BOpOpfkzwsekwwHq1DGyhdGIsjG_UHh5Wb4'));
