@@ -14,3 +14,18 @@ export function live(root,run,{ready=()=>true,delay=350,ignore='[readonly],[data
  if(initial)schedule();window.addEventListener('pagehide',()=>{stopped=true;clearTimeout(timer);cancel?.();root.querySelectorAll('a[download][href^="blob:"]').forEach(a=>URL.revokeObjectURL(a.href))},{once:true});
  return{schedule,stop(){stopped=true;clearTimeout(timer);cancel?.();invalidate();status.textContent='Paused. Change a setting to resume.'},get busy(){return busy}};
 }
+
+// Separate download links preserve each output's real format without an archive.
+export function offerDownloads(root,files){
+ let box=root.querySelector('[data-live-output]');
+ if(!box){box=document.createElement('div');box.dataset.liveOutput='';box.className='live-download';root.append(box)}
+ for(const a of box.querySelectorAll('a'))URL.revokeObjectURL(a.href);
+ box.replaceChildren();
+ for(const file of files){
+  const row=document.createElement('div');row.className='file-download';
+  const name=document.createElement('span');name.textContent=file.name;name.title=file.name;
+  const a=document.createElement('a');a.className='btn';a.href=URL.createObjectURL(file.blob);a.download=file.name;a.textContent='Download';a.setAttribute('aria-label',`Download ${file.name}`);
+  row.append(name,a);box.append(row);
+ }
+ box.hidden=false;return box;
+}
