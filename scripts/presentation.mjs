@@ -1,3 +1,4 @@
+import {about,privacy,terms} from './company-pages.mjs';
 import {readdir, readFile, writeFile} from 'node:fs/promises';
 import {tools} from '../src/tools.mjs';
 import {header,footer,home,directory,card} from './design.mjs';
@@ -44,6 +45,8 @@ async function enhance(dir) {
     else html = html.replace('</main>',`</main>${footer}`);
     if (file === 'dist/index.html') html = html.replace(/(<main[^>]*>)[\s\S]*?<\/main>/,`$1${home}</main>`);
     if (file === 'dist/tools/index.html') html = html.replace(/(<main[^>]*>)[\s\S]*?<\/main>/,`$1${directory}</main>`);
+    const companyBody = {'dist/about/index.html':about,'dist/privacy/index.html':privacy,'dist/terms/index.html':terms}[file];
+    if (companyBody) html = html.replace(/(<main[^>]*>)[\s\S]*?<\/main>/, `$1${companyBody}</main>`);
     html = html.replace(/<aside class="ad">[\s\S]*?<\/aside>/g,'').replace(/<div class="wrap ad">[\s\S]*?<\/div>/g,'');
     html = html.replace('</body>','<script type="module" src="/assets/site-shell.js"></script></body>');
     if (tool) {
