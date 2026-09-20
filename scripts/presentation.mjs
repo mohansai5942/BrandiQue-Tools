@@ -1,4 +1,4 @@
-import {about,privacy,terms} from './company-pages.mjs';
+import {about,privacy,terms,download} from './company-pages.mjs';
 import {readdir, readFile, writeFile} from 'node:fs/promises';
 import {tools} from '../src/tools.mjs';
 import {header,footer,home,directory,card} from './design.mjs';
@@ -41,13 +41,13 @@ async function enhance(dir) {
     html = html.replace('<body', '<body data-ui="compact"');
     const pwaHead = '<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#111111"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="BrandiQue"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="/assets/presentation.css"><link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg">';
     html = html.replace('</head>', `${pwaHead}</head>`);
-    html = html.replace(/(<body[^>]*>)/, `$1${pwaBanner}${strip}`);
+    html = html.replace(/(<body[^>]*>)/, `$1${strip}`);
     html = html.replace(/<header[\s\S]*?<\/header>/, header);
     if (html.includes('<footer')) html = html.replace(/<footer[\s\S]*?<\/footer>/,footer);
     else html = html.replace('</main>',`</main>${footer}`);
     if (file === 'dist/index.html') html = html.replace(/(<main[^>]*>)[\s\S]*?<\/main>/,`$1${home}</main>`);
     if (file === 'dist/tools/index.html') html = html.replace(/(<main[^>]*>)[\s\S]*?<\/main>/,`$1${directory}</main>`);
-    const companyBody = {'dist/about/index.html':about,'dist/privacy/index.html':privacy,'dist/terms/index.html':terms}[file];
+    const companyBody = {'dist/about/index.html':about,'dist/privacy/index.html':privacy,'dist/terms/index.html':terms,'dist/download/index.html':download}[file];
     if (companyBody) html = html.replace(/(<main[^>]*>)[\s\S]*?<\/main>/, `$1${companyBody}</main>`);
     html = html.replace(/<aside class="ad">[\s\S]*?<\/aside>/g,'').replace(/<div class="wrap ad">[\s\S]*?<\/div>/g,'');
     html = html.replace('</body>','<script type="module" src="/assets/site-shell.js"></script></body>');

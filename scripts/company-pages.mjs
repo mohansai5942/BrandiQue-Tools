@@ -35,3 +35,109 @@ export const terms = policy('Terms of Use','Please use BrandiQue Tools responsib
  ['Website identity and separate services','<p>BrandiQue branding and website materials are distinct from the files you process. Do not present yourself as BrandiQue or imply an endorsement without permission. Custom website, branding or automation work offered through BrandiQue Web Solutions is separate from these free tools and subject to the scope and terms agreed for that project.</p>'],
  ['Updates and contact','<p>These terms may change as the service evolves. Check the date above for the current version. For questions, feedback or a report about misuse, visit <a href="https://www.brandique.in" target="_blank" rel="noopener noreferrer">BrandiQue Web Solutions</a> and use the available contact options. For information about data handling, read our <a href="/privacy/">Privacy Policy</a>.</p>']
 ]);
+
+export const download = `<div class="company-page wrap download-page">
+<section class="company-hero">
+  <div>
+    <span class="eyebrow">STANDALONE WEB APP &amp; LAUNCHERS</span>
+    <h1>Download BrandiQue App.<br><em>Desktop &amp; Mobile.</em></h1>
+    <p class="company-intro">Install BrandiQue Tools directly on your device for instant offline access, dedicated window workflow, and zero distractions. No app store account required.</p>
+    <div class="company-actions">
+      <a class="btn" href="#apps">Choose Your Platform ↓</a>
+      <a class="text-link" href="/tools/">Browse Online Tools ↗</a>
+    </div>
+  </div>
+  <aside class="company-vision">
+    <span class="eyebrow">WHY INSTALL?</span>
+    <h2>Instant offline tools.<br>Zero clutter.</h2>
+    <p>Launch directly from your desktop, taskbar, or home screen. Works fast, stays private, and processes files locally on your hardware.</p>
+    <span class="company-signature">Windows · Mac · Android · iOS</span>
+  </aside>
+</section>
+
+<section class="company-section" id="apps">
+  <span class="eyebrow">SELECT YOUR DEVICE</span>
+  <h2>Install for your device view.</h2>
+  <div class="download-cards">
+    <article class="download-card">
+      <div class="download-card-header">
+        <span class="download-badge">DESKTOP APP</span>
+        <div class="download-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+      </div>
+      <h3>BrandiQue Desktop App</h3>
+      <p class="download-card-lead">For Windows, macOS, Linux and Chromebook computers. A dedicated, distraction-free application window.</p>
+      <ul class="download-feature-list">
+        <li>Dedicated standalone window with no browser tabs</li>
+        <li>Pin to your Windows Taskbar or Mac Dock</li>
+        <li>Cached tools load instantly even offline</li>
+        <li>Fast drag-and-drop batch file processing</li>
+      </ul>
+      <div class="download-actions">
+        <button type="button" class="btn" data-pwa-install data-platform="desktop">Download Desktop App</button>
+        <button type="button" class="btn alt" data-pwa-install data-platform="desktop">Get Desktop Launcher</button>
+      </div>
+      <div class="download-guide">
+        <h4>How to install on Desktop:</h4>
+        <ol>
+          <li>Click <strong>Download Desktop App</strong> above, or look for the <strong>Install</strong> icon (⊕) in your browser address bar.</li>
+          <li>Click <strong>Install</strong> when prompted to add BrandiQue Tools to your computer.</li>
+          <li>Launch anytime from your desktop or start menu!</li>
+        </ol>
+      </div>
+    </article>
+
+    <article class="download-card">
+      <div class="download-card-header">
+        <span class="download-badge">MOBILE APP</span>
+        <div class="download-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+      </div>
+      <h3>BrandiQue Mobile App</h3>
+      <p class="download-card-lead">For Android smartphones and iPhone / iPad devices. Fast, responsive, full-screen touch tools.</p>
+      <ul class="download-feature-list">
+        <li>One-tap launch from your phone home screen</li>
+        <li>Full-screen experience without browser address bar</li>
+        <li>Quick file pick from camera, photos, or documents</li>
+        <li>Super lightweight — takes less than 2 MB space</li>
+      </ul>
+      <div class="download-actions">
+        <button type="button" class="btn" data-pwa-install data-platform="mobile">Download Mobile App</button>
+        <button type="button" class="btn alt" data-pwa-install data-platform="mobile">Get Mobile Launcher</button>
+      </div>
+      <div class="download-guide">
+        <h4>How to install on Mobile:</h4>
+        <ol>
+          <li><strong>Android (Chrome):</strong> Tap <strong>Download Mobile App</strong> above or tap browser menu (⋮) → <strong>Install app</strong> / <strong>Add to Home screen</strong>.</li>
+          <li><strong>iPhone / iPad (Safari):</strong> Tap the <strong>Share</strong> button (⎋ with arrow) → Tap <strong>Add to Home Screen</strong> → Tap <strong>Add</strong>.</li>
+        </ol>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="company-section company-values">
+  <div>
+    <span class="eyebrow">WHY CHOOSE BRANDIQUE APP</span>
+    <h2>Designed for everyday reliability.</h2>
+    <p>Everything you need to resize images, merge PDFs, convert files, check resumes and calculate numbers — directly on your device.</p>
+  </div>
+  <div class="company-principles">
+    <article>
+      <h3>100% Private &amp; On-Device</h3>
+      <p>Your documents, images, and data never leave your computer or phone. Processing runs completely in your local sandbox.</p>
+    </article>
+    <article>
+      <h3>Offline Access Anywhere</h3>
+      <p>Never get stopped by a spotty internet connection. Cached tools remain fully functional while travelling or on the go.</p>
+    </article>
+    <article>
+      <h3>Free Forever, Zero Accounts</h3>
+      <p>No account sign-ups, no monthly subscriptions, and no watermarks. Clean, honest browser tools built with care.</p>
+    </article>
+  </div>
+</section>
+</div>`;
+

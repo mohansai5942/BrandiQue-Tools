@@ -39,5 +39,5 @@ t('emi-calculator','EMI Calculator','Calculators','Estimate monthly loan payment
 t('discount-calculator','Discount Calculator','Calculators','Calculate final price, savings and combined discount/tax results.',['Currency values'],'discount'),
 t('gst-calculator','GST Calculator','Calculators','Add or remove GST and see base amount, tax amount and total.',['Currency values'],'gst')
 ];
-export const legal=[['about','About BrandiQue Tools'],['privacy','Privacy Policy'],['terms','Terms of Service'],['contact','Contact']];
+export const legal=[['about','About BrandiQue Tools'],['privacy','Privacy Policy'],['terms','Terms of Service'],['contact','Contact'],['download','Download BrandiQue App']];
 export const bySlug=s=>tools.find(x=>x.slug===s);

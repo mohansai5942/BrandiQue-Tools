@@ -187,6 +187,8 @@ document.addEventListener('click',async event=>{
   if (typeof event.preventDefault === 'function') event.preventDefault();
   if (typeof closeMenu === 'function') closeMenu();
 
+  const platform = installBtn.getAttribute?.('data-platform') || installBtn.dataset?.platform;
+
   if (deferredPWA) {
    try {
     await deferredPWA.prompt();
@@ -199,7 +201,7 @@ document.addEventListener('click',async event=>{
    } catch {}
   }
 
-  showInstallGuide();
+  showInstallGuide(platform);
  });
 
  function downloadAppLauncher(type = 'desktop') {
@@ -256,7 +258,7 @@ location.href = "https://tools.brandique.in/";
   } catch {}
  }
 
- function showInstallGuide() {
+ function showInstallGuide(preferredPlatform) {
   if (!doc.body || typeof doc.createElement !== 'function') return;
 
   const old = doc.getElementById?.('pwa-modal');
@@ -266,8 +268,11 @@ location.href = "https://tools.brandique.in/";
   modal.id = 'pwa-modal';
   modal.className = 'pwa-modal-backdrop';
 
-  const currentMobile = isMobileEnv();
-  const modalType = isIOS ? 'ios' : (currentMobile ? 'mobile' : 'desktop');
+  const modalType = (preferredPlatform === 'desktop')
+   ? 'desktop'
+   : (preferredPlatform === 'mobile'
+      ? (isIOS ? 'ios' : 'mobile')
+      : (isIOS ? 'ios' : (isMobileEnv() ? 'mobile' : 'desktop')));
   let title = 'Download BrandiQue Desktop App';
   let sub = 'Install BrandiQue Desktop App on your PC or Mac for instant offline access:';
   let steps = '';
