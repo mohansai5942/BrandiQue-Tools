@@ -92,3 +92,66 @@ test('share button falls back to clipboard when Web Share API is absent',async()
  assert.equal(shareBtn.classList.contains('copied'),true);
 });
 
+test('PWA install button triggers beforeinstallprompt prompt when available',async()=>{
+ const installBtn=new Element();
+ const banner=new Element();
+ banner.hidden=false;
+ const map={
+  '[data-pwa-banner]':banner,
+  '[data-pwa-install]':installBtn
+ };
+ const document=new Element();
+ document.body=new Element();
+ document.querySelector=s=>map[s]||null;
+ document.querySelectorAll=s=>s==='[data-pwa-install]'?[installBtn]:[];
+ const location=new URL('https://tools.brandique.in/');
+
+ let prompted=false;
+ const windowObj={
+  innerWidth:1200,
+  addEventListener(evt,cb){
+   if(evt==='beforeinstallprompt'){
+    cb({
+     preventDefault(){},
+     async prompt(){prompted=true},
+     userChoice:Promise.resolve({outcome:'accepted'})
+    });
+   }
+  },
+  matchMedia:()=>({matches:false})
+ };
+ const navigator={userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'};
+
+ vm.runInNewContext(source,{document,location,window:windowObj,navigator,setTimeout,clearTimeout});
+
+ await document.fire('click',{target:{closest:s=>s==='[data-pwa-install]'?installBtn:null},preventDefault(){}});
+ assert.equal(prompted,true);
+ assert.equal(banner.hidden,true);
+});
+
+test('PWA top banner can be dismissed and hides the element',async()=>{
+ const banner=new Element();
+ banner.hidden=false;
+ const dismissBtn=new Element();
+ const map={
+  '[data-pwa-banner]':banner,
+  '[data-pwa-dismiss]':dismissBtn
+ };
+ const document=new Element();
+ document.body=new Element();
+ document.querySelector=s=>map[s]||null;
+ document.querySelectorAll=()=>[];
+ const location=new URL('https://tools.brandique.in/');
+ const localStorageData={};
+ const localStorageMock={
+  getItem:k=>localStorageData[k]||null,
+  setItem:(k,v)=>{localStorageData[k]=String(v)}
+ };
+
+ vm.runInNewContext(source,{document,location,localStorage:localStorageMock,navigator:{userAgent:'Mozilla/5.0'}});
+
+ await dismissBtn.fire('click');
+ assert.equal(banner.hidden,true);
+ assert.equal(localStorageData['brandique_pwa_dismissed'],'1');
+});
+

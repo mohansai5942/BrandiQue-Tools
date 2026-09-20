@@ -125,6 +125,7 @@ body[data-ui="compact"]{--y:#f5df32;--bg:#0d0d0d;--s:#181818;--b:#333;--t:#f5f5f
 @media(max-width:560px){[data-ui] .tool :is(button,.btn){font-size:12px;min-height:34px;padding:7px 9px}[data-ui] .tool :is(.editor-panel,.ir-pane){padding:12px}[data-ui] .ir-actions{position:static}[data-ui] .tool .ir-two{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .split-workspace{display:grid;gap:20px}.split-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}.split-options,.split-plan{border:1px solid #363636;border-radius:10px;padding:18px;min-width:0}.split-output-list{max-height:250px;overflow:auto;padding-left:22px}.split-output-list li{margin-bottom:12px;overflow-wrap:anywhere}.split-output-list span{display:block;color:#aaa;font-size:13px}.split-pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;max-height:360px;overflow:auto}.split-page{display:grid!important;gap:6px;text-align:center}.split-page img{width:100%;height:135px;object-fit:contain}.split-page[aria-pressed=true]{border:1px solid #f5df32!important}.split-page[aria-pressed=false]{opacity:.6}.split-page:disabled{cursor:default;opacity:1}.split-page:disabled small{display:none}.split-page small{color:#bbb}@container(max-width:650px){.split-grid{grid-template-columns:1fr}.split-options,.split-plan{padding:12px}}
 .format-workspace{display:grid;gap:20px}.format-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}.format-options,.format-result{padding:18px;border:1px solid #363636;border-radius:10px;min-width:0}.format-note{font-size:14px!important;padding:12px;border-left:3px solid var(--y);background:#101010}.format-preview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-height:360px;overflow:auto}.format-preview figure{margin:0;min-width:0}.format-preview img{width:100%;height:180px;object-fit:contain;background:#eee}.format-preview figcaption{font-size:12px;text-align:center}.conversion-render-frame{position:fixed;left:-100000px;top:0;width:1100px;height:1400px;border:0;pointer-events:none;z-index:-1}@container(max-width:650px){.format-grid{grid-template-columns:1fr}.format-options,.format-result{padding:12px}}
+.pdfw-meter{height:8px;background:#292929;border-radius:8px;overflow:hidden;margin:8px 0;width:100%}.pdfw-meter span{display:block;width:0;height:100%;background:var(--y,#fbff00);transition:width .2s ease}
 
 /* Stable desktop type: no viewport-proportional zoom or scaling of tool output. */
 [data-ui] .wrap{max-width:1200px}
@@ -347,3 +348,77 @@ body[data-ui="compact"]{--y:#f5df32;--bg:#0d0d0d;--s:#181818;--b:#333;--t:#f5f5f
 [data-ui] .ats-plan li{margin-bottom:16px}
 [data-ui] .ats-workspace textarea[data-resume-text]{min-height:260px}
 @media(max-width:820px){[data-ui] .ats-score{font-size:42px}[data-ui] .ats-sub-scores>span{padding:8px;font-size:11px}[data-ui] .ats-sub-scores b{font-size:18px}[data-ui] .ats-requirements{max-height:320px}}
+
+/* Progressive Web App (PWA) Top Download Bar & Buttons */
+.pwa-top-bar{background:#0e0e0e;border-bottom:1px solid #292929;color:#d5d5cd;font-size:11px;padding:6px 0;position:relative;z-index:11}
+.pwa-top-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.pwa-top-info{display:flex;align-items:center;gap:9px}
+.pwa-badge{background:var(--y,#f5df32);color:#121212;font-size:9px;font-weight:800;letter-spacing:.6px;padding:2px 6px;border-radius:4px;text-transform:uppercase;line-height:1.2}
+.pwa-top-actions{display:flex;align-items:center;gap:8px}
+.pwa-top-btn{display:inline-flex;align-items:center;gap:6px;background:var(--y,#f5df32);color:#141414;border:none;border-radius:6px;font-size:11px;font-weight:700;padding:5px 12px;cursor:pointer;line-height:1.2;transition:filter .15s,transform .15s}
+.pwa-top-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.pwa-top-close{background:transparent;border:none;color:#858585;font-size:13px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1;transition:color .15s}
+.pwa-top-close:hover{color:#fff;background:#242424}
+
+/* Header Download Button (Desktop Nav) */
+[data-ui] .nav-download-btn{display:inline-flex;align-items:center;gap:7px;background:#212121;color:#f2f2eb;border:1px solid #484848;border-radius:7px;font-size:11px;font-weight:650;padding:8px 14px;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+[data-ui] .nav-download-btn:hover{background:#2b2b2b;border-color:var(--y,#f5df32);color:var(--y,#f5df32)}
+[data-ui] .nav-download-btn svg{color:var(--y,#f5df32);flex-shrink:0}
+
+/* Mobile Header Download Button (Always directly accessible on small screens) */
+[data-ui] .mobile-download-btn{display:none;align-items:center;gap:6px;background:var(--y,#f5df32);color:#151515;border:none;border-radius:6px;font-size:12px;font-weight:750;padding:7px 13px;margin-left:auto;cursor:pointer;line-height:1.2;white-space:nowrap;box-shadow:0 2px 8px rgba(245,223,50,.25);transition:filter .15s,transform .12s}
+[data-ui] .mobile-download-btn:hover{filter:brightness(1.08)}
+[data-ui] .mobile-download-btn:active{transform:scale(.96)}
+[data-ui] .mobile-download-btn svg{color:#151515;flex-shrink:0}
+
+/* Responsive Desktop vs Mobile Label & Icon Visibility */
+.pwa-text-mobile,.pwa-icon-mobile,.pwa-msg-mobile{display:none!important}
+.pwa-text-desktop,.pwa-icon-desktop,.pwa-msg-desktop{display:inline-flex!important}
+
+@media(max-width:820px){
+  .pwa-text-desktop,.pwa-icon-desktop,.pwa-msg-desktop{display:none!important}
+  .pwa-text-mobile,.pwa-icon-mobile,.pwa-msg-mobile{display:inline-flex!important}
+  .pwa-top-bar{display:none!important}
+  [data-ui] .mobile-download-btn{display:none!important}
+  [data-ui] [data-nav] .nav-download-btn{display:flex;width:100%;justify-content:center;padding:12px 16px;font-size:13px;font-weight:750;background:var(--y,#f5df32);color:#151515;border-color:var(--y,#f5df32);margin:8px 0;border-radius:8px;box-shadow:0 2px 10px rgba(245,223,50,.25)}
+  [data-ui] [data-nav] .nav-download-btn svg{color:#151515}
+}
+
+/* Specific body[data-device] overrides */
+body[data-device="mobile"] .pwa-top-bar{display:none!important}
+body[data-device="mobile"] .pwa-text-desktop,
+body[data-device="mobile"] .pwa-icon-desktop,
+body[data-device="mobile"] .pwa-msg-desktop{display:none!important}
+body[data-device="mobile"] .pwa-text-mobile,
+body[data-device="mobile"] .pwa-icon-mobile,
+body[data-device="mobile"] .pwa-msg-mobile{display:inline-flex!important}
+
+body[data-device="desktop"] .pwa-text-mobile,
+body[data-device="desktop"] .pwa-icon-mobile,
+body[data-device="desktop"] .pwa-msg-mobile{display:none!important}
+body[data-device="desktop"] .pwa-text-desktop,
+body[data-device="desktop"] .pwa-icon-desktop,
+body[data-device="desktop"] .pwa-msg-desktop{display:inline-flex!important}
+
+/* PWA Guided Install Modal */
+.pwa-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;animation:pwaFadeIn .18s ease}
+.pwa-modal-card{background:#171717;border:1px solid #3a3a3a;border-radius:14px;max-width:440px;width:100%;padding:24px;color:#ecece5;box-shadow:0 24px 60px rgba(0,0,0,.75);position:relative}
+.pwa-modal-header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.pwa-modal-icon{width:46px;height:46px;border-radius:12px;background:var(--y,#f5df32);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pwa-modal-title{margin:0;font-size:18px;font-weight:700;color:#fff;line-height:1.2}
+.pwa-modal-sub{margin:4px 0 0;font-size:11px;color:#a0a0a0;line-height:1.4}
+.pwa-modal-steps{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:10px}
+.pwa-modal-step{display:flex;align-items:flex-start;gap:12px;background:#1e1e1e;border:1px solid #2e2e2e;padding:11px 13px;border-radius:8px;font-size:12px;line-height:1.5;color:#cdcdcd}
+.pwa-modal-step strong{color:#fff}
+.pwa-step-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--y,#f5df32);color:#121212;font-weight:800;font-size:11px;flex-shrink:0}
+.pwa-modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.pwa-modal-btn{background:var(--y,#f5df32);color:#141414;border:none;border-radius:7px;padding:9px 18px;font-size:12px;font-weight:700;cursor:pointer;transition:filter .15s,transform .12s}
+.pwa-modal-btn:hover{filter:brightness(1.08)}
+.pwa-modal-btn:active{transform:scale(.97)}
+.pwa-modal-btn-secondary{background:#292929;color:#cdcdcd;border:1px solid #444}
+.pwa-modal-btn-secondary:hover{background:#353535;color:#fff}
+.pwa-modal-btn-success{background:#2e7d32!important;color:#fff!important}
+.pwa-modal-close-x{position:absolute;top:14px;right:14px;background:none;border:none;color:#888;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;border-radius:4px}
+.pwa-modal-close-x:hover{color:#fff;background:#252525}
+@keyframes pwaFadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+

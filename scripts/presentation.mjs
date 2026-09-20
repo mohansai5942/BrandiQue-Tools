@@ -28,6 +28,7 @@ function related(tool) {
   return [...new Map(candidates.filter(t => t && t.slug !== tool.slug).map(t => [t.slug,t])).values()].slice(0,4);
 }
 const strip = `<div class="site-trust" aria-label="Platform benefits"><span>No login</span><span>Local processing</span><a href="https://www.brandique.in" target="_blank" rel="noopener noreferrer">Designed by BrandiQue Web Solutions <span aria-hidden="true">↗</span></a><span>Free to use</span></div>`;
+const pwaBanner = `<aside class="pwa-top-bar" data-pwa-banner aria-label="App download banner"><div class="wrap pwa-top-inner"><div class="pwa-top-info"><span class="pwa-badge">APP</span><span class="pwa-msg-desktop">Get BrandiQue Tools Desktop App — quick offline access on your computer</span><span class="pwa-msg-mobile">Get BrandiQue Tools app on your mobile phone</span></div><div class="pwa-top-actions"><button type="button" class="pwa-top-btn" data-pwa-install aria-label="Download Desktop App"><svg class="pwa-icon-desktop" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><polyline points="8 9 12 13 16 9"/><line x1="12" y1="5" x2="12" y2="13"/></svg><span class="pwa-text-desktop">Download Desktop App</span></button><button type="button" class="pwa-top-close" data-pwa-dismiss aria-label="Dismiss app banner" title="Dismiss">✕</button></div></div></aside>`;
 const recommendations = tool => `<section class="section wrap related-tools" aria-labelledby="related-heading"><div class="section-title"><div><span class="eyebrow">KEEP THE MOMENTUM</span><h2 id="related-heading">Your next useful tool.</h2></div><a class="text-link" href="/tools/">Explore all tools ↗</a></div><div class="grid">${related(tool).map(card).join('')}</div></section>`;
 async function enhance(dir) {
   for (const entry of await readdir(dir, {withFileTypes:true})) {
@@ -38,8 +39,9 @@ async function enhance(dir) {
     const slug = html.match(/rel="canonical" href="https:\/\/tools\.brandique\.in\/tools\/([^/]+)\//)?.[1];
     const tool = tools.find(t => t.slug === slug);
     html = html.replace('<body', '<body data-ui="compact"');
-    html = html.replace('</head>', '<link rel="stylesheet" href="/assets/presentation.css"><link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg"></head>');
-    html = html.replace(/(<body[^>]*>)/, `$1${strip}`);
+    const pwaHead = '<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#111111"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="BrandiQue"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="/assets/presentation.css"><link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg">';
+    html = html.replace('</head>', `${pwaHead}</head>`);
+    html = html.replace(/(<body[^>]*>)/, `$1${pwaBanner}${strip}`);
     html = html.replace(/<header[\s\S]*?<\/header>/, header);
     if (html.includes('<footer')) html = html.replace(/<footer[\s\S]*?<\/footer>/,footer);
     else html = html.replace('</main>',`</main>${footer}`);
