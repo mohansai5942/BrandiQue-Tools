@@ -8,4 +8,4 @@ export const collections=[
  ['resume-tools','Resume Tools','Free Resume ATS Checker','Check a PDF, DOCX or text resume for readable content, structure and job-keyword coverage. The score is a transparent readiness estimate, not an employer ATS result or a hiring guarantee.'],
  ['utilities','Utilities','Free Text and Developer Tools','Format or validate JSON, encode Base64 and URL components, count words, change text case, convert colors and timestamps, generate passwords or create QR codes. Choose a focused tool for the task.']
 ];
-export const extraPaths=['/sitemap/',...collections.map(([slug])=>`/collections/${slug}/`)];
+export const extraPaths=['/collections/','/sitemap/',...collections.map(([slug])=>`/collections/${slug}/`)];

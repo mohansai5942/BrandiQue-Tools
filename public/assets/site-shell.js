@@ -5,6 +5,49 @@ menu?.addEventListener('click',event=>{event.stopImmediatePropagation();const op
 document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeMenu();if(document.activeElement?.closest('[data-nav]'))menu?.focus()}});
 document.addEventListener('click',event=>{if(!event.target.closest('.site-header'))closeMenu()});
 nav?.querySelectorAll('a').forEach(a=>{if(new URL(a.href).pathname===location.pathname&&!a.hash)a.setAttribute('aria-current','page')});
+
+// Remove # from URLs across all pages while preserving smooth scroll behavior
+const cleanHashFromUrl=()=>{
+ if(typeof location!=='undefined'&&location?.hash){
+  const h=location.hash;
+  try{if(typeof history!=='undefined'&&typeof history?.replaceState==='function')history.replaceState(null,'',location.pathname+location.search)}catch{}
+  return h;
+ }
+ return '';
+};
+const initialHash=cleanHashFromUrl();
+if(initialHash&&typeof document!=='undefined'&&typeof document?.getElementById==='function'){
+ const targetId=decodeURIComponent(initialHash.slice(1));
+ const el=document.getElementById(targetId);
+ if(el&&typeof setTimeout==='function'){setTimeout(()=>{try{el.scrollIntoView?.({behavior:'smooth'})}catch{}},100)}
+}
+if(typeof window!=='undefined'&&typeof window?.addEventListener==='function'){
+ window.addEventListener('hashchange',()=>{cleanHashFromUrl()});
+}
+if(typeof document!=='undefined'&&typeof document?.addEventListener==='function'){
+ document.addEventListener('click',event=>{
+  const anchor=event?.target?.closest?.('a');
+  if(!anchor||!anchor.href)return;
+  try{
+   const currentOrigin=typeof location!=='undefined'&&location?.origin?location.origin:'https://tools.brandique.in';
+   const targetUrl=new URL(anchor.href,currentOrigin);
+   if(typeof location!=='undefined'&&targetUrl.origin===location.origin&&targetUrl.hash){
+    const isSamePage=targetUrl.pathname===location.pathname||(targetUrl.pathname==='/'&&location.pathname==='/');
+    if(isSamePage&&typeof document?.getElementById==='function'){
+     const targetId=decodeURIComponent(targetUrl.hash.slice(1));
+     const targetEl=document.getElementById(targetId);
+     if(targetEl){
+      if(typeof event.preventDefault==='function')event.preventDefault();
+      closeMenu();
+      try{targetEl.scrollIntoView?.({behavior:'smooth'})}catch{}
+      cleanHashFromUrl();
+     }
+    }
+   }
+  }catch{}
+ },false);
+}
+
 const search=document.querySelector('[data-catalog-search]');
 if(search){
  const cards=[...document.querySelectorAll('[data-catalog-card]')],filters=[...document.querySelectorAll('[data-category-filter]')];
