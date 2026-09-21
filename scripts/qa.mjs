@@ -29,6 +29,8 @@ for(const file of htmlFiles){
  }
 
  if((html.match(/class="site-trust"/g)||[]).length!==1)throw new Error(`Missing or duplicate trust strip: ${file}`);
+ if((html.match(/googletagmanager\.com\/gtag\/js\?id=G-V4Q17T7C5Q/g)||[]).length!==1)throw new Error(`Missing or duplicate Google tag: ${file}`);
+ if(!/<head>\s*<!-- Google tag \(gtag\.js\) -->/.test(html))throw new Error(`Google tag not immediately after <head>: ${file}`);
  if(!/href="\/assets\/release-[a-f0-9]{16}\/presentation\.css"/.test(html))throw new Error(`Missing presentation stylesheet: ${file}`);
  if(!html.includes('href="https://www.brandique.in" target="_blank" rel="noopener noreferrer"'))throw new Error(`Missing safe brand link: ${file}`);
  if(!/src="\/assets\/release-[a-f0-9]{16}\/site-shell\.js"/.test(html))throw new Error(`Unversioned site shell: ${file}`);
