@@ -1,8 +1,15 @@
 /tools/pdf-editor/ /tools/pdf-merger/ 301
 /pdf-editor.html /tools/pdf-merger/ 301
+/unit-converter.html /tools/unit-converter/ 301
+/length-converter.html /tools/length-converter/ 301
+/area-converter.html /tools/area-converter/ 301
+/temperature-converter.html /tools/temperature-converter/ 301
+/volume-converter.html /tools/volume-converter/ 301
+/weight-converter.html /tools/weight-converter/ 301
+/power-converter.html /tools/power-converter/ 301
+/speed-converter.html /tools/speed-converter/ 301
 /app /download/ 301
 /app/ /download/ 301
 /download-app /download/ 301
 /download-app/ /download/ 301
 /collections /collections/ 301
-
