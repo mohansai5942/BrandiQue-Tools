@@ -50,83 +50,54 @@ function shell(){
 
 export function mountImageCompressor(root){
  if(!root||root.dataset.imageCompressorMounted==='true')return;
- root.dataset.imageCompressorMounted='true';
- root.innerHTML=shell();
- let file=null,bitmap=null,resultUrl='';
- const drop=$('[data-drop]',root),input=$('input[type=file]',drop),run=$('[data-run]',root),mode=$('[data-mode]',root),format=$('[data-format]',root),quality=$('[data-quality]',root),target=$('[data-target]',root),qualityWrap=$('[data-quality-wrap]',root),targetWrap=$('[data-target-wrap]',root),downscaleWrap=$('[data-downscale-wrap]',root),downscale=$('[data-downscale]',root);
- const source=$('[data-source]',root),status=$('[data-status]',root),progress=$('[data-progress]',root),result=$('[data-result]',root),qout=$('[data-qout]',root);
-
- const setStatus=(text,tone='')=>{status.textContent=text;status.dataset.tone=tone};
- const updateUI=()=>{
-  const targetMode=mode.value==='target';
-  qualityWrap.hidden=targetMode;targetWrap.hidden=!targetMode;downscaleWrap.hidden=!targetMode;
-  format.querySelector('option[value="image/png"]').textContent=targetMode?'PNG — lossless, dimensions may need to change':'PNG — lossless';
-  qout.textContent=quality.value+'%';
-  $('[data-help]',root).innerHTML=targetMode
-   ? 'Target mode searches encoder quality automatically. If the target is still too large, optional <b>automatic dimension reduction</b> lowers resolution until the output reaches the limit or the smallest practical size.'
-   : 'Quality changes are used for JPEG/WebP. PNG stays lossless, so PNG compression depends mainly on the source image.';
-  run.disabled=!bitmap;
-  if(targetMode&&format.value==='image/png')setStatus('PNG is lossless. Target-size mode may need to reduce dimensions.','');
- };
- const load=async f=>{
+ root.dataset.imageCompressorMounted='true';root.innerHTML=shell();
+ let file=null,bitmap=null,resultUrl='',timer=0,busy=false,revision=0;
+ const drop=$('[data-drop]',root),input=$('input[type=file]',drop),source=$('[data-source]',root),status=$('[data-status]',root),progress=$('[data-progress]',root),result=$('[data-result]',root),format=$('[data-format]',root),quality=$('[data-quality]',root),qout=$('[data-qout]',root),target=$('[data-target]',root),unit=$('[data-unit]',root);
+ const setStatus=(t,tone='')=>{status.textContent=t;status.dataset.tone=tone};
+ const targetBytes=()=>{const n=Number(target.value);if(!Number.isFinite(n)||n<=0)return null;return Math.max(1,Math.floor(n*(unit.value==='MB'?1048576:1024)))};
+ const clearResult=()=>{revoke(resultUrl);resultUrl='';result.replaceChildren()};
+ const schedule=()=>{clearTimeout(timer);revision++;clearResult();if(!bitmap)return;timer=setTimeout(()=>process(revision),450)};
+ const updateLabel=()=>{qout.textContent=quality.value+'%';const t=targetBytes();$('[data-target-help]',root).textContent=t?'Automatic compression will aim for ≤ '+target.value+' '+unit.value+' and reduce dimensions only if needed.':'Leave target empty for automatic compression.'};
+ const load=async f=>{try{if(!f?.type.startsWith('image/'))throw Error('Choose an image file.');if(f.size>50*1024*1024)throw Error('Choose an image smaller than 50 MB.');bitmap?.close();bitmap=await createImageBitmap(f,{imageOrientation:'from-image'});file=f;source.textContent=f.name+' · '+bitmap.width+' × '+bitmap.height+' · '+humanBytes(f.size);setStatus('Image ready. Compressing automatically…','success');schedule()}catch(e){bitmap?.close();bitmap=null;file=null;clearResult();setStatus(e.message,'error')}};
+ async function process(token){
+  if(!bitmap||!file||token!==revision||busy)return;
+  busy=true;progress.hidden=false;progress.value=.04;setStatus(targetBytes()?'Finding the best quality for ≤ '+target.value+' '+unit.value+'…':'Compressing automatically…');
   try{
-   if(!f?.type.startsWith('image/'))throw Error('Choose an image file.');
-   if(f.size>50*1024*1024)throw Error('Choose an image smaller than 50 MB.');
-   bitmap?.close();file=f;bitmap=await createImageBitmap(f,{imageOrientation:'from-image'});
-   source.textContent=`${f.name} · ${bitmap.width} × ${bitmap.height} · ${humanBytes(f.size)}`;
-   result.replaceChildren(document.createElement('p'));result.firstChild.textContent='Ready. Set your goal, then compress.';
-   setStatus('Image ready.','success');updateUI();
-  }catch(e){bitmap?.close();bitmap=null;file=null;run.disabled=true;setStatus(e.message,'error')}
- };
+   const type=format.value,limit=targetBytes();let width=bitmap.width,height=bitmap.height,blob=null,usedQuality=Number(quality.value)/100,metTarget=!limit,autoResized=false;
+   const encodeAt=q=>encode(bitmap,type,q,width,height);
+   if(limit){
+    let attempt=await findQualityForTarget(encodeAt,limit,{min:.01,max:1,iterations:18});
+    blob=attempt.blob;usedQuality=attempt.quality;metTarget=blob.size<=limit;progress.value=.45;
+    for(let round=0;round<16&&!metTarget;round++){
+     const ratio=Math.sqrt(limit/blob.size)*.93;
+     const nextW=Math.max(24,Math.floor(width*Math.min(.9,Math.max(.2,ratio))));
+     const nextH=Math.max(24,Math.round(nextW*bitmap.height/bitmap.width));
+     if(nextW>=width&&nextH>=height)break;
+     width=nextW;height=nextH;autoResized=true;
+     attempt=await findQualityForTarget(encodeAt,limit,{min:.01,max:1,iterations:18});
+     blob=attempt.blob;usedQuality=attempt.quality;metTarget=blob.size<=limit;progress.value=.45+((round+1)/16)*.5;
+    }
+    if(!metTarget)throw Error('Could not reach '+target.value+' '+unit.value+'. Smallest result was '+humanBytes(blob.size)+'.');
+   }else{blob=await encode(bitmap,type,usedQuality);progress.value=.9}
+   if(token!==revision)return;
+   if(!blob?.size)throw Error('The browser produced an empty image.');
+   const name=safeOutputName(file.name,'-compressed',extFor(blob.type));resultUrl=URL.createObjectURL(blob);
+   const img=document.createElement('img');img.alt='Automatically compressed image preview';img.src=resultUrl;img.style.maxWidth='100%';img.style.maxHeight='420px';
+   const saving=Math.round((1-blob.size/file.size)*100);
+   const summary=document.createElement('div');summary.innerHTML='<p><b>'+humanBytes(blob.size)+'</b> output · '+(saving>=0?saving+'% smaller':Math.abs(saving)+'% larger')+'</p><p>'+width+' × '+height+' · '+blob.type.split('/')[1].toUpperCase()+' · quality '+Math.round(usedQuality*100)+'%</p><p>'+(limit?(metTarget?'Target reached: ≤ '+target.value+' '+unit.value:'Target not reached'):'Automatic compression')+(autoResized?' · dimensions reduced automatically':'')+'</p>';
+   const dl=document.createElement('button');dl.className='btn';dl.textContent='Download compressed image';dl.onclick=()=>download(blob,name);
+   result.append(img,summary,dl);progress.value=1;setStatus('Compression complete — preview updated automatically.','success');
+  }catch(e){if(token===revision){result.innerHTML='<p class="media-help">No output was created.</p>';setStatus(e.message,'error')}}finally{if(token===revision)progress.hidden=true;busy=false;if(token!==revision)schedule()}
+ }
  input.onchange=()=>load(input.files[0]);
  for(const event of ['dragenter','dragover'])drop.addEventListener(event,e=>{e.preventDefault();drop.classList.add('is-over')});
  for(const event of ['dragleave','drop'])drop.addEventListener(event,e=>{e.preventDefault();drop.classList.remove('is-over')});
  drop.addEventListener('drop',e=>load(e.dataTransfer.files[0]));
- mode.onchange=updateUI;format.onchange=updateUI;quality.oninput=()=>qout.textContent=quality.value+'%';
-
- run.onclick=async()=>{
-  if(!bitmap||!file)return setStatus('Choose an image first.','error');
-  run.disabled=true;progress.hidden=false;progress.value=.05;result.replaceChildren();revoke(resultUrl);resultUrl='';
-  try{
-   const type=format.value,targetBytes=Math.max(1,Math.floor((+target.value||20)*1024));
-   let width=bitmap.width,height=bitmap.height,blob,usedQuality=+quality.value/100,metTarget=true,autoResized=false;
-   const encodeAt=(q,w=width,h=height)=>canvasEncode(bitmap,type,q,w,h);
-   if(mode.value==='target'){
-    if(!Number.isFinite(+target.value)||+target.value<1)throw Error('Enter a target size of at least 1 KB.');
-    let attempt=await findQualityForTarget(q=>encodeAt(q),targetBytes,{min:.01,max:1,iterations:18});
-    blob=attempt.blob;usedQuality=attempt.quality;metTarget=blob.size<=targetBytes;progress.value=.55;
-    if(!metTarget&&downscale.checked){
-      for(let round=0;round<12&&!metTarget;round++){
-       const ratio=Math.sqrt(targetBytes/blob.size)*.94;
-       const nextW=Math.max(24,Math.floor(width*Math.min(.92,Math.max(.25,ratio))));
-       const nextH=Math.max(24,Math.round(nextW*height/width));
-       if(nextW>=width&&nextH>=height)break;
-       width=nextW;height=nextH;autoResized=true;
-       attempt=await findQualityForTarget(q=>encodeAt(q,width,height),targetBytes,{min:.01,max:1,iterations:18});
-       blob=attempt.blob;usedQuality=attempt.quality;metTarget=blob.size<=targetBytes;
-       progress.value=.55+((round+1)/12)*.4;
-      }
-    }
-    if(!metTarget)throw Error(`The browser could not reach ${target.value} KB. Smallest result was ${humanBytes(blob.size)}. Try a larger target or allow more dimension reduction.`);
-   }else{
-    blob=await encodeAt(usedQuality);progress.value=.85;
-   }
-   if(!blob?.size)throw Error('The browser produced an empty image.');
-   progress.value=1;const name=file.name.replace(/\.[^.]+$/,'')+'-compressed.'+extFor(blob.type);
-   resultUrl=URL.createObjectURL(blob);
-   const img=document.createElement('img');img.alt='Compressed image preview';img.src=resultUrl;img.style.maxWidth='100%';img.style.maxHeight='420px';
-   const summary=document.createElement('div');
-   summary.innerHTML=`<p><b>${humanBytes(blob.size)}</b> output · ${Math.round((blob.size/file.size)*100)}% of original</p><p>${width} × ${height} · ${blob.type.split('/')[1].toUpperCase()} ${type==='image/png'?'lossless':''}</p><p>${mode.value==='target'?(metTarget?`Target reached: ≤ ${target.value} KB`:'Target not reached'):`Quality: ${Math.round(usedQuality*100)}%`}${autoResized?' · dimensions reduced automatically':''}</p>`;
-   const dl=document.createElement('button');dl.className='btn';dl.textContent='Download compressed image';dl.onclick=()=>download(blob,name);
-   result.append(img,summary,dl);
-   setStatus(mode.value==='target'?(`Done. Output is ${humanBytes(blob.size)} ${metTarget?'and meets the target.':''}`):'Compression complete.','success');
-  }catch(e){result.innerHTML='<p class="media-help">No output was created.</p>';setStatus(e.message,'error')}
-  finally{run.disabled=!bitmap;progress.hidden=true}
- };
- updateUI();
- window.addEventListener('pagehide',()=>{bitmap?.close();revoke(resultUrl)},{once:true});
+ [format,quality,target,unit].forEach(e=>e.addEventListener('input',()=>{updateLabel();schedule()}));
+ [format,unit].forEach(e=>e.addEventListener('change',()=>{updateLabel();schedule()}));
+ updateLabel();
+ window.addEventListener('pagehide',()=>{clearTimeout(timer);bitmap?.close();clearResult()},{once:true});
 }
-
 // Self-mount when this module is loaded directly by the tool page.
 if(typeof document!=='undefined'){
  const root=document.querySelector('[data-tool]');
