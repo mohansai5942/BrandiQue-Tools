@@ -49,6 +49,8 @@ function shell(){
 }
 
 export function mountImageCompressor(root){
+ if(!root||root.dataset.imageCompressorMounted==='true')return;
+ root.dataset.imageCompressorMounted='true';
  root.innerHTML=shell();
  let file=null,bitmap=null,resultUrl='';
  const drop=$('[data-drop]',root),input=$('input[type=file]',drop),run=$('[data-run]',root),mode=$('[data-mode]',root),format=$('[data-format]',root),quality=$('[data-quality]',root),target=$('[data-target]',root),qualityWrap=$('[data-quality-wrap]',root),targetWrap=$('[data-target-wrap]',root),downscaleWrap=$('[data-downscale-wrap]',root),downscale=$('[data-downscale]',root);
@@ -123,4 +125,10 @@ export function mountImageCompressor(root){
  };
  updateUI();
  window.addEventListener('pagehide',()=>{bitmap?.close();revoke(resultUrl)},{once:true});
+}
+
+// Self-mount when this module is loaded directly by the tool page.
+if(typeof document!=='undefined'){
+ const root=document.querySelector('[data-tool]');
+ if(root)mountImageCompressor(root);
 }
