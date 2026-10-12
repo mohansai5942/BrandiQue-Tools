@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-const source=await readFile(new URL('../public/assets/site-shell.js',import.meta.url),'utf8');
+const searchCore=(await readFile(new URL('../public/assets/search-core.js',import.meta.url),'utf8')).replaceAll('export ','');
+// site-shell is an ES module; inline its single import so it can run in a vm context.
+const source=(await readFile(new URL('../public/assets/site-shell.js',import.meta.url),'utf8')).replace("import{matchesQuery}from'./search-core.js';",searchCore);
 class Element{
  constructor(dataset={},textContent=''){this.dataset=dataset;this.textContent=textContent;this.events={};this.attributes={};this.hidden=false;this.value='';this.focused=false;const classes=new Set();this.classList={toggle(c){if(classes.has(c)){classes.delete(c);return false}classes.add(c);return true},remove:c=>classes.delete(c),add:c=>classes.add(c),contains:c=>classes.has(c)}}
  addEventListener(type,fn){(this.events[type]||=[]).push(fn)}

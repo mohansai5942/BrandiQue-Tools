@@ -43,11 +43,11 @@ app.use((req, res) => {
   if (cleanPath && existsSync(candidateHtml)) {
     return res.sendFile(candidateHtml);
   }
-  const rootIndex = path.join(distDir, 'index.html');
-  if (existsSync(rootIndex)) {
-    return res.status(404).send('Page not found. Visit /tools/ to browse available tools.');
+  const notFound = path.join(distDir, '404.html');
+  if (existsSync(notFound)) {
+    return res.status(404).sendFile(notFound);
   }
-  return res.status(404).send('Not Found');
+  return res.status(404).send('Page not found. Visit /tools/ to browse available tools.');
 });
 
 const server = app.listen(PORT, HOST, () => {

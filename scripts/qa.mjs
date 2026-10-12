@@ -22,6 +22,11 @@ for(const tool of tools){
 
 await walkHtml('dist');
 const broken=[];
+// Every page must use the one shared footer (same links everywhere).
+const sharedFooter=(await readFile('dist/tools/index.html','utf8')).match(/<footer class="site-footer"[\s\S]*?<\/footer>/)[0];
+for(const file of htmlFiles){const footer=(await readFile(file,'utf8')).match(/<footer class="site-footer"[\s\S]*?<\/footer>/)?.[0]||'';if(footer.replaceAll(' data-google-vignette="false"','')!==sharedFooter)throw new Error(`Footer differs from the shared footer: ${file}`)}
+// Branded 404 page exists and is not indexable.
+{const nf=await readFile('dist/404.html','utf8');if(!nf.includes('Page not found')||!nf.includes('noindex')||nf.includes('rel="canonical"'))throw new Error('dist/404.html is missing or indexable')}
 for(const file of htmlFiles){
  const html=await readFile(file,'utf8');
  for(const marker of ['class="site-header"','class="site-footer"']){

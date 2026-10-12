@@ -1,3 +1,4 @@
+import{matchesQuery}from'./search-core.js';
 // Own navigation at the shell level; legacy tool menu listeners are left intact.
 const menu=document.querySelector('[data-menu]'),nav=document.querySelector('[data-nav]');
 const closeMenu=()=>{nav?.classList.remove('open');menu?.setAttribute('aria-expanded','false')};
@@ -55,8 +56,8 @@ if(search){
  if(!filters.some(b=>b.dataset.categoryFilter===category))category='';
  search.value=params.get('q')||'';
  const update=()=>{
-  const query=search.value.trim().toLowerCase();let count=0;
-  for(const card of cards){const match=(!category||card.dataset.category===category)&&card.textContent.toLowerCase().includes(query);card.hidden=!match;if(match)count++}
+  const query=search.value.trim();let count=0;
+  for(const card of cards){const hay=`${card.textContent||''} ${card.dataset.keywords||''} ${card.dataset.category||''}`;const match=(!category||card.dataset.category===category)&&matchesQuery(query,hay);card.hidden=!match;if(match)count++}
   filters.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.categoryFilter===category)));
   document.querySelector('[data-category-title]').textContent=category||'All tools';
   document.querySelector('[data-catalog-count]').textContent=`${count} ${count===1?'tool':'tools'}`;
@@ -225,6 +226,8 @@ document.addEventListener('click',async event=>{
  }
 
  doc.addEventListener('click', async event => {
+  const launcherBtn = event.target?.closest?.('[data-pwa-launcher]');
+  if (launcherBtn) { event.preventDefault?.(); downloadAppLauncher(launcherBtn.dataset.platform === 'mobile' ? 'mobile' : 'desktop'); launcherBtn.textContent = '✓ Launcher downloaded'; return; }
   const installBtn = event.target?.closest?.('[data-pwa-install]');
   if (!installBtn) return;
   if (typeof event.preventDefault === 'function') event.preventDefault();
@@ -301,6 +304,35 @@ location.href = "https://tools.brandique.in/";
   } catch {}
  }
 
+ function detectBrowser() {
+  const u = ua;
+  if (/edg\//.test(u)) return 'edge';
+  if (/samsungbrowser/.test(u)) return 'samsung';
+  if (/opr\/|opera/.test(u)) return 'opera';
+  if (/firefox|fxios/.test(u)) return 'firefox';
+  if (/crios/.test(u)) return 'chrome-ios';
+  if (/chrome|chromium/.test(u)) return 'chrome';
+  if (/safari/.test(u)) return 'safari';
+  return 'other';
+ }
+ const step = (n, html) => `<li class="pwa-modal-step"><span class="pwa-step-num">${n}</span><div>${html}</div></li>`;
+ // Plain-language install steps for the browser in use. Shown whenever the browser does not offer
+ // a one-click install prompt (Safari, Firefox, iOS, already installed or Chrome's prompt not ready).
+ function installSteps(type) {
+  const b = detectBrowser();
+  if (isStandalone) return { title: 'BrandiQue Tools is already installed', sub: 'You are using the installed app right now. Open it any time from your home screen, Start menu, Dock or app drawer.', steps: '' };
+  if (isIOS) {
+   if (b === 'safari') return { title: 'Install on iPhone or iPad', sub: 'Safari installs web apps from the Share menu:', steps: step(1, 'Tap the <strong>Share</strong> button (square with an up arrow) in the Safari toolbar.') + step(2, 'Scroll down and tap <strong>Add to Home Screen</strong>.') + step(3, 'Tap <strong>Add</strong>. BrandiQue Tools appears on your home screen.') };
+   return { title: 'Install on iPhone or iPad', sub: 'On iPhone and iPad, apps are added from the browser Share menu (iOS 16.4+) or from Safari:', steps: step(1, 'Tap the <strong>Share</strong> button (in Chrome it is in the address bar or the ⋯ menu).') + step(2, 'Choose <strong>Add to Home Screen</strong>. If you do not see it, open tools.brandique.in in <strong>Safari</strong> and use Share → Add to Home Screen.') + step(3, 'Tap <strong>Add</strong>.') };
+  }
+  if (b === 'firefox') return { title: type === 'mobile' ? 'Install on Android (Firefox)' : 'Using Firefox on a computer', sub: type === 'mobile' ? 'Firefox for Android can add the app to your home screen:' : 'Firefox for desktop does not install web apps. You can still use every tool in this tab, or:', steps: type === 'mobile' ? step(1, 'Tap the <strong>⋮ menu</strong>.') + step(2, 'Tap <strong>Install</strong> or <strong>Add to Home screen</strong>.') + step(3, 'Confirm <strong>Add</strong>.') : step(1, 'Open tools.brandique.in in <strong>Chrome</strong> or <strong>Microsoft Edge</strong>.') + step(2, 'Click the <strong>Install</strong> icon in the address bar, or open the menu → <strong>Install BrandiQue Tools</strong>.') + step(3, 'Or bookmark this page (Ctrl/Cmd + D) for quick access in Firefox.') };
+  if (b === 'safari') return { title: 'Install on Mac (Safari)', sub: 'Safari 17 or newer on macOS Sonoma can add web apps to the Dock:', steps: step(1, 'Open the <strong>File</strong> menu (or the Share button).') + step(2, 'Choose <strong>Add to Dock…</strong>') + step(3, 'Click <strong>Add</strong>. Launch it from the Dock or Launchpad.') };
+  if (b === 'samsung') return { title: 'Install on Samsung Internet', sub: 'Samsung Internet adds web apps to your home screen:', steps: step(1, 'Tap the <strong>☰ menu</strong>.') + step(2, 'Tap <strong>Add page to</strong> → <strong>Home screen</strong> (or tap the install icon in the address bar).') + step(3, 'Confirm <strong>Add</strong>.') };
+  const name = b === 'edge' ? 'Microsoft Edge' : b === 'opera' ? 'Opera' : 'Chrome';
+  if (type === 'mobile' || isMobileEnv()) return { title: `Install on Android (${name})`, sub: 'If no install pop-up appeared, use the browser menu:', steps: step(1, 'Tap the <strong>⋮ menu</strong> (top-right).') + step(2, 'Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.') + step(3, 'Confirm <strong>Install</strong>. The app appears in your app drawer.') };
+  return { title: `Install on your computer (${name})`, sub: 'If no install pop-up appeared, use the browser menu:', steps: (b === 'edge' ? step(1, 'Click the <strong>⋯ menu</strong> → <strong>Apps</strong> → <strong>Install BrandiQue Tools</strong>.') : step(1, 'Click the <strong>Install</strong> icon (⊕ / monitor with arrow) at the right of the address bar, or open the <strong>⋮ menu</strong> → <strong>Cast, save and share</strong> → <strong>Install page as app</strong>.')) + step(2, 'Click <strong>Install</strong> to confirm.') + step(3, 'Launch it from your desktop, Start menu, Dock or taskbar.') };
+ }
+
  function showInstallGuide(preferredPlatform) {
   if (!doc.body || typeof doc.createElement !== 'function') return;
 
@@ -316,63 +348,9 @@ location.href = "https://tools.brandique.in/";
    : (preferredPlatform === 'mobile'
       ? (isIOS ? 'ios' : 'mobile')
       : (isIOS ? 'ios' : (isMobileEnv() ? 'mobile' : 'desktop')));
-  let title = 'Download BrandiQue Desktop App';
-  let sub = 'Install BrandiQue Desktop App on your PC or Mac for instant offline access:';
-  let steps = '';
-  let btnLabel = 'Download Desktop App';
-
-  if (modalType === 'ios') {
-   title = 'Download BrandiQue Mobile App';
-   sub = 'Install BrandiQue Mobile App directly on your iPhone / iPad:';
-   steps = `
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">1</span>
-      <div>Tap the <strong>Share</strong> button <svg style="display:inline;vertical-align:-2px" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> in Safari toolbar.</div>
-    </li>
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">2</span>
-      <div>Scroll down and tap <strong>Add to Home Screen</strong>.</div>
-    </li>
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">3</span>
-      <div>Tap <strong>Add</strong>. Launch BrandiQue Mobile App anytime right from your home screen!</div>
-    </li>`;
-   btnLabel = 'Download Mobile App';
-  } else if (modalType === 'mobile') {
-   title = 'Download BrandiQue Mobile App';
-   sub = 'Install BrandiQue Mobile App directly on your mobile device:';
-   steps = `
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">1</span>
-      <div>Tap <strong>Download Mobile App</strong> below or browser menu (⋮ 3 dots).</div>
-    </li>
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">2</span>
-      <div>Select <strong>Install app</strong> or <strong>Add to Home screen</strong>.</div>
-    </li>
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">3</span>
-      <div>Confirm <strong>Install</strong>. BrandiQue Mobile App will appear right in your app drawer!</div>
-    </li>`;
-   btnLabel = 'Download Mobile App';
-  } else {
-   title = 'Download BrandiQue Desktop App';
-   sub = 'Install BrandiQue Desktop App on your PC or Mac:';
-   steps = `
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">1</span>
-      <div>Click <strong>Download Desktop App</strong> below or look for the <strong>Install</strong> icon in your browser address bar.</div>
-    </li>
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">2</span>
-      <div>Confirm <strong>Install</strong> to add BrandiQue Tools to your computer applications.</div>
-    </li>
-    <li class="pwa-modal-step">
-      <span class="pwa-step-num">3</span>
-      <div>Launch anytime right from your Desktop, Taskbar, or Applications dock!</div>
-    </li>`;
-   btnLabel = 'Download Desktop App';
-  }
+  const guide = installSteps(modalType === 'desktop' ? 'desktop' : 'mobile');
+  const title = guide.title, sub = guide.sub, steps = guide.steps;
+  const btnLabel = deferredPWA ? 'Install now' : '';
 
   const iconSvg = modalType === 'desktop'
    ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>'
@@ -388,14 +366,14 @@ location.href = "https://tools.brandique.in/";
          <p class="pwa-modal-sub">${sub}</p>
        </div>
      </div>
-     <ol class="pwa-modal-steps">${steps}</ol>
+     ${steps ? `<ol class="pwa-modal-steps">${steps}</ol>` : ''}
      <div class="pwa-modal-actions">
-       <button type="button" class="pwa-modal-btn" data-pwa-action="download-install">${btnLabel}</button>
-       <button type="button" class="pwa-modal-btn pwa-modal-btn-secondary" data-pwa-modal-close>Close</button>
+       ${btnLabel ? `<button type="button" class="pwa-modal-btn" data-pwa-action="download-install">${btnLabel}</button>` : ''}
+       <button type="button" class="pwa-modal-btn${btnLabel ? ' pwa-modal-btn-secondary' : ''}" data-pwa-modal-close>${btnLabel ? 'Close' : 'Got it'}</button>
      </div>
    </div>`;
 
-  const close = () => {
+ const close = () => {
    modal.remove?.();
    doc.removeEventListener?.('keydown', onKey);
   };
@@ -417,10 +395,7 @@ location.href = "https://tools.brandique.in/";
       }
      } catch {}
     }
-    const isDesk = modalType === 'desktop';
-    downloadAppLauncher(isDesk ? 'desktop' : 'mobile');
-    actionBtn.classList?.add?.('pwa-modal-btn-success');
-    actionBtn.textContent = isDesk ? '✓ Desktop App Ready!' : '✓ Mobile App Ready!';
+    actionBtn.remove?.();
     return;
    }
    if (e.target === modal || e.target.closest?.('.pwa-modal-close-x') || e.target.closest?.('[data-pwa-modal-close]')) {
@@ -429,5 +404,26 @@ location.href = "https://tools.brandique.in/";
   });
   doc.addEventListener?.('keydown', onKey);
   doc.body.appendChild(modal);
+  try { modal.querySelector('[data-pwa-modal-close]')?.focus(); } catch {}
  }
+})();
+
+
+// Number inputs must not change when the page is scrolled with a mouse wheel or trackpad.
+// Blurring the focused field lets the page scroll normally and keeps the typed value.
+document.addEventListener('wheel',event=>{const el=document.activeElement;if(el&&el.matches?.('input[type=number]')&&(event.target===el||el.contains?.(event.target)))el.blur()},{passive:true,capture:true});
+
+// Warn before leaving a tool page while a file is loaded, so an accidental click
+// (including on an advertisement) does not silently discard work.
+(()=>{
+ const tool=document.querySelector('article.tool[data-tool], .tool[data-tool]');
+ if(!tool)return;
+ let dirty=false;
+ const mark=()=>{dirty=true};
+ tool.addEventListener('change',e=>{if(e.target?.matches?.('input[type=file]')&&e.target.files?.length)mark()},true);
+ tool.addEventListener('drop',e=>{if(e.dataTransfer?.files?.length)mark()},true);
+ window.addEventListener('paste',e=>{if([...(e.clipboardData?.items||[])].some(i=>i.kind==='file'))mark()});
+ document.addEventListener('bq:work',e=>{dirty=e.detail?.active!==false});
+ window.addEventListener('beforeunload',e=>{if(!dirty)return;e.preventDefault();e.returnValue='';return ''});
+ window.__bqHasUnsavedWork=()=>dirty;
 })();

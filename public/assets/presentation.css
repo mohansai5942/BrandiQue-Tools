@@ -446,3 +446,6 @@ body[data-device="desktop"] .pwa-msg-desktop{display:inline-flex!important}
   .download-card{padding:22px}
 }
 
+.tool-guide-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:20px}.tool-guide ol,.tool-guide ul{padding-left:20px;line-height:1.65}.tool-guide li{margin:4px 0}.guide-table-wrap{overflow-x:auto}.guide-table{width:100%;border-collapse:collapse;font-size:13px}.guide-table th,.guide-table td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid #2c2c2c}.guide-table tbody th{white-space:nowrap;color:#e6e6e6;font-weight:700;width:34%}.guide-table thead th{color:#9a9a9a;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:820px){.tool-guide-grid{grid-template-columns:1fr}.guide-table tbody th{white-space:normal}}
+.not-found h2{margin-top:40px}.not-found .hero-actions{margin:24px 0 8px}.not-found-links{line-height:1.9}

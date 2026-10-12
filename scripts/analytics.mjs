@@ -59,6 +59,6 @@ export async function processAll(dirs = ['dist', 'public']) {
 }
 
 if (process.argv[1] && process.argv[1].endsWith('analytics.mjs')) {
-  const count = await processAll(['dist', 'public']);
+  const count = await processAll(['dist']);
   console.log(`Google Analytics: verified single Google tag (G-V4Q17T7C5Q) immediately after <head> in ${count} files.`);
 }

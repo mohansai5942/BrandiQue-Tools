@@ -76,7 +76,7 @@ export const download = `<div class="company-page wrap download-page">
       </ul>
       <div class="download-actions">
         <button type="button" class="btn" data-pwa-install data-platform="desktop">Download Desktop App</button>
-        <button type="button" class="btn alt" data-pwa-install data-platform="desktop">Get Desktop Launcher</button>
+        <button type="button" class="btn alt" data-pwa-launcher data-platform="desktop">Get Desktop Launcher</button>
       </div>
       <div class="download-guide">
         <h4>How to install on Desktop:</h4>
@@ -84,7 +84,9 @@ export const download = `<div class="company-page wrap download-page">
           <li>Click <strong>Download Desktop App</strong> above, or look for the <strong>Install</strong> icon (⊕) in your browser address bar.</li>
           <li>Click <strong>Install</strong> when prompted to add BrandiQue Tools to your computer.</li>
           <li>Launch anytime from your desktop or start menu!</li>
+          <li><strong>Safari on Mac:</strong> File → <strong>Add to Dock…</strong> (Safari 17+). <strong>Firefox:</strong> desktop Firefox cannot install web apps — open this page in Chrome or Edge, or bookmark it.</li>
         </ol>
+        <p class="download-note">The launcher button saves a small shortcut file that opens BrandiQue Tools in your browser; it is not a separate program.</p>
       </div>
     </article>
 
@@ -105,7 +107,7 @@ export const download = `<div class="company-page wrap download-page">
       </ul>
       <div class="download-actions">
         <button type="button" class="btn" data-pwa-install data-platform="mobile">Download Mobile App</button>
-        <button type="button" class="btn alt" data-pwa-install data-platform="mobile">Get Mobile Launcher</button>
+        <button type="button" class="btn alt" data-pwa-launcher data-platform="mobile">Get Mobile Launcher</button>
       </div>
       <div class="download-guide">
         <h4>How to install on Mobile:</h4>
