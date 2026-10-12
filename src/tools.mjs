@@ -1,5 +1,45 @@
+// Extra search words people actually type. Used by the /tools/ search together with the name, category, formats and description.
+export const aliases={
+ 'image-resizer':['resize image','photo resizer','picture size','change dimensions','scale image','instagram size','pixels'],
+ 'image-compressor':['compress image','reduce image size','shrink photo','kb','optimize image','jpg compressor','png compressor'],
+ 'screenshot-editor':['annotate','markup','crop image','blur','pixelate','draw on image','arrow','add text to image','screenshot'],
+ 'image-to-pdf':['jpg to pdf','png to pdf','photos to pdf','picture to pdf','convert images to pdf','combine images'],
+ 'video-resizer':['resize video','change video resolution','scale video','webm'],
+ 'video-compressor':['compress video','reduce video size','shrink video','smaller video'],
+ 'video-to-audio':['extract audio','mp4 to audio','video to mp3','sound from video','audio extractor','opus'],
+ 'document-format-converter':['pdf to word','word to pdf','docx to pdf','excel to csv','xlsx to csv','pdf to jpg','convert document'],
+ 'pdf-merger':['merge pdf','combine pdf','join pdf','pdf combiner','append pdf'],
+ 'pdf-splitter':['split pdf','extract pages','separate pdf','pdf page range','cut pdf'],
+ 'pdf-compressor':['compress pdf','reduce pdf size','shrink pdf','pdf optimizer','smaller pdf'],
+ 'document-converter':['txt to html','markdown to html','csv to json','json to csv','text converter','md'],
+ 'file-converter':['convert file','png to jpg','jpg to png','webp to png','image converter','format converter'],
+ 'age-calculator':['age','birthday','date of birth','dob','how old am i','years old'],
+ 'unit-converter':['convert units','measurement','metric','imperial','unit conversion'],
+ 'length-converter':['cm to inch','inch to cm','feet to meter','km to miles','distance','height'],
+ 'area-converter':['sq ft','square feet','acre to hectare','land area','square meter'],
+ 'temperature-converter':['celsius to fahrenheit','fahrenheit to celsius','kelvin','degrees','temperature'],
+ 'volume-converter':['litre','liter to gallon','ml','cups','capacity'],
+ 'weight-converter':['kg to lb','pounds to kg','mass','grams','ounces'],
+ 'power-converter':['watt','horsepower','hp to kw','kilowatt'],
+ 'speed-converter':['kmph','km/h to mph','knots','velocity','miles per hour'],
+ 'resume-ats-checker':['ats','cv checker','resume score','resume checker','job description match','keywords'],
+ 'json-formatter':['beautify json','pretty print','minify json','json viewer'],
+ 'json-validator':['check json','json lint','json error','validate'],
+ 'base64-encoder-decoder':['base64 encode','base64 decode','b64'],
+ 'url-encoder-decoder':['percent encoding','urlencode','urldecode','escape url','encode uri'],
+ 'password-generator':['random password','strong password','secure password','passphrase'],
+ 'word-counter':['word count','character count','letter count','text counter','count words','reading time'],
+ 'case-converter':['uppercase','lowercase','title case','camelcase','snake case','kebab case'],
+ 'color-converter':['hex to rgb','rgb to hex','hsl','colour','color picker','contrast'],
+ 'timestamp-converter':['epoch','unix time','epoch converter','date to timestamp','milliseconds'],
+ 'qr-code-generator':['qr','qr code','barcode','make qr'],
+ 'percentage-calculator':['percent','percent change','increase','decrease','what percent'],
+ 'emi-calculator':['loan','emi','home loan','car loan','interest','amortization','monthly payment'],
+ 'discount-calculator':['sale price','discount','offer price','savings','off'],
+ 'gst-calculator':['gst','tax','cgst','sgst','igst','india tax','inclusive','exclusive']
+};
 export const categories=['Image Tools','Video Tools','PDF Tools','Document Tools','Converters','Calculators','Resume Tools','Utilities'];
-const t=(slug,name,category,description,formats,kind='generic',popular=false)=>({slug,name,category,description,formats,kind,popular,keywords:[name.toLowerCase(),category.toLowerCase(),...formats.map(x=>x.toLowerCase())],howTo:[`Open ${name} and choose your input.`,`Review the available settings for your browser.`,`Process locally, verify the result, then download it.`],faqs:[['Is this tool free?','Yes. No account is required for normal use.'],['Are my files uploaded?','No. User-selected files are processed in your browser. Page assets may still use normal network requests.'],['Will it work on every device?','Capability and maximum file size depend on browser support, memory, and device performance.']]});
+const t=(slug,name,category,description,formats,kind='generic',popular=false)=>({slug,name,category,description,formats,kind,popular,keywords:[name.toLowerCase(),category.toLowerCase(),...formats.map(x=>x.toLowerCase()),...(aliases[slug]||[])],howTo:[`Open ${name} and choose your input.`,`Review the available settings for your browser.`,`Process locally, verify the result, then download it.`],faqs:[['Is this tool free?','Yes. No account is required for normal use.'],['Are my files uploaded?','No. User-selected files are processed in your browser. Page assets may still use normal network requests.'],['Will it work on every device?','Capability and maximum file size depend on browser support, memory, and device performance.']]});
 export const tools=[
 t('image-resizer','Free Image Resizer','Image Tools','Resize JPG, PNG, WebP and browser-supported images in batches with aspect-ratio controls and real downloads.',['JPG','PNG','WebP','AVIF*'],'image',true),
 t('image-compressor','Free Image Compressor','Image Tools','Compress images locally with format-aware quality controls, previews and direct image downloads.',['JPG','PNG*','WebP','AVIF*'],'image',true),

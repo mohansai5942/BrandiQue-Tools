@@ -8,3 +8,8 @@
 @media(min-width:1600px){.ad-rail{display:block;position:absolute;top:0;width:160px;min-height:600px;margin:0}.ad-rail-left{right:calc(100% + 24px)}.ad-rail-right{left:calc(100% + 24px)}}
 @media(max-width:600px){.ad-placement{margin:16px auto;padding:8px 0}.ad-banner{min-height:60px}.ad-article,.ad-feed,.ad-multiplex{min-height:140px}}
 @media print{.ad-placement{display:none!important}}
+/* Tool pages: keep a clear gap between the last tool control (Download) and the first ad,
+   and leave room at the bottom so a bottom anchor ad can never sit on top of tool buttons. */
+.ad-after-tool{margin-top:48px;min-height:140px}
+body[data-tool-page]{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+@media(max-width:600px){.ad-after-tool{min-height:100px;margin-top:32px}}

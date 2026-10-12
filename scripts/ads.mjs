@@ -8,10 +8,13 @@ async function walk(dir){for(const e of await readdir(dir,{withFileTypes:true}))
  const path=new URL(h.match(/rel="canonical" href="([^"]+)"/)[1]).pathname;
  const isTool=/^\/tools\/[^/]+\/$/.test(path),directory=path==='/tools/',home=path==='/';
  h=h.replace(/<(?:aside|div) class="(?:wrap )?ad">Advertisement space<\/(?:aside|div)>/g,'');
- h=h.replace('</head>',`<meta name="google-adsense-account" content="${client}"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}" crossorigin="anonymous"></script><link rel="stylesheet" href="/assets/ads.css"></head>`);
+ // Tool pages: data-overlays="bottom" keeps any anchor ad at the bottom edge (never over the
+ // header/upload area). Vignettes, anchors and side rails can only be switched off in the AdSense
+ // console (see docs/ADSENSE.md); the code below removes every code-side trigger we control.
+ h=h.replace('</head>',`<meta name="google-adsense-account" content="${client}"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}" crossorigin="anonymous"${isTool?' data-overlays="bottom"':''}></script><link rel="stylesheet" href="/assets/ads.css"></head>`);
  if(isTool){
   // Keep the workspace first. Side units occupy outer gutters only on wide screens.
-  h=h.replace(/(<section class="wrap(?: work)?">)(<article class="tool"[\s\S]*?<\/article>)(<\/section>)/,(_,start,body,end)=>`<section class="wrap ad-workspace">${body}${unit('display','ad-rail ad-rail-left')}${unit('display','ad-rail ad-rail-right')}${end}<div class="wrap">${unit('display','ad-banner ad-after-tool')}</div>`);
+  h=h.replace(/(<section class="wrap(?: work)?">)(<article class="tool"[\s\S]*?<\/article>)(<\/section>)/,(_,start,body,end)=>`<section class="wrap ad-workspace google-anno-skip google-auto-ads-ignore" data-ad-exclude="true" data-tool-workspace>${body}${unit('display','ad-rail ad-rail-left')}${unit('display','ad-rail ad-rail-right')}${end}<div class="wrap">${unit('display','ad-banner ad-after-tool')}</div>`);
   h=h.replace(/(<section class="section wrap cols">)([\s\S]*?)(<\/section>)/,(_,start,body,end)=>start+body+unit('article','ad-editorial')+end);
   h=h.replace('</main>',`<div class="wrap">${unit('multiplex')}</div></main>`);
  }else if(directory){
@@ -22,6 +25,12 @@ async function walk(dir){for(const e of await readdir(dir,{withFileTypes:true}))
   h=h.replace('</main>',`<div class="wrap">${unit('multiplex')}</div></main>`);
  }else{h=h.replace('</main>',`<div class="wrap">${unit('display','ad-banner')}</div></main>`)}
  if(path==='/privacy/')h=h.replace('</article>',`<h2>Advertising and cookies</h2><p>This site uses Google AdSense to display advertisements. Google and its partners may use cookies and similar technologies, IP addresses and device information to deliver, measure and personalize ads, subject to your consent and applicable settings. File processing stays in your browser; selected document contents are not intentionally sent to an advertising service.</p><p>Learn <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">how Google uses information from partner sites</a> and manage personalization at <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">My Ad Center</a>. Where a consent message is available, use it to manage your advertising choices.</p></article>`);
+ if(isTool){
+  // Documented AdSense opt-out: links marked data-google-vignette="false" never trigger a
+  // full-screen vignette, so leaving a tool page can't throw an interstitial over unsaved work.
+  h=h.replace(/<a\b(?![^>]*data-google-vignette)/g,'<a data-google-vignette="false"');
+  h=h.replace(/<body\b/,'<body data-tool-page');
+ }
  h=h.replace('</body>','<script type="module" src="/assets/ads.js"></script></body>');await writeFile(p,h);
 }}
 await walk('dist');
