@@ -33,49 +33,53 @@ A practical guide to all 37 free tools on [tools.brandique.in](https://tools.bra
 **URL:** [https://tools.brandique.in/tools/image-resizer/](https://tools.brandique.in/tools/image-resizer/)  
 **Formats:** JPG, PNG, WebP, AVIF*
 
-Resize one or many images to exact pixels, a percentage or a scale factor, with optional crop, rotation, flip, sharpening and format conversion.
+Resize one or many images to exact pixels, a percentage or a scale factor — and, if you need it, to an exact file size such as 20 KB or 50 KB for exam and government forms.
 
 **How to use**
 
 1. Click Add images (or drop files / paste with Ctrl+V). JPG, PNG, WebP, GIF (first frame) and AVIF (if your browser supports it) are accepted.
-2. Choose a Resize mode and enter Width and Height, a Percent or a Scale. Keep Lock aspect ratio on to avoid stretching, or pick a Social preset.
-3. Pick the Output format and Quality. Open “Crop, effects & filename” for fit mode, rotation, flips, sharpening and file naming.
-4. The queue is processed automatically after every change. Compare Before / After / Side / Split in the preview.
-5. Select an image in the queue and click Download (or the Download button on its row).
+2. Under “1. Pixel size”, choose Resize by and enter Width and Height, a Percent or a Scale. Keep “Keep proportions” on to avoid stretching, or pick a Size preset.
+3. Under “2. File type & file size”, choose Save as (JPG is best for forms). For a fixed file size, type it in Target file size and pick KB or MB — or tap a chip such as 20 KB or 100 KB. Leave it empty to use the Quality slider instead.
+4. The queue is processed automatically after every change. The box under the preview shows the final size in KB and bytes, the pixel size and a green “Matches target” note (or an amber explanation).
+5. Select an image in the queue and click Download (or the Download button on its row). The file name includes the target, e.g. photo-resized-20KB.jpg.
 
 **Options and controls**
 
 | Option | What it does |
 |---|---|
-| Resize mode | Dimensions (exact width × height), Percentage (of the original) or Scale factor (e.g. 0.5 or 2). |
-| Width / Height | Target size in pixels (defaults 1280 × 720). With Lock aspect ratio on, changing one updates the other. |
-| Percent | 1–1000 % of the original size (default 50 %). Used in Percentage mode. |
-| Scale | 0.01–100× (default 1). Used in Scale factor mode. |
-| Lock aspect ratio | Keeps the original proportions (on by default). |
-| Social preset | Instagram square 1080×1080, portrait 1080×1350, story 1080×1920, YouTube thumbnail 1280×720, LinkedIn post 1200×627, X post 1600×900, Facebook post 1200×630. Choosing one unlocks the aspect ratio. |
-| Output | JPG, PNG or WebP (default WebP); AVIF appears only if your browser can encode it. |
-| Quality | 10–100 % (default 86 %) for JPG/WebP/AVIF. PNG is lossless. |
-| Fit mode | Fit inside (no crop), Crop / fill (fills the frame, trims edges) or Stretch (ignores proportions). |
+| Resize by | Width × height (pixels), Percentage of original, or Scale factor (e.g. 0.5 or 2). |
+| Width / Height | Size in pixels (defaults 1280 × 720). With Keep proportions on, changing one updates the other. |
+| Percent | 1–1000 % of the original size (default 50 %). Used for “Percentage of original”. |
+| Scale | 0.01–100× (default 1). Used for “Scale factor”. |
+| Keep proportions | Keeps the original shape so nothing is stretched (on by default). |
+| Size preset | Instagram square 1080×1080, portrait 1080×1350, story 1080×1920, YouTube thumbnail 1280×720, LinkedIn post 1200×627, X post 1600×900, Facebook post 1200×630. Choosing one turns off Keep proportions. |
+| Save as | JPG (default, best for photos and forms), PNG (lossless, larger) or WebP (small, modern). AVIF appears only if your browser can encode it. |
+| Target file size | Optional. Type any size and choose KB or MB (1 KB = 1024 bytes), or tap 20 KB / 50 KB / 100 KB / 200 KB / 500 KB / 1 MB. The tool searches quality (and, if allowed, pixel size) so the file is never above your target. Sizes bigger than the original are allowed. |
+| Match | Exact size (default): the file is exactly the size you typed — any small gap is filled with harmless padding that image viewers ignore. Up to this size: the file is at most your target, with no padding. WebP files always have an even byte count, so an odd target ends 1 byte under; AVIF cannot be padded. |
+| If the size can’t be reached | Shrink pixel size if needed (default), Shrink or enlarge pixel size, or Keep my pixel size exactly. With “Keep”, a target that is too small for those pixels shows an amber message instead of a bigger file. |
+| Quality | 10–100 % (default 86 %) for JPG/WebP/AVIF when no target size is set. PNG is lossless. With a target size, quality is chosen automatically. |
+| When the shape changes | Fit inside (adds borders, no crop), Fill and crop the edges, or Stretch to fill. |
 | Rotate | 0°, 90°, 180° or 270°. |
-| Resampling | High, Medium or Fast scaling quality. |
+| Smoothness | High quality, Medium or Fast scaling. |
 | Flip H / Flip V | Mirror horizontally or vertically. |
 | Sharpen / Reduce noise | Optional filters applied after resizing. |
-| Preserve transparency | Keeps transparent areas for PNG/WebP. When off (or for JPG) the Background colour is used. |
-| Background | Fill colour for transparent areas (default white). |
-| Filename template / Suffix | Output name pattern, default {name}{suffix} with suffix “-resized”. |
+| Keep transparent areas | Keeps transparency for PNG/WebP. When off (or for JPG) the Background colour is used. |
+| Background colour | Fill colour for transparent areas and borders (default white). |
+| File name pattern / Added to file name | Output name pattern, default {name}{suffix} with “-resized”. With a target size the size is added, e.g. -resized-50KB. |
 | Before / After / Side / Split | Preview modes; the Comparison position slider moves the split line. |
 | − / + / Fit / 1:1 | Preview zoom (25–400 %). Click the empty preview background to cycle checker, dark and light backgrounds. |
 | Queue buttons ↑ ↓ × Retry Download | Reorder, remove, retry a failed image, or download that image’s result. |
 | Clear | Empties the queue. |
 | Cancel | Stops processing. |
 
-**Output:** One file per image in the chosen format, named with the template (e.g. photo-resized.webp). Output size and % change are shown under the preview.
+**Output:** One file per image in the chosen format, named with the pattern (e.g. photo-resized.jpg, or photo-resized-20KB.jpg with a target size). The final size (KB and bytes), pixel size and format are shown under the preview.
 
 **Limits & tips**
 
+- For exam photos and signatures, choose JPG and type the limit from the form (for example 20 KB). If the form also fixes the pixel size, enter it and choose “Keep my pixel size exactly”.
+- PNG is lossless, so it cannot get very small; the tool reduces colours or pixels and suggests JPG if needed.
 - Re-encoding removes EXIF/metadata such as GPS location.
 - Very large images (over 150 megapixels) are refused to avoid browser crashes.
-- Only image files are accepted; PDFs and other files are rejected with a message.
 - Files stay on your device; nothing is uploaded.
 
 ### Image Compressor
@@ -83,30 +87,34 @@ Resize one or many images to exact pixels, a percentage or a scale factor, with 
 **URL:** [https://tools.brandique.in/tools/image-compressor/](https://tools.brandique.in/tools/image-compressor/)  
 **Formats:** JPG, PNG*, WebP, AVIF*
 
-Make an image file smaller by re-encoding it as JPEG, WebP or PNG, with an optional target size.
+Make an image an exact file size you type — 5 KB to 5 MB and beyond — or compress it by quality. Built for exam, job and government form uploads.
 
 **How to use**
 
 1. Choose or drop one image.
-2. Pick the Output format and move the Quality slider. Optionally enter a target size in KB.
-3. The image is compressed automatically; the result shows the new size and % change with a preview.
-4. Click Download to save it.
+2. Pick Save as: JPG (best for photos and forms), WebP or PNG.
+3. Keep “How to compress” on “To a file size I choose”, then type the size and choose KB or MB — or tap a chip (20 KB, 50 KB, 100 KB, 200 KB, 500 KB, 1 MB).
+4. The image is processed automatically. The result says what happened (e.g. “Compressed from 4.3 MB to 20.0 KB”), with the size in bytes, pixel size, quality and a green “Matches target” note.
+5. Click Download. The file name includes the size, e.g. photo-20KB.jpg.
 
 **Options and controls**
 
 | Option | What it does |
 |---|---|
-| Output format | JPEG, WebP or PNG (lossless). |
-| Quality | 10–100 % (default 82 %). Lower = smaller file, more artefacts. Ignored for PNG. |
-| Optional target size (KB) | Best effort for JPEG/WebP: the tool searches (7 steps) for the highest quality at or under this size. |
+| Save as | JPG (default), WebP or PNG (lossless). Transparent areas become white in JPG. |
+| How to compress | “To a file size I choose” (default) or “By quality level”. If the size box is empty the quality setting is used. |
+| Target file size | Any size in KB or MB (1 KB = 1024 bytes, as most Indian exam and government forms mean). Very small (5–20 KB) and large (1–5 MB+) targets work, including targets bigger than the original. |
+| Match | Exact size (default): the file is exactly the number of bytes you asked for — a small gap is filled with harmless padding (a JPEG comment, PNG text chunk or WebP extra chunk) that viewers ignore. Up to this size: never above the target and no padding. |
+| If the size can’t be reached | Change pixel size as needed (default — shrinks for small targets, can enlarge for big ones), Only shrink pixel size, or Keep my pixel size (shows an amber note if impossible). |
+| Quality | 10–100 % (default 82 %) in “By quality level” mode. Lower = smaller file. Ignored for PNG. |
 
-**Output:** A single file named name-compressed.jpg / .webp / .png. The result shows output size vs the original and the dimensions.
+**Output:** A single file named name-20KB.jpg (target mode) or name-compressed.jpg (quality mode), with a preview, the final size in KB and bytes, pixel size and format.
 
 **Limits & tips**
 
-- If the output is not smaller, try WebP or a lower quality; already-optimised images may not shrink.
-- PNG output is lossless and often larger than JPEG/WebP for photos.
-- Transparent areas become white in JPEG.
+- A tiny target needs fewer pixels: a 4000×3000 photo becomes roughly 1000×750 at 20 KB. Choose JPG for the best detail at small sizes.
+- If even a 16-pixel image is bigger than your target (for example 1 KB), the tool says so instead of giving you a wrong file.
+- WebP files always have an even byte count, so an odd target ends 1 byte under.
 - Only image files are accepted.
 - Files stay on your device; nothing is uploaded.
 
@@ -122,28 +130,28 @@ Annotate, crop, blur, resize, rotate and export a screenshot without a watermark
 1. Click Add a screenshot, drop an image, or paste one with Ctrl+V / ⌘V.
 2. Pick a tool on the left and drag on the canvas (for Text, click where the text should start, type, then press Enter).
 3. Use Transform and Effects on the right if needed; Undo / Redo at any time.
-4. Choose the export format and quality, then click Download exact canvas.
+4. Choose the export format and quality, then click Download image.
 
 **Options and controls**
 
 | Option | What it does |
 |---|---|
-| Freehand | Draw freely with the chosen colour and stroke. |
+| Freehand | Draw freely with the chosen colour and line thickness. |
 | Arrow | Drag from start to end to draw an arrow. |
 | Rectangle | Drag to draw an outline box. |
-| Text | Click on the canvas, type in the box that appears, press Enter to place it (Escape cancels). Text size = Stroke × 5 px (minimum 14 px). |
+| Text | Click on the canvas, type in the box that appears, press Enter to place it (Escape cancels). Text size = Line thickness × 5 px (minimum 14 px). |
 | Crop | Drag a rectangle; the canvas is cropped to it. |
-| Pixelate | Drag over sensitive details to pixelate them (block size grows with Stroke). |
-| Blur region | Drag over an area to blur it (blur radius = Stroke px, min 2). |
+| Pixelate | Drag over sensitive details to pixelate them (block size grows with Line thickness). |
+| Blur region | Drag over an area to blur it (blur radius = Line thickness px, min 2). |
 | Color | Colour for drawing and text (default red). |
-| Stroke | 1–30 (default 4): line width, text size, pixelation and blur strength. |
+| Line thickness | 1–30 (default 4): line width, text size, pixelation and blur strength. |
 | Undo / Redo | Up to 25 steps. |
 | ↺ 90° / ↻ 90° / Flip H / Flip V | Rotate or mirror the whole image. |
-| Width / Height | Type new pixel dimensions; the canvas resizes automatically after you stop typing. |
+| Width / Height | Type new pixel dimensions; the canvas resizes automatically after you stop typing (or click Apply new size). |
 | Effects | Brightness, Contrast, Saturate (0–200, default 100) and Grayscale, Sepia (0–100, default 0). Applied live. |
 | Format | PNG, JPG or WebP export. |
 | Quality | 10–100 (default 92) for JPG/WebP. |
-| Download exact canvas | Saves the canvas at its exact pixel size as name-edited.png/jpg/webp. |
+| Download image | Saves the canvas at its exact pixel size as name-edited.png/jpg/webp. |
 
 **Output:** One image file at the canvas’s exact dimensions, no watermark.
 
@@ -163,32 +171,35 @@ Annotate, crop, blur, resize, rotate and export a screenshot without a watermark
 **URL:** [https://tools.brandique.in/tools/video-resizer/](https://tools.brandique.in/tools/video-resizer/)  
 **Formats:** Browser-decodable video, WebM output
 
-Change a video’s resolution, frame rate and bitrate in the browser; output is WebM.
+Change a video’s resolution and frame rate, and optionally make it an exact file size in KB or MB. Output is WebM.
 
 **How to use**
 
 1. Choose or drop a video (MP4, WebM, MOV… whatever your browser can play).
-2. Width and Height are filled from the video; change them (keep Preserve aspect ratio on to avoid distortion).
-3. Pick a frame rate and bitrate.
-4. Processing runs automatically in real time (a 1-minute video takes about 1 minute). Preview the result and click Download.
+2. Width and Height are filled from the video; change them (keep “Keep proportions” on to avoid distortion).
+3. Optional: type a Target file size (e.g. 5 MB) or tap a chip. Otherwise set Video quality (bitrate).
+4. Processing starts automatically and runs in real time (a 1-minute video takes about 1 minute per pass; a target size may take 2–3 passes). Preview the result and click Download.
 
 **Options and controls**
 
 | Option | What it does |
 |---|---|
+| Target file size | Optional. Any size in KB or MB (1 MB = 1024 × 1024 bytes); chips for 1, 5, 10 and 25 MB. The bitrate is worked out from the video length, then the video is re-recorded once or twice if the first pass misses. The file is never above your target. |
+| Match | Exact size (default) adds a harmless WebM “Void” block so the file is exactly your target and still plays. Up to this size skips the padding. |
+| Lower the resolution automatically | Off by default here. When on, small targets also get a smaller frame so they stay watchable. |
 | Width / Height | Output size in pixels (rounded to even numbers; max 16 megapixels). |
-| Preserve aspect ratio | Height follows width to keep proportions (on by default). |
+| Keep proportions | Height follows width to keep the shape (on by default). |
 | Frame rate | 24, 30 (default) or 60 fps. |
-| Video bitrate (Mbps) | 0.1–50 Mbps (default 4). Higher = better quality and bigger file. |
+| Video quality (bitrate, Mbps) | 0.1–50 Mbps (default 4) when no target size is set. Higher = sharper and bigger. |
 | Cancel | Stops the recording. |
 
-**Output:** A WebM file (name-resized.webm) with an inline video preview, its size and the original size.
+**Output:** A WebM file (name-resized.webm, or name-5MB.webm with a target) with a preview, its exact size in MB and bytes, and the original size.
 
 **Limits & tips**
 
 - Output is WebM because browsers cannot reliably record MP4.
 - Keep the tab visible while processing; it records in real time.
-- Image files are rejected with “This is not a video file”.
+- Targets larger than the original are allowed: the bitrate is raised and the rest is padded.
 - Desktop Chrome or Edge gives the best results.
 - Files stay on your device; nothing is uploaded.
 
@@ -197,32 +208,35 @@ Change a video’s resolution, frame rate and bitrate in the browser; output is 
 **URL:** [https://tools.brandique.in/tools/video-compressor/](https://tools.brandique.in/tools/video-compressor/)  
 **Formats:** Browser-decodable video, WebM output
 
-Make a video smaller by lowering resolution, frame rate and bitrate; output is WebM.
+Shrink a video to a file size you choose (e.g. 5 MB or 10 MB) or by quality; output is WebM.
 
 **How to use**
 
 1. Choose or drop a video.
-2. The width is capped at 1280 px by default; lower it and the bitrate for a smaller file.
-3. Pick a frame rate.
-4. Compression runs automatically in real time; preview the result and click Download.
+2. Type a Target file size and pick KB or MB, or tap 1 MB / 5 MB / 10 MB / 25 MB.
+3. Leave “Lower the resolution automatically” on so small targets stay watchable.
+4. Compression runs automatically in real time (about the video’s length per pass; 2–3 passes for a target). The result shows the final size and a green “Matches target” note. Click Download.
 
 **Options and controls**
 
 | Option | What it does |
 |---|---|
-| Width / Height | Output size (defaults to the source, capped at 1280 px wide; max 16 megapixels). |
-| Preserve aspect ratio | Keeps proportions (on by default). |
+| Target file size | Any size in KB or MB (1 MB = 1024 × 1024 bytes), from about 500 KB to 50 MB and more. The tool computes the bitrate from the length (target bits ÷ seconds − audio), measures the result and re-records if needed. Never above the target. |
+| Match | Exact size (default) pads the file with a harmless WebM Void block so it is exactly your target; Up to this size skips padding. |
+| Lower the resolution automatically | On by default: picks a smaller frame when the target is small. |
+| Width / Height | Maximum output size (defaults to the source, capped at 1280 px wide; max 16 megapixels). |
+| Keep proportions | Keeps the shape (on by default). |
 | Frame rate | 24, 30 (default) or 60 fps. 24 fps saves space. |
-| Video bitrate (Mbps) | 0.1–50 Mbps (default 1.5). This is the main size control. |
+| Video quality (bitrate, Mbps) | 0.1–50 Mbps (default 1.5) when no target size is set. |
 | Cancel | Stops the recording. |
 
-**Output:** A WebM file (name-compressed.webm) with preview and size.
+**Output:** A WebM file (name-5MB.webm or name-compressed.webm) with preview, final size in MB and bytes, resolution and bitrate.
 
 **Limits & tips**
 
-- Rough size guide: bitrate (Mbps) × duration (s) ÷ 8 = MB of video.
+- Rough size guide: bitrate (Mbps) × duration (s) ÷ 8 = MB.
+- Very small targets for long videos (for example 500 KB for a 10-minute clip) can fall below what the encoder can do; the tool then says the file is above the target.
 - Processing happens in real time; keep the tab open and visible.
-- Image files are rejected with a clear message.
 - Files stay on your device; nothing is uploaded.
 
 ### Video to Audio
@@ -269,7 +283,7 @@ Put several images into one PDF, one image per page, in the order you choose.
 
 1. Click Add images and pick JPG, PNG, WebP or other images (you can add more later).
 2. Reorder: drag a row, drag the ⠿ handle (touch screens), or use the ↑ / ↓ buttons. Use ↻ to rotate an image 90° or Remove to drop it.
-3. Choose page size, orientation, fit, margin and JPEG quality.
+3. Choose page size, orientation, fit, margin and image quality.
 4. The PDF is rebuilt automatically after each change; click the Download link to save it.
 
 **Options and controls**
@@ -279,8 +293,8 @@ Put several images into one PDF, one image per page, in the order you choose.
 | Page size | Match each image (page = image size), A4 or US Letter. |
 | Orientation | Auto (follows each image), Portrait or Landscape. |
 | Fit | Contain (whole image visible, no crop) or Cover (fills the page, edges cropped). |
-| Margin (pt) | 0–144 points of white space around each image (default 24; 72 pt = 1 inch). |
-| JPEG quality | 40–95 % (default 82 %). Images are embedded as JPEG. |
+| Page margin | 0–144 points of white space around each image (default 24; 72 pt = 1 inch). |
+| Image quality in the PDF | 40–95 % (default 82 %). Images are embedded as JPEG; lower = smaller PDF. |
 | Output name | File name for the PDF (default images.pdf). |
 | ⠿ / ↑ / ↓ | Change page order (drag handle works with touch). |
 | ↻ | Rotate that image by 90°. |
@@ -374,12 +388,12 @@ Extract page ranges or split a PDF into several smaller PDFs.
 **URL:** [https://tools.brandique.in/tools/pdf-compressor/](https://tools.brandique.in/tools/pdf-compressor/)  
 **Formats:** PDF
 
-Reduce PDF size losslessly (structure optimisation) or strongly by rasterising pages.
+Make a PDF smaller: keep text sharp (lossless, small savings) or turn pages into images (much smaller, lossy).
 
 **How to use**
 
 1. Choose a PDF. The first page preview, page count and size appear.
-2. Pick a Method. For Rasterize, set DPI, JPEG quality and optionally grayscale.
+2. Pick a Compression method. For “Turn pages into images”, set Image sharpness (DPI), Image quality and optionally grayscale.
 3. The optimised PDF is created automatically; the result shows the new size and savings.
 4. Click Download.
 
@@ -387,9 +401,9 @@ Reduce PDF size losslessly (structure optimisation) or strongly by rasterising p
 
 | Option | What it does |
 |---|---|
-| Method | Lossless structure optimization (keeps text, links, forms; may save little) or Rasterize pages (lossy; much smaller, text becomes an image). |
-| Raster DPI | 72–240 (default 120). Lower = smaller, less sharp. Rasterize only. |
-| JPEG quality | 35–92 % (default 72 %). Rasterize only. |
+| Compression method | Keep text sharp (lossless: keeps text, links, forms; may save little) or Turn pages into images (lossy: much smaller, text becomes part of a picture). |
+| Image sharpness (DPI) | 72–240 (default 120). Lower = smaller, less sharp. Only for “Turn pages into images”. |
+| Image quality | 35–92 % (default 72 %). Only for “Turn pages into images”. |
 | Grayscale raster output | Converts pages to black and white for extra savings. |
 | Output name | Default compressed-document.pdf. |
 | Cancel | Stops after the current page. |
