@@ -28,3 +28,11 @@ Deploy `dist/` to any static host. Build command: `npm run build`; output: `dist
 The registry generates 37 dedicated tools plus Home, All Tools, About, Privacy, Terms and Contact. Images convert to JPG/PNG/WebP. Native media processing emits WebM where supported. PDF tools process locally after downloading pinned library code. PDF-to-Word extracts text from text PDFs into DOCX; it does not include OCR or promise exact complex-layout preservation. Unsupported paths never display fake success or downloads. Browser memory and codec support vary.
 
 SEO includes unique metadata, canonical URLs, WebApplication JSON-LD, breadcrumbs, FAQ content, internal links, sitemap and robots. Reserved ad slots are non-overlaying and no ad or analytics provider is enabled by default.
+
+## User guide
+
+`src/tool-guides.mjs` documents every tool's steps, options, output and limits. `scripts/guides.mjs` renders it as a "How to use / Options explained" section below each tool during the build, and `node scripts/user-guide.mjs` regenerates `docs/USER-GUIDE.md`. Update the guide entry whenever a tool's controls change (a test fails if a tool has no guide).
+
+## Not-found page
+
+The build writes a branded `dist/404.html` (no ads, `noindex`). Vercel and Cloudflare Pages serve it automatically with HTTP 404. On Cloudflare Workers static assets, set `assets.not_found_handling = "404-page"`.

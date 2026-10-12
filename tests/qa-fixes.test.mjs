@@ -119,3 +119,10 @@ test('file guards: images, videos and PDF headers',()=>{
  assert(hasPdfHeader(new TextEncoder().encode('%PDF-1.4\n...')));assert(hasPdfHeader(new TextEncoder().encode('\n\n%PDF-1.7')));
  assert(!hasPdfHeader(new Uint8Array([0xff,0xd8,0xff,0xe0,0,0,0,0])));assert(!hasPdfHeader(new Uint8Array()));
 });
+
+// Usage guides shown below every tool and in docs/USER-GUIDE.md.
+test('every tool has a usage guide with steps, options, output and tips',async()=>{
+ const {guides}=await import('../src/tool-guides.mjs');
+ for(const t of tools){const g=guides[t.slug];assert(g,`missing guide ${t.slug}`);assert(g.summary&&g.output,t.slug);assert(g.steps.length>=2,t.slug);assert(g.options.length>=2,t.slug);assert(g.options.every(o=>o.length===2&&o[0]&&o[1]),t.slug);assert(g.tips.length>=1,t.slug)}
+ assert.deepEqual(Object.keys(guides).sort(),tools.map(t=>t.slug).sort());
+});
