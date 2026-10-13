@@ -1,9 +1,10 @@
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {extraPaths} from '../src/seo-content.mjs';
+import {landingPaths} from '../src/landing-pages.mjs';
 import {tools,legal} from '../src/tools.mjs';
 import {siteOrigin,previousOrigin,futureOrigin} from '../src/site.mjs';
-const origin=siteOrigin(),paths=[...extraPaths,'/','/tools/',...tools.map(t=>`/tools/${t.slug}/`),...legal.map(([s])=>`/${s}/`)];
+const origin=siteOrigin(),paths=[...extraPaths,'/','/tools/',...tools.map(t=>`/tools/${t.slug}/`),...legal.map(([s])=>`/${s}/`),...landingPaths];
 const sitemap=await readFile('dist/sitemap.xml','utf8'),titles=new Set();
 assert.equal([...sitemap.matchAll(/<loc>/g)].length,paths.length);
 for(const path of paths){
