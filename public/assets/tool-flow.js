@@ -57,7 +57,7 @@ function label(root){
 const one=(root,sel)=>root.querySelector(sel);
 const all=(root,sels)=>[...new Set((sels||[]).flatMap(s=>[...root.querySelectorAll(s)]))];
 export const RECIPES=[
- {id:'ir',match:'.ir-layout',upload:'.ir-drop',a:['.ir-layout>aside.ir-pane:not(.ir-settings)','.ir-settings'],split:'.ir-settings',r:['.ir-layout>main.ir-pane','.ir-actions'],prog:['.ir-queue-progress','[data-status]']},
+ {id:'ir',match:'.ir-layout',upload:'.ir-drop',a:['.ir-layout>aside.ir-pane:not(.ir-settings)','.ir-settings'],split:'.ir-settings',splitAt:'.ir-advanced',r:['.ir-layout>main.ir-pane','.ir-actions'],prog:['.ir-queue-progress','[data-status]']},
  {id:'media',match:'.media-grid .dropzone',upload:'.dropzone',a:['.media-grid>section.media-card>div:not(.dropzone)'],split:'.media-fields',r:['.media-grid>aside.media-card'],prog:['.media-progress','.media-status']},
  {id:'pdfw',match:'.pdfw-layout',upload:'.pdfw-drop',a:['.pdfw-layout>section:has(.pdfw-list)','.pdfw-settings'],split:'.pdfw-settings',r:['.pdfw-stats','.pdfw-layout>section:not(:has(.pdfw-list))','.pdfw>.result'],prog:['.pdfw-meter','[data-status]']},
  {id:'pm',match:'.pm-layout',upload:'.pm-drop',a:['.pm-bar','.pm-layout>section'],b:['.pm-settings','.pm-summary'],r:['.pm>.result','.pm-actions'],prog:['.pm-progress','[data-status]']},
@@ -91,14 +91,18 @@ export function arrange(root){
  if(upload){parents.add(upload.parentElement);upload.classList.add('tf-upload');ws.before(upload)}
  all(root,rec.a).filter(e=>!e.closest('.tf-ws')).forEach(e=>move(e,A));
  all(root,rec.b).filter(e=>!e.closest('.tf-ws')).forEach(e=>move(e,B));
- if(rec.split){const src=one(A,rec.split);if(src){const kids=[...src.children],i=splitIndex(kids);if(i>0){const twin=document.createElement(src.tagName);twin.className=src.className+' tf-twin';kids.slice(i).forEach(k=>twin.append(k));B.append(twin)}}}
+ const wide=root.dataset.tfLayout==='wide';if(wide)ws.classList.add('tf-wide');
+ // Wide tools keep every main option visible; only the advanced block (if any) goes to More options.
+ const adv=rec.splitAt&&one(A,rec.splitAt);
+ if(adv){const twin=document.createElement('div');twin.className=(adv.closest(rec.split)?.className||'')+' tf-twin';[...adv.children].filter(k=>k.tagName!=='SUMMARY').forEach(k=>twin.append(k));adv.remove();B.append(twin)}
+ else if(rec.split&&!wide){const src=one(A,rec.split);if(src){const kids=[...src.children],i=splitIndex(kids);if(i>0){const twin=document.createElement(src.tagName);twin.className=src.className+' tf-twin';kids.slice(i).forEach(k=>twin.append(k));B.append(twin)}}}
  const box=document.createElement('div');box.className='tf-proc-tools';
  all(root,rec.prog).filter(e=>!e.closest('.tf-r')&&!e.closest('.tf-bar')).forEach(e=>move(e,box));
  proc.after(box);
  all(root,rec.r).filter(e=>!e.closest('.tf-ws')).forEach(e=>move(e,R));
  if(B.children.length<2)ws.classList.add('tf-two');
  ws.querySelectorAll('[data-tf-step]').forEach(e=>{delete e.dataset.tfStep;delete e.dataset.tfLabel});
- for(const p of parents)if(p&&p!==root&&!p.contains(ws)&&!p.children.length)p.hidden=true;
+ for(const p of parents)if(p&&p!==root&&!p.contains(ws)&&[...p.children].every(c=>/^H[1-4]$/.test(c.tagName)))p.hidden=true;
  return ws;
 }
 // Live-output boxes and the live status line are appended to the tool root by shared code; keep them in the result panel.
@@ -160,7 +164,7 @@ export function mountFlow(root){
  root.addEventListener('dragenter',e=>{const z=e.target.closest?.('[data-tf-step="1"]');if(z)z.classList.add('tf-dragover')});
  root.addEventListener('dragleave',e=>{const z=e.target.closest?.('[data-tf-step="1"]');if(z&&!z.contains(e.relatedTarget))z.classList.remove('tf-dragover')});
  root.addEventListener('drop',()=>root.querySelectorAll('.tf-dragover').forEach(z=>z.classList.remove('tf-dragover')));
- new MutationObserver(list=>{if(list.some(m=>!(m.target.closest?.('.tf-proc,.tf-chip'))))schedule()}).observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','disabled','href','class','aria-busy','style','aria-valuenow']});
+ new MutationObserver(list=>{if(list.some(m=>!(m.target.closest?.('.tf-proc,.tf-chip,.iv-stage'))))schedule()}).observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','disabled','href','class','aria-busy','style','aria-valuenow']});
  render();
 }
 if(typeof document!=='undefined'){const go=()=>document.querySelectorAll('[data-tool]').forEach(mountFlow);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()}

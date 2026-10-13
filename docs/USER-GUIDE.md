@@ -41,7 +41,7 @@ Resize one or many images to exact pixels, a percentage or a scale factor — an
 2. Under “1. Pixel size”, choose Resize by and enter Width and Height, a Percent or a Scale. Keep “Keep proportions” on to avoid stretching, or pick a Size preset.
 3. Under “2. File type & file size”, choose Save as (JPG is best for forms). For a fixed file size, type it in Target file size and pick KB or MB — or tap a chip such as 20 KB or 100 KB. Leave it empty to use the Quality slider instead.
 4. The queue is processed automatically after every change. The box under the preview shows the final size in KB and bytes, the pixel size and a green “Matches target” note (or an amber explanation).
-5. Select an image in the queue and click Download (or the Download button on its row). The file name includes the target, e.g. photo-resized-20KB.jpg.
+5. Select an image in the queue and click the yellow Download button under the preview (or Download on its row). The file name includes the target, e.g. photo-resized-20KB.jpg.
 
 **Options and controls**
 
@@ -66,14 +66,14 @@ Resize one or many images to exact pixels, a percentage or a scale factor — an
 | Keep transparent areas | Keeps transparency for PNG/WebP. When off (or for JPG) the Background colour is used. |
 | Background colour | Fill colour for transparent areas and borders (default white). |
 | File name pattern / Added to file name | Output name pattern, default {name}{suffix} with “-resized”. With a target size the size is added, e.g. -resized-50KB. |
-| Before / After / Side / Split | Preview modes; the Comparison position slider moves the split line. |
-| − / + / Fit / 1:1 | Preview zoom (25–400 %). Click the empty preview background to cycle checker, dark and light backgrounds. |
 | Queue buttons ↑ ↓ × Retry Download | Reorder, remove, retry a failed image, or download that image’s result. |
 | Clear | Empties the queue. |
 | Cancel | Stops processing. |
+| Split / Side by side / Before / After · − / + / Fit / 100% | The large preview: Split slider or side-by-side comparison, zoom buttons, Fit to panel and Full size (actual pixels). Mouse wheel / pinch zooms, drag pans when zoomed, double-click toggles 100 %; ◩ changes the background. Stats (dimensions, size, % saved, format) and Download sit under the image. |
+| More options | Crop/fit, rotate, smoothness, flip, sharpen, noise, transparency, background colour and file-name settings. Pixel size and File type & file size are always visible. |
 | More size presets | Also includes Passport photo 35×45 mm (413×531 px at 300 dpi), WhatsApp profile photo, WhatsApp status, Full HD 1080p and HD 720p. |
 
-**Output:** One file per image in the chosen format, named with the pattern (e.g. photo-resized.jpg, or photo-resized-20KB.jpg with a target size). The final size (KB and bytes), pixel size and format are shown under the preview.
+**Output:** One file per image in the chosen format, named with the pattern (e.g. photo-resized.jpg, or photo-resized-20KB.jpg with a target size). The final size (KB and bytes), pixel size, % saved and format are shown under the large preview.
 
 **Limits & tips**
 
@@ -109,8 +109,9 @@ Make an image an exact file size you type — 5 KB to 5 MB and beyond — or com
 | Match | Exact size (default): the file is exactly the number of bytes you asked for — a small gap is filled with harmless padding (a JPEG comment, PNG text chunk or WebP extra chunk) that viewers ignore. Up to this size: never above the target and no padding. |
 | If the size can’t be reached | Change pixel size as needed (default — shrinks for small targets, can enlarge for big ones), Only shrink pixel size, or Keep my pixel size (shows an amber note if impossible). |
 | Quality | 10–100 % (default 82 %) in “By quality level” mode. Lower = smaller file. Ignored for PNG. |
-| Before / after slider | Drag the slider over the result to compare the original and compressed image at the same spot. |
-| Result table | Original vs result dimensions, file size, format and the % saved. |
+| Split / Side by side / Before / After | Large preview modes. Split puts a draggable before/after line over the image; Side by side shows both at the same zoom. |
+| − / + / Fit / 100% | Zoom out, zoom in, fit the whole image in the panel, or Full size (100 % = actual pixels). Mouse wheel and pinch also zoom; drag to pan when zoomed; double-click toggles 100 %. ◩ changes the background (checker, dark, light). |
+| Result stats | Dimensions, file size, % saved (green) or larger (amber) and format, before → after, with the Download button. |
 
 **Output:** A single file named name-20KB.jpg (target mode) or name-compressed.jpg (quality mode), with a preview, the final size in KB and bytes, pixel size and format.
 
@@ -907,28 +908,39 @@ Convert m/s, km/h, mph, ft/s, knots and Mach (at sea level).
 **URL:** [https://tools.brandique.in/tools/age-calculator/](https://tools.brandique.in/tools/age-calculator/)  
 **Formats:** Date, Optional time
 
-Exact age in years, months and days between a birth date and any date.
+Exact calendar age plus live, second-by-second stats: totals, a next-birthday countdown, zodiac signs, birthstone, generation, life-in-numbers estimates, age on other planets and milestone dates.
 
 **How to use**
 
-1. Enter the Birth date.
-2. Age on defaults to today; change it to calculate age on another date.
-3. The result updates automatically.
+1. Enter your Birth date (and, optionally, your Birth time for exact hours, minutes and seconds).
+2. Everything appears instantly: calendar age, a live next-birthday countdown and your age in years, months, weeks, days, hours, minutes and seconds, ticking every second.
+3. Scroll the cards: About your birthday, Your life in numbers (approximate), Your age on other planets and Milestones.
+4. Change “Calendar age on” to see your calendar age on another date (the live counters always use the current time).
 
 **Options and controls**
 
 | Option | What it does |
 |---|---|
-| Birth date | Date of birth. |
-| Age on | Comparison date (default today). |
+| Birth date | Date of birth (required). |
+| Birth time (optional) | Time of birth; without it midnight is used. |
+| Calendar age on | Date used for the headline years-months-days age (default today). |
+| Your age right now (live) | Years (8 decimals), months, weeks, days, hours, minutes and seconds, updated every second. |
+| Next birthday · live countdown | Days, hours, minutes and seconds to your next birthday, the age you will turn and its date. |
+| About your birthday | Day of the week you were born, zodiac sign, Chinese zodiac (element + animal, by birth year), birthstone, birth flower, generation (Gen Z, Millennial…), leap days lived and the weekday of your next birthday. |
+| Your life in numbers (approximate) | Estimated heartbeats (80/min), breaths (16/min), hours asleep (one third of life), meals (3/day), blinks (15 per waking minute), steps (about 6,000/day after age one), distance travelled around the Sun (29.78 km/s) and full moons seen (every 29.53 days). |
+| Your age on other planets | Your age in Mercury, Venus, Mars, Jupiter, Saturn, Uranus and Neptune years (by orbital period). |
+| Milestones | Dates you reach 10,000 / 15,000 / 20,000 / 25,000 / 30,000 days, 500 million / 1 / 2 billion seconds, 1,000–3,000 weeks, 10,000–500,000 hours and 1–25 million minutes, marked passed or “in N days”. |
 
-**Output:** Years, months and days, total days, completed weeks, and the next birthday with days remaining.
+**Output:** Years, months and days, live totals, a live birthday countdown and the fact and estimate cards — all on screen, nothing uploaded.
 
 **Limits & tips**
 
 - Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Uses calendar months, not averages.
-- A 29 February birthday is counted on 28 February in non-leap years; month-end dates use the last day of shorter months.
+- A 29 February birthday is counted on 28 February in non-leap years (and on 29 February in leap years); month-end dates use the last day of shorter months.
+- Life-in-numbers values are rough averages for fun, not medical facts.
+- Chinese zodiac follows the birth year; if you were born in January or early February, check the Chinese New Year date for your year.
+- The live counters pause when the tab is hidden and stop when you leave the page.
 - Files stay on your device; nothing is uploaded.
 
 ### Percentage Calculator
@@ -1414,7 +1426,7 @@ Create styled QR codes for links, text, Wi-Fi, phone, email, SMS, WhatsApp, cont
 **How to use**
 
 1. Step 1 · Content: pick a type (URL, Text, Wi-Fi, Phone, Email, SMS, WhatsApp, Contact, Image or Video) and fill in its fields.
-2. For Image or Video: either paste a public link, or upload the file — tick the consent box first, because the file is uploaded to a free public host to get a link (Litterbox: direct link that expires after 1–72 hours; or Gofile: a page link). Upload progress shows in the preview panel.
+2. For Image or Video: either paste a public link, or upload the file — tick the consent box first, because the file is sent through BrandiQue’s upload service to a free public host to get a TEMPORARY link (Litterbox: direct link that expires after 1–72 hours; or Gofile: a page link that is removed when inactive). Upload progress shows in the preview panel.
 3. Step 2 · Design: choose size, margin, dot style, colours or a gradient, corner frame/centre style and colour, an optional centre logo and the error-correction level.
 4. Step 3 · Preview & download: the code is drawn in the right panel and scan-tested in your browser, then download PNG, SVG or JPG.
 
@@ -1423,7 +1435,7 @@ Create styled QR codes for links, text, Wi-Fi, phone, email, SMS, WhatsApp, cont
 | Option | What it does |
 |---|---|
 | Content types | URL, Text, Wi-Fi (WPA/WEP/open, hidden network), Phone, Email (subject/body), SMS, WhatsApp (wa.me link with message), Contact card (vCard 3.0), Image and Video. |
-| Image / Video upload | Up to 200 MB. Litterbox (catbox.moe) gives a direct link and deletes the file after 1, 12, 24 or 72 hours. Gofile (gofile.io) gives a page link; free files can be removed after a period without downloads. Nothing is uploaded unless you tick the consent box and press Upload. For a permanent code, paste a link to a file you host yourself. |
+| Image / Video upload | Up to 95 MB, and always temporary. Litterbox (litterbox.catbox.moe — not the permanent Catbox service) gives a direct link and deletes the file after 1, 12, 24 or 72 hours. Gofile (gofile.io) gives a page link; free files can be removed after a period without downloads. Nothing is uploaded unless you tick the consent box and press Upload. For a permanent code, paste a link to a file you host yourself. |
 | Size / Margin | 256 to 2048 px; margin (quiet zone) 0–80 px. |
 | Dot style | Square, Rounded, Dots, Classy, Classy rounded or Extra rounded. |
 | Colours & gradient | Dot colour, background colour or transparent background (PNG/SVG), and an optional linear or radial two-colour gradient with angle. |
@@ -1438,9 +1450,10 @@ Create styled QR codes for links, text, Wi-Fi, phone, email, SMS, WhatsApp, cont
 **Limits & tips**
 
 - Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- While the code is generated and scan-tested a short progress bar shows in the result panel; it clears as soon as the scan test finishes (for every type, including uploads and pasted links) and the QR shows in full colour.
 - Keep dark dots on a light background — light-on-dark and low-contrast codes are flagged.
 - If the scan test warns, raise contrast, use square corners, a smaller logo or higher error correction.
-- Litterbox links expire — do not print a QR made from a temporary upload. Use your own permanent link instead.
+- Uploaded links are temporary (Litterbox and Gofile) — do not print a QR made from a temporary upload. Use your own permanent link instead.
 - Test the printed size with your phone camera before ordering prints.
 - Files stay on your device; nothing is uploaded.
 
