@@ -82,6 +82,9 @@ export function arrange(root){
  const proc=document.createElement('div');proc.className='tf-proc';proc.hidden=true;proc.setAttribute('aria-live','polite');
  proc.innerHTML='<div class="tf-proc-head"><span class="tf-spin" aria-hidden="true"></span><p class="tf-proc-text">Working…</p><b class="tf-proc-pct"></b></div><div class="tf-proc-bar"><span></span></div>';
  R.append(proc);ws.append(A,B,R);
+ // "More options" is collapsed by default; on desktop it then sits under the options column.
+ B.classList.add('tf-closed');B.firstChild.innerHTML='<button type="button" class="tf-more" aria-expanded="false">More options <span aria-hidden="true">▾</span></button>';
+ B.firstChild.firstChild.onclick=()=>{const shut=B.classList.toggle('tf-closed');B.firstChild.firstChild.setAttribute('aria-expanded',String(!shut))};
  const anchor=one(root,rec.match.split(' ')[0]);
  const parents=new Set();const move=(el,to)=>{if(!el||el===ws||el.contains(ws))return;parents.add(el.parentElement);to.append(el)};
  anchor.before(ws);

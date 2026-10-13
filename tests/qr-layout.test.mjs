@@ -53,17 +53,15 @@ test('QR payload builders follow the formats phones understand', () => {
 });
 test('image/video uploads are checked and host answers parsed strictly', () => {
   assert.throws(() => Q.checkUpload({type: 'video/mp4', size: 10}, 'image'), /not an image/);
-  assert.throws(() => Q.checkUpload({type: 'video/mp4', size: Q.MAX_UPLOAD + 1}, 'video'), /200 MB/);
-  assert.ok(Q.checkUpload({type: 'image/png', size: 10}, 'image'));
-  assert.equal(Q.parseHostResponse('litterbox', 200, 'https://litter.catbox.moe/ab12cd.png\n'), 'https://litter.catbox.moe/ab12cd.png');
-  assert.throws(() => Q.parseHostResponse('litterbox', 200, '<html>error</html>'), /did not accept/);
-  assert.equal(Q.parseHostResponse('gofile', 200, JSON.stringify({status: 'ok', data: {downloadPage: 'https://gofile.io/d/AbC'}})), 'https://gofile.io/d/AbC');
-  assert.throws(() => Q.parseHostResponse('gofile', 200, '{"status":"error-rateLimit"}'), /rateLimit/);
-  const fd = Q.uploadForm('litterbox', new Blob(['x']), '12h');
-  assert.equal(fd.get('reqtype'), 'fileupload'); assert.equal(fd.get('time'), '12h');
-  assert.equal(Q.uploadForm('litterbox', new Blob(['x']), 'forever').get('time'), '72h');
-  assert.ok(Q.uploadForm('gofile', new Blob(['x'])).get('file'));
-  assert.equal(Q.HOSTS.litterbox.progress, false); // no preflight on Litterbox, so no upload progress listeners
+  assert.throws(() => Q.checkUpload({type: 'video/mp4', size: Q.MAX_UPLOAD + 1}, 'video'), /95 MB/);
+  assert.ok(Q.MAX_UPLOAD <= 100 * 1024 * 1024); // Workers request-body limit
+  assert.equal(Q.uploadUrl('litterbox', {name: 'a b.png'}, '12h'), '/api/qr-upload?host=litterbox&name=a+b.png&expiry=12h');
+  assert.match(Q.uploadUrl('litterbox', {name: 'x.png'}, 'forever'), /expiry=72h/);
+  assert.doesNotMatch(Q.uploadUrl('gofile', {name: 'x.mp4'}), /expiry/);
+  assert.equal(Q.parseProxyResponse('litterbox', 200, '{"url":"https://litter.catbox.moe/ab12cd.png"}'), 'https://litter.catbox.moe/ab12cd.png');
+  assert.throws(() => Q.parseProxyResponse('litterbox', 502, '{"error":"Litterbox did not accept the file (403)."}'), /did not accept/);
+  assert.throws(() => Q.parseProxyResponse('gofile', 403, '<!doctype html><title>403'), /unexpected answer/);
+  for (const h of Object.values(Q.HOSTS)) { assert.ok(h.temporary); assert.match(h.name, /temporary/i); assert.doesNotMatch(h.name, /permanent/i); }
 });
 test('QR styling options: logo forces high error correction, transparent background, gradient', () => {
   const base = {size: '512', margin: '16', dark: '#111111', light: '#ffffff', level: 'L', dots: 'rounded'};
@@ -93,4 +91,18 @@ test('workspace layout: long option panels split sensibly; every file-tool famil
 });
 test('legacy duplicate breadcrumb is stripped from tool pages', async () => {
   assert.match(await readFile('scripts/presentation.mjs', 'utf8'), /<p>Home \\\/ Tools \\\//);
+});
+
+test('upload proxy Worker: same-origin, image/video only, size cap, forwards to the host', async () => {
+  const W = await import('../worker/index.js');
+  const req = (o = {}) => new Request('https://tools.brandique.in/api/qr-upload?host=' + (o.host || 'litterbox') + '&name=a.png&expiry=1h', {method: 'POST', body: o.body ?? 'x', headers: {origin: o.origin ?? 'https://tools.brandique.in', 'content-type': o.type || 'image/png', ...(o.len ? {'content-length': o.len} : {})}});
+  assert.equal((await W.handleUpload(req({origin: 'https://evil.example'}))).status, 403);
+  assert.equal((await W.handleUpload(req({type: 'text/html'}))).status, 415);
+  assert.equal((await W.handleUpload(req({host: 'nope'}))).status, 400);
+  assert.equal((await W.handleUpload(new Request('https://tools.brandique.in/api/qr-upload'))).status, 405);
+  assert.ok(W.MAX_BYTES <= 100 * 1024 * 1024);
+  assert.ok(W.HOSTS.litterbox.parse(200, 'https://litter.catbox.moe/a.png\n'));
+  assert.throws(() => W.HOSTS.litterbox.parse(403, '<!doctype html><title>403'));
+  const wr = await readFile('wrangler.jsonc', 'utf8');
+  assert.match(wr, /"main": "worker\/index.js"/); assert.match(wr, /"run_worker_first": \["\/api\/\*"\]/); assert.match(wr, /"not_found_handling": "404-page"/);
 });

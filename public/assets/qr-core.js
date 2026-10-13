@@ -3,13 +3,16 @@ export const TYPES=[
  ['url','URL / link'],['text','Text'],['wifi','Wi-Fi'],['phone','Phone'],['email','Email'],
  ['sms','SMS'],['whatsapp','WhatsApp'],['vcard','Contact (vCard)'],['image','Image'],['video','Video']
 ];
-export const MAX_UPLOAD=200*1024*1024;
-// Anonymous hosts that accept browser uploads (CORS) without an account. Tested Oct 2026.
+export const MAX_UPLOAD=95*1024*1024; // the upload proxy runs on a Cloudflare Worker (100 MB request limit)
+export const UPLOAD_ENDPOINT='/api/qr-upload';
+// Files go to our own same-origin Worker endpoint, which forwards them to the host server-side
+// (direct browser uploads to Litterbox were rejected with HTTP 403). Both hosts are TEMPORARY.
+// Catbox (catbox.moe, permanent) refuses anonymous uploads ("Invalid uploader"), so it is not offered.
 export const HOSTS={
- litterbox:{name:'Litterbox (catbox.moe)',site:'https://litterbox.catbox.moe',endpoint:'https://litterbox.catbox.moe/resources/internals/api.php',progress:false,
-  note:'Direct link to the file. Temporary: it is deleted automatically after the time you pick (max 72 hours).'},
- gofile:{name:'Gofile (gofile.io)',site:'https://gofile.io',endpoint:'https://upload.gofile.io/uploadfile',progress:true,
-  note:'Link opens a Gofile page where the file can be viewed or downloaded. Free files can be removed by Gofile after a period without downloads.'}
+ litterbox:{name:'Litterbox — temporary (1–72 h)',short:'Litterbox',temporary:true,
+  note:'Temporary: the file and link are deleted automatically after the time you pick (max 72 hours). Direct link to the file.'},
+ gofile:{name:'Gofile — temporary (removed when inactive)',short:'Gofile',temporary:true,
+  note:'Temporary: link opens a Gofile page to view or download the file. Free files are removed by Gofile after a period without downloads.'}
 };
 export const EXPIRY=[['1h','1 hour'],['12h','12 hours'],['24h','24 hours'],['72h','72 hours']];
 
@@ -69,33 +72,33 @@ export function buildPayload(type,f={}){
 export function checkUpload(file,kind){
  if(!file)throw new Error(`Choose a${kind==='image'?'n image':' video'} file.`);
  if(!String(file.type||'').startsWith(kind+'/'))throw new Error(`That file is not a${kind==='image'?'n image':' video'}.`);
- if(file.size>MAX_UPLOAD)throw new Error('Files up to 200 MB can be uploaded. Use “Paste a link” for bigger files.');
+ if(file.size>MAX_UPLOAD)throw new Error('Files up to 95 MB can be uploaded. Use “Paste a link” for bigger files.');
  if(!file.size)throw new Error('The file is empty.');
  return true;
 }
-export function parseHostResponse(host,status,body){
- if(host==='litterbox'){const t=String(body||'').trim();if(status===200&&/^https:\/\/litter\.catbox\.moe\/\S+$/.test(t))return t;throw new Error(`Litterbox did not accept the file${t?`: ${t.slice(0,120)}`:''}.`)}
- if(host==='gofile'){let j;try{j=JSON.parse(body)}catch{throw new Error('Gofile returned an unexpected answer.')}const u=j?.data?.downloadPage;if(status===200&&j.status==='ok'&&/^https:\/\/gofile\.io\//.test(u||''))return u;throw new Error(`Gofile did not accept the file (${j?.status||status}).`)}
- throw new Error('Unknown host.');
+export function uploadUrl(host,file,expiry='72h'){
+ if(!HOSTS[host])throw new Error('Unknown host.');
+ const q=new URLSearchParams({host,name:String(file?.name||'file').slice(-120)});
+ if(host==='litterbox')q.set('expiry',EXPIRY.some(([k])=>k===expiry)?expiry:'72h');
+ return `${UPLOAD_ENDPOINT}?${q}`;
 }
-export function uploadForm(host,file,expiry='72h'){
- const fd=new FormData();
- if(host==='litterbox'){fd.append('reqtype','fileupload');fd.append('time',EXPIRY.some(([k])=>k===expiry)?expiry:'72h');fd.append('fileToUpload',file)}
- else fd.append('file',file);
- return fd;
+export function parseProxyResponse(host,status,body){
+ let j;try{j=JSON.parse(body)}catch{throw new Error(`The upload service returned an unexpected answer (HTTP ${status}). Try again or use the other host.`)}
+ if(status===200&&typeof j.url==='string'&&/^https:\/\//.test(j.url))return j.url;
+ throw new Error(j.error||`Upload failed (HTTP ${status}).`);
 }
-// Upload with XHR. Gofile allows CORS preflight, so it reports byte progress; Litterbox only accepts simple
-// requests (no preflight), so progress listeners must not be attached for it.
+// Upload with XHR to the same-origin proxy: raw file body, so byte progress works for every host.
 export function uploadFile(file,host,{expiry,onProgress,signal}={}){
  return new Promise((resolve,reject)=>{
-  const h=HOSTS[host];if(!h)return reject(new Error('Unknown host.'));
-  const x=new XMLHttpRequest();x.open('POST',h.endpoint);x.timeout=30*60*1000;
-  if(h.progress&&onProgress)x.upload.onprogress=e=>{if(e.lengthComputable)onProgress(e.loaded/e.total)};
-  x.onload=()=>{try{resolve(parseHostResponse(host,x.status,x.responseText))}catch(e){reject(e)}};
-  x.onerror=()=>reject(new Error(`Could not reach ${h.name}. Check your connection, or try the other host.`));
+  if(!HOSTS[host])return reject(new Error('Unknown host.'));
+  const x=new XMLHttpRequest();x.open('POST',uploadUrl(host,file,expiry));x.timeout=30*60*1000;
+  x.setRequestHeader('Content-Type',file.type||'application/octet-stream');
+  if(onProgress)x.upload.onprogress=e=>{if(e.lengthComputable)onProgress(e.loaded/e.total)};
+  x.onload=()=>{try{resolve(parseProxyResponse(host,x.status,x.responseText))}catch(e){reject(e)}};
+  x.onerror=()=>reject(new Error('Could not reach the upload service. Check your connection and try again.'));
   x.ontimeout=()=>reject(new Error('The upload timed out.'));x.onabort=()=>reject(new Error('Upload cancelled.'));
   signal?.addEventListener('abort',()=>x.abort(),{once:true});
-  x.send(uploadForm(host,file,expiry));
+  x.send(file);
  });
 }
 // Relative luminance contrast (WCAG) for #rrggbb colours.
