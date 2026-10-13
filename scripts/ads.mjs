@@ -15,7 +15,7 @@ async function walk(dir){for(const e of await readdir(dir,{withFileTypes:true}))
  if(isTool){
   // Keep the workspace first. Side units occupy outer gutters only on wide screens.
   h=h.replace(/(<section class="wrap(?: work)?">)(<article class="tool"[\s\S]*?<\/article>)(<\/section>)/,(_,start,body,end)=>`<section class="wrap ad-workspace google-anno-skip google-auto-ads-ignore" data-ad-exclude="true" data-tool-workspace>${body}${unit('display','ad-rail ad-rail-left')}${unit('display','ad-rail ad-rail-right')}${end}<div class="wrap">${unit('display','ad-banner ad-after-tool')}</div>`);
-  h=h.replace(/(<section class="section wrap cols">)([\s\S]*?)(<\/section>)/,(_,start,body,end)=>start+body+unit('article','ad-editorial')+end);
+  // In-article unit removed 14 Oct 2026 (Mohan): ~30% fewer ads on tool pages.
   h=h.replace('</main>',`<div class="wrap">${unit('multiplex')}</div></main>`);
  }else if(directory){
   let count=0;h=h.replace(/<a class="card"[\s\S]*?<\/a>/g,card=>card+(++count===8?unit('feed','ad-catalog'):''));
