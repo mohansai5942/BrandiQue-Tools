@@ -166,3 +166,16 @@ export const faq=[
  ['Is the ATS score what employers see?','No. It is a transparent readiness estimate based on readable text, structure and keyword evidence.'],
  ['I found a bug. How do I report it?','Use the Contact page on tools.brandique.in or email BrandiQue Web Solutions via brandique.in.']
 ];
+
+// Additions for the step-by-step tool layout (Step 1 Upload/Input → Step 2 Options → Step 3 Preview & result).
+const add=(slug,{options=[],tips=[]})=>{const g=guides[slug];if(!g)return;g.options.push(...options);g.tips.push(...tips)};
+const flowTip='Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. Start over clears the tool.';
+for(const g of Object.values(guides))g.tips.unshift(flowTip);
+add('image-compressor',{options:[['Before / after slider','Drag the slider over the result to compare the original and compressed image at the same spot.'],['Result table','Original vs result dimensions, file size, format and the % saved.']]});
+add('image-resizer',{options:[['More size presets','Also includes Passport photo 35×45 mm (413×531 px at 300 dpi), WhatsApp profile photo, WhatsApp status, Full HD 1080p and HD 720p.']]});
+for(const slug of ['video-resizer','video-compressor'])add(slug,{options:[['Resolution preset','4K, 1080p, 720p, 480p, 360p or 240p. Sets the shorter side and keeps the original shape; presets never enlarge a smaller video. Typing your own width or height switches back to Custom.'],['Result table','Original vs result dimensions, file size, format and the % change (when no target size is set).']]});
+add('word-counter',{options:[['Unique words / Avg word length / Words per sentence','Extra readability figures that update as you type.'],['Top keywords','The most repeated meaningful words with their count and share of all words. Common words such as “the” and “and” are ignored.']]});
+add('color-converter',{options:[['Contrast checker','Pick a text colour to test on the current background. Shows the contrast ratio and whether it passes WCAG AA/AAA for normal and large text.'],['Palette','Tints and shades of the colour plus complementary, analogous and triadic hues. Click a swatch to load it.']]});
+add('qr-code-generator',{options:[['Dots colour / Background','Choose the QR colours; PNG and SVG downloads use them. Low-contrast pairs are flagged because some scanners fail on them.'],['Size 1024','Extra-large PNG for print.']],tips:['Keep dark dots on a light background for the most reliable scans.']});
+add('json-formatter',{options:[['Error location','Invalid JSON shows the line, column and the offending line with a ^ marker.'],['Size & depth','The status line shows input and output size in bytes and the nesting depth.']]});
+add('json-validator',{options:[['Error location','Invalid JSON shows the line, column and the offending line with a ^ marker.'],['Size & depth','The status line shows the size in bytes and the nesting depth.']]});
