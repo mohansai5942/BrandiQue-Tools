@@ -16,3 +16,5 @@ const observer='IntersectionObserver' in window?new IntersectionObserver(entries
 },{rootMargin:'200px 0px'}):null;
 for(const slot of slots){if(observer)observer.observe(slot);else{pending.add(slot);queue(slot)}}
 if('ResizeObserver' in window){const resize=new ResizeObserver(()=>{for(const slot of pending)queue(slot)});for(const slot of slots)resize.observe(slot)}
+// Tool pages: links added after load (search results, download buttons) also opt out of vignettes.
+if(document.body?.hasAttribute('data-tool-page')&&'MutationObserver' in window){const stamp=root=>{for(const a of root.querySelectorAll?.('a:not([data-google-vignette])')||[])a.setAttribute('data-google-vignette','false');if(root.matches?.('a:not([data-google-vignette])'))root.setAttribute('data-google-vignette','false')};stamp(document);new MutationObserver(list=>{for(const m of list)for(const n of m.addedNodes)if(n.nodeType===1)stamp(n)}).observe(document.body,{childList:true,subtree:true})}

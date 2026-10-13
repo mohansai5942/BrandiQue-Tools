@@ -18,7 +18,7 @@ export function parseTarget(value,unit='KB'){
 export function sizeLabel(bytes){
  if(!Number.isFinite(bytes)||bytes<0)return '—';
  const main=bytes>=MB?`${(bytes/MB).toFixed(2)} MB`:bytes>=KB?`${(bytes/KB).toFixed(1)} KB`:`${bytes} B`;
- return `${main} (${bytes.toLocaleString('en-IN')} bytes)`;
+ return `${main} (${bytes.toLocaleString('en-US')} bytes)`;
 }
 export function shortSize(bytes){return bytes>=MB?`${(bytes/MB).toFixed(2)} MB`:bytes>=KB?`${(bytes/KB).toFixed(1)} KB`:`${bytes} B`}
 

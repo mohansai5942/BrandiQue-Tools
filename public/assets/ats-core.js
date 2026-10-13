@@ -39,11 +39,16 @@ export function extractRequirements(job){
  for(const term of extras.slice(0,35))found.push({term,variants:[term],weight:.5,priority:'Context',source:lines.find(l=>has(l,term))?.trim().slice(0,240)||'',kind:'other JD term'});
  return found;
 }
+export const MIN_RESUME_WORDS=30,MIN_RESUME_CHARS=150,MIN_TEXT_WORDS=5;
 export function analyzeResume(input,{job='',pages=null,fileType='text'}={}){
  const text=String(input).replace(/\u0000/g,'').trim();
  if(text.length>150000||job.length>50000)throw Error('Use a resume below 150,000 characters and a job description below 50,000 characters.');
  const words=text.split(/\s+/).filter(Boolean),count=words.length;
- if(count<30||text.length<150)throw Error('Not enough readable resume text to score. Use a text-based PDF, DOCX or TXT, or paste the extracted text. Scanned PDFs need OCR first.');
+ // Only call it a scanned/unreadable file when extraction produced (almost) no words. A short but
+ // readable resume gets an exact, actionable count instead of the OCR hint (QA retest #2).
+ if(count<MIN_TEXT_WORDS)throw Error('Not enough readable resume text to score. Use a text-based PDF, DOCX or TXT, or paste the extracted text. Scanned PDFs need OCR first.');
+ if(count<MIN_RESUME_WORDS)throw Error(`Your resume has only ${count} word${count===1?'':'s'}. Add at least ${MIN_RESUME_WORDS-count} more word${MIN_RESUME_WORDS-count===1?'':'s'} (minimum ${MIN_RESUME_WORDS}) to get a score.`);
+ if(text.length<MIN_RESUME_CHARS)throw Error(`Your resume has only ${text.length} characters of text. Add at least ${MIN_RESUME_CHARS-text.length} more characters (minimum ${MIN_RESUME_CHARS}) to get a score.`);
  const rawLines=text.split(/\n/).map(l=>l.trim()).filter(Boolean), unique=[...new Set(rawLines)],sections={}, annotated=[];let section='other';
  for(const line of unique){const h=Object.entries(headings).find(([,re])=>re.test(line));if(h){section=h[0];sections[section]=true}else annotated.push({line,section});}
  const email=/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i.test(text),phone=(text.match(/\+?\d[\d ()-]{7,}\d/g)||[]).some(s=>{const n=s.replace(/\D/g,'').length;return n>=10&&n<=15}),link=/\b(?:linkedin\.com|github\.com|https?:\/\/|www\.)/i.test(text);

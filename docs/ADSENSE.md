@@ -53,3 +53,7 @@ Overlay formats (vignette, anchor, side rail) are account settings. To stop them
 7. Verify on a phone and a desktop in a private window: open Image to PDF, add images, click "All tools" — no full-screen ad should appear, and the browser should ask before leaving.
 
 Sources: https://support.google.com/adsense/answer/9262311 (page exclusions), https://support.google.com/adsense/answer/9305577 (Auto ads settings: anchor, vignette, side rail), https://support.google.com/adsense/answer/17016693 (`data-google-vignette="false"`), https://support.google.com/adsense/answer/7478225 (`data-overlays="bottom"`), https://support.google.com/adsense/answer/15111968 (`google-anno-skip`).
+
+## October 2026 retest: scroll-triggered vignettes
+
+The full-screen ad that appeared **on scroll** comes from AdSense's *additional vignette triggers* (enabled by default since 9 Mar 2026). It is not triggered by links, so `data-google-vignette="false"` cannot stop it; only the account can. Code now also stamps the opt-out on links created after load (search results, download buttons) and revokes blob URLs of replaced results. In AdSense → Ads → Edit tools.brandique.in: add page exclusion `tools.brandique.in/tools` (all pages under it), **or** Overlay formats → turn off Vignette + Anchor (and Side rail), and Overlay formats → Advanced settings → untick *Allow additional triggers for vignette ads*. Apply to site. Source: https://support.google.com/adsense/answer/16531962

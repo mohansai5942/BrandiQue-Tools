@@ -29,3 +29,6 @@ export function offerDownloads(root,files){
  }
  box.hidden=false;return box;
 }
+
+// Revoke blob: URLs of result elements as soon as they are removed or replaced, whatever code path removed them.
+export function autoRevoke(container){if(!container||container.__bqRevoke||typeof MutationObserver==='undefined')return;container.__bqRevoke=true;new MutationObserver(list=>{for(const m of list)for(const n of m.removedNodes){if(n.nodeType!==1)continue;for(const e of [n,...n.querySelectorAll('[src^="blob:"],[href^="blob:"]')]){const u=e.getAttribute?.('src')||e.getAttribute?.('href');if(u?.startsWith('blob:'))URL.revokeObjectURL(u)}}}).observe(container,{childList:true,subtree:true})}
