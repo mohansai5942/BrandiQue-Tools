@@ -100,6 +100,9 @@ export function arrange(root){
  all(root,rec.prog).filter(e=>!e.closest('.tf-r')&&!e.closest('.tf-bar')).forEach(e=>move(e,box));
  proc.after(box);
  all(root,rec.r).filter(e=>!e.closest('.tf-ws')).forEach(e=>move(e,R));
+ // Image Resizer on mobile mirrors the Image Compressor: File type & file size first, then Pixel size (CSS order, <1024px only).
+ if(rec.id==='ir'){const set=one(A,'.ir-settings');if(set){const hs=[...set.children].filter(k=>k.matches('.ir-h'));hs.forEach(h=>{const m=h.firstChild?.nodeType===3&&h.firstChild.nodeValue.match(/^\d+\.\s*/);if(m){const n=document.createElement('span');n.className='tf-hn';n.textContent=m[0];h.firstChild.nodeValue=h.firstChild.nodeValue.slice(m[0].length);h.prepend(n)}});
+  if(hs[1]){let on=false;[...set.children].forEach(k=>{if(k===hs[1])on=true;if(on)k.classList.add('tf-m-first')})}}}
  if(B.children.length<2)ws.classList.add('tf-two');
  ws.querySelectorAll('[data-tf-step]').forEach(e=>{delete e.dataset.tfStep;delete e.dataset.tfLabel});
  for(const p of parents)if(p&&p!==root&&!p.contains(ws)&&[...p.children].every(c=>/^H[1-4]$/.test(c.tagName)))p.hidden=true;
