@@ -3,3 +3,21 @@
 .result.is-error{color:#ff8a80;border-color:#a33}.uw-password.is-empty{color:#aaa;font-style:italic;letter-spacing:0}
 button:disabled{opacity:.5;cursor:not-allowed}
 .uw [data-case][aria-pressed="true"]{font-weight:800}.uw [data-case][aria-pressed="true"]::before{content:'✓ '}
+/* QR generator */
+.qr-ws .field{display:grid;gap:5px;margin:0}
+.qr-ws .field input:not([type=checkbox]):not([type=color]),.qr-ws .field select,.qr-ws .field textarea{width:100%}
+.qr-ws input[type=color]{width:100%;height:38px;padding:2px;border-radius:8px;cursor:pointer}
+.qr-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end}
+.qr-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.qr-types button{padding:8px 10px;font-size:13px;min-height:0}
+.qr-check{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.4}
+.qr-consent{padding:10px;border:1px solid #5a4b16;border-radius:9px;background:#1b1708}
+.qr-hint,.qr-note{font-size:12px;color:var(--m,#a2a2a2);margin:0}
+.qr-warn{margin:0;padding:8px 10px;border-radius:8px;border:1px solid #7d2f2f;color:#ffb0b0;font-size:12.5px}
+.qr-preview{display:grid;place-items:center;min-height:260px;padding:12px;border-radius:10px;background:#1a1a1a}
+.qr-preview.is-transparent{background:repeating-conic-gradient(#fff 0 25%,#e4e4e4 0 50%) 0 0/16px 16px}
+.qr-preview canvas,.qr-preview svg{display:block;width:100%!important;height:auto!important;max-width:340px;border-radius:6px}
+.qr-empty{margin:0;color:var(--m,#a2a2a2);text-align:center}
+.qr-link{display:grid;gap:4px;padding:10px;border:1px solid #333;border-radius:9px;font-size:12.5px;word-break:break-all}
+.qr-link span{color:var(--m,#a2a2a2)}.qr-link a{color:var(--y,#f5df32)}.qr-link button{justify-self:start;padding:5px 10px;font-size:12px;min-height:0}
+@media (max-width:1023px){.qr-ws>.tf-r{order:3}}

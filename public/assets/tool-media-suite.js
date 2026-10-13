@@ -28,7 +28,7 @@ try{const type=$('[data-format]',r).value,ext=type.split('/')[1].replace('jpeg',
 if(target){const exact=$('[data-match]',r).value==='exact';setStatus(r,`Finding the best image for ${shortSize(target)}…`);
 const res=await fitImageToTarget({encode:o=>encodeBytes(b,type,o),width:b.width,height:b.height,mime:type,target,exact,policy:$('[data-policy]',r).value,onStep:n=>{if(p)p.value=Math.min(.95,.1+n*.04);setStatus(r,`Finding the best image for ${shortSize(target)}… (try ${n})`)}});
 if(p)p.value=1;
-if(!res.ok){x.innerHTML=`<p class="size-verdict" data-ok="false"><b>Can’t reach ${shortSize(target)}.</b> ${res.reason}${type==='image/png'?' PNG is lossless, so it cannot get very small — choose JPG for small targets.':' Try a larger target or let the pixel size change.'}</p>`;setStatus(r,'Target size not reachable — see the note on the right.','error');return}
+if(!res.ok){x.innerHTML=`<p class="size-verdict" data-ok="false"><b>Can’t reach ${shortSize(target)}.</b> ${res.reason}${type==='image/png'?' PNG is lossless, so it cannot get very small — choose JPG for small targets.':' Try a larger target or let the pixel size change.'}</p>`;setStatus(r,'Target size not reachable — see the note in the result panel.','error');return}
 const out=new Blob([res.bytes],{type}),name=safeOutputName(f.name,`-${sizeTag(target)}`,ext);
 x.innerHTML=verdictHtml({original:f.size,size:out.size,target,exact,raw:res.raw,evenNote:type==='image/webp',extra:` · ${res.width}×${res.height} px${res.width!==b.width?` (was ${b.width}×${b.height})`:''} · ${fmtName(type)}${type==='image/png'?(res.levels?` · colours reduced to ${res.levels} levels`:''):` · quality ${Math.max(1,Math.round(res.quality*100))}%`}`});
 x.prepend(compareView(f,out,compareStats({origSize:f.size,newSize:out.size,origDims:`${b.width}×${b.height} px`,newDims:`${res.width}×${res.height} px`,origType:f.type,newType:type})));x.append(download(out,name));setStatus(r,`Done: ${sizeLabel(out.size)}.`,'success');return}
@@ -108,7 +108,7 @@ else{o=best;const raw=o.blob.size,blob=exact?new Blob([padWebm(new Uint8Array(aw
 x.innerHTML=verdictHtml({original:f.size,size:blob.size,target,exact,raw,extra:` · ${o.width}×${o.height} WebM · ${(o.plan.video/1e6).toFixed(2)} Mbps video${o.hasAudio?` + ${Math.round(o.plan.audio/1000)} kbps audio`:' (no audio track)'}`})}}
 x.prepend(el('video',{controls:true,src:URL.createObjectURL(o.blob)}));
 x.append(download(o.blob,name));
-setStatus(r,note==='over'?'Finished, but the file is above your target — see the note on the right.':'Video ready. Preview it, then download.',note==='over'?'error':'success')}catch(e){setStatus(r,e.name==='AbortError'?'Processing cancelled.':e.message,e.name==='AbortError'?'':'error');
+setStatus(r,note==='over'?'Finished, but the file is above your target — see the note in the result panel.':'Video ready. Preview it, then download.',note==='over'?'error':'success')}catch(e){setStatus(r,e.name==='AbortError'?'Processing cancelled.':e.message,e.name==='AbortError'?'':'error');
 if(e.name!=='AbortError'){f=null;
 run.disabled=true}}finally{if(f)run.disabled=false;
 cancel.disabled=true;

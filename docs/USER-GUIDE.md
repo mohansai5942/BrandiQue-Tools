@@ -71,11 +71,13 @@ Resize one or many images to exact pixels, a percentage or a scale factor — an
 | Queue buttons ↑ ↓ × Retry Download | Reorder, remove, retry a failed image, or download that image’s result. |
 | Clear | Empties the queue. |
 | Cancel | Stops processing. |
+| More size presets | Also includes Passport photo 35×45 mm (413×531 px at 300 dpi), WhatsApp profile photo, WhatsApp status, Full HD 1080p and HD 720p. |
 
 **Output:** One file per image in the chosen format, named with the pattern (e.g. photo-resized.jpg, or photo-resized-20KB.jpg with a target size). The final size (KB and bytes), pixel size and format are shown under the preview.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - For exam photos and signatures, choose JPG and type the limit from the form (for example 20 KB). If the form also fixes the pixel size, enter it and choose “Keep my pixel size exactly”.
 - PNG is lossless, so it cannot get very small; the tool reduces colours or pixels and suggests JPG if needed.
 - Re-encoding removes EXIF/metadata such as GPS location.
@@ -107,11 +109,14 @@ Make an image an exact file size you type — 5 KB to 5 MB and beyond — or com
 | Match | Exact size (default): the file is exactly the number of bytes you asked for — a small gap is filled with harmless padding (a JPEG comment, PNG text chunk or WebP extra chunk) that viewers ignore. Up to this size: never above the target and no padding. |
 | If the size can’t be reached | Change pixel size as needed (default — shrinks for small targets, can enlarge for big ones), Only shrink pixel size, or Keep my pixel size (shows an amber note if impossible). |
 | Quality | 10–100 % (default 82 %) in “By quality level” mode. Lower = smaller file. Ignored for PNG. |
+| Before / after slider | Drag the slider over the result to compare the original and compressed image at the same spot. |
+| Result table | Original vs result dimensions, file size, format and the % saved. |
 
 **Output:** A single file named name-20KB.jpg (target mode) or name-compressed.jpg (quality mode), with a preview, the final size in KB and bytes, pixel size and format.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - A tiny target needs fewer pixels: a 4000×3000 photo becomes roughly 1000×750 at 20 KB. Choose JPG for the best detail at small sizes.
 - If even a 16-pixel image is bigger than your target (for example 1 KB), the tool says so instead of giving you a wrong file.
 - WebP files always have an even byte count, so an odd target ends 1 byte under.
@@ -157,6 +162,7 @@ Annotate, crop, blur, resize, rotate and export a screenshot without a watermark
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - GIFs use their first frame; animation is not kept.
 - Outputs above 60 megapixels are blocked to prevent crashes.
 - Pixelate rather than blur when hiding passwords or numbers.
@@ -192,15 +198,19 @@ Change a video’s resolution and frame rate, and optionally make it an exact fi
 | Frame rate | 24, 30 (default) or 60 fps. |
 | Video quality (bitrate, Mbps) | 0.1–50 Mbps (default 4) when no target size is set. Higher = sharper and bigger. |
 | Cancel | Stops the recording. |
+| Resolution preset | 4K, 1080p, 720p, 480p, 360p or 240p. Sets the shorter side and keeps the original shape; presets never enlarge a smaller video. Typing your own width or height switches back to Custom. |
+| Result table | Original vs result dimensions, file size, format and the % change (when no target size is set). |
 
 **Output:** A WebM file (name-resized.webm, or name-5MB.webm with a target) with a preview, its exact size in MB and bytes, and the original size.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Output is WebM because browsers cannot reliably record MP4.
 - Keep the tab visible while processing; it records in real time.
 - Targets larger than the original are allowed: the bitrate is raised and the rest is padded.
 - Desktop Chrome or Edge gives the best results.
+- Non-video files (for example images) are rejected with “This is not a video file. Choose an MP4, WebM, MOV or another video your browser can play.” and the width, height and result are cleared.
 - Files stay on your device; nothing is uploaded.
 
 ### Video Compressor
@@ -229,14 +239,18 @@ Shrink a video to a file size you choose (e.g. 5 MB or 10 MB) or by quality; out
 | Frame rate | 24, 30 (default) or 60 fps. 24 fps saves space. |
 | Video quality (bitrate, Mbps) | 0.1–50 Mbps (default 1.5) when no target size is set. |
 | Cancel | Stops the recording. |
+| Resolution preset | 4K, 1080p, 720p, 480p, 360p or 240p. Sets the shorter side and keeps the original shape; presets never enlarge a smaller video. Typing your own width or height switches back to Custom. |
+| Result table | Original vs result dimensions, file size, format and the % change (when no target size is set). |
 
 **Output:** A WebM file (name-5MB.webm or name-compressed.webm) with preview, final size in MB and bytes, resolution and bitrate.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Rough size guide: bitrate (Mbps) × duration (s) ÷ 8 = MB.
 - Very small targets for long videos (for example 500 KB for a 10-minute clip) can fall below what the encoder can do; the tool then says the file is above the target.
 - Processing happens in real time; keep the tab open and visible.
+- Non-video files (for example images) are rejected with “This is not a video file. Choose an MP4, WebM, MOV or another video your browser can play.” and the width, height and result are cleared.
 - Files stay on your device; nothing is uploaded.
 
 ### Video to Audio
@@ -263,9 +277,10 @@ Extract the sound track from a video as a WebM/Opus audio file.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Silent videos show “This video has no accessible audio track”.
 - Most players and editors open WebM/Opus; convert to MP3 elsewhere if a device needs it.
-- Image files are rejected with “This is not a video file”.
+- Image files are rejected with “This is not a video file. Choose an MP4, WebM, MOV or another video your browser can play.”
 - Files stay on your device; nothing is uploaded.
 
 ---
@@ -305,8 +320,9 @@ Put several images into one PDF, one image per page, in the order you choose.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Transparent PNG areas become white.
-- Only images are accepted; PDF files are rejected with a message (use PDF Merger to combine PDFs).
+- Only images are accepted; other files (such as PDFs) are rejected with “Only image files are supported. Choose a JPG, PNG, WebP, GIF or another image your browser can open.” followed by their names (use PDF Merger to combine PDFs).
 - You will be asked to confirm before leaving the page while images are loaded.
 - Files stay on your device; nothing is uploaded.
 
@@ -331,6 +347,7 @@ Combine several PDFs into one, choosing pages, order and rotation.
 | Select all / Select none / Invert | Change which pages are used. |
 | Remove selected | Marks the selected pages as deleted. |
 | Restore deleted | Brings back all deleted pages. |
+| Clear all / Start over | Removes all loaded PDFs, pages and the merged result. |
 | Use (per page) | Include or skip that page. |
 | ↻ (per page) | Rotate the page 90° clockwise. |
 | Delete / Restore (per page) | Remove or restore a single page. |
@@ -344,9 +361,11 @@ Combine several PDFs into one, choosing pages, order and rotation.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Bookmarks/outlines are not preserved.
 - Password-protected PDFs must be unlocked first.
-- Non-PDF files (e.g. JPG) are rejected and listed by name; use Image to PDF for images.
+- Non-PDF files (e.g. JPG) are listed by name with “This file is not a PDF. Choose a PDF document (the file must start with a %PDF header).”; use Image to PDF for images.
+- “Clear all / Start over” removes every loaded file and page; adding more PDFs otherwise appends their pages after the existing ones.
 - Files stay on your device; nothing is uploaded.
 
 ### PDF Splitter
@@ -379,6 +398,7 @@ Extract page ranges or split a PDF into several smaller PDFs.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Page numbers start at 1.
 - Encrypted PDFs cannot be split until unlocked.
 - Files stay on your device; nothing is uploaded.
@@ -412,8 +432,10 @@ Make a PDF smaller: keep text sharp (lossless, small savings) or turn pages into
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Rasterized PDFs lose selectable text, links, forms and signatures; keep the original.
 - If the output is larger, lower DPI or quality.
+- Non-PDF files are rejected with “This file is not a PDF. Choose a PDF document (the file must start with a %PDF header).” and any previous result is cleared.
 - Files stay on your device; nothing is uploaded.
 
 ---
@@ -446,6 +468,7 @@ Convert PDF, Word, spreadsheet, text and image files between supported formats, 
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - PDF → Word embeds page images: the Word text is not editable.
 - Legacy .doc/.xls, PowerPoint and password-protected files are not supported.
 - Fonts and page breaks of Word/HTML → PDF may differ from the original app.
@@ -475,6 +498,7 @@ Convert simple text documents between TXT, Markdown, HTML, JSON and CSV.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Layout, fonts and images are not preserved; this is for structured text.
 - Images and other non-text files are rejected; use File Converter or Document Format Converter instead.
 - JSON → CSV expects an array of objects (or one object).
@@ -508,6 +532,7 @@ Convert images between PNG, JPEG and WebP, and text files between TXT, Markdown,
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Unsupported files (video, PDF, Office) show a clear message and clear the old result.
 - JPEG has no transparency; transparent areas become white.
 - Files stay on your device; nothing is uploaded.
@@ -548,6 +573,12 @@ Convert between units in 23 categories, from length and temperature to data, pre
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -588,6 +619,12 @@ Convert nm, μm, mm, cm, m, km, in, ft, yd, mi and nautical miles.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -628,6 +665,12 @@ Convert mm², cm², m², km², in², ft², yd², mi², acres and hectares.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -668,6 +711,7 @@ Convert Celsius, Fahrenheit, Kelvin and Rankine with exact offset formulas.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -709,6 +753,7 @@ Convert mL, L, cm³, m³, in³, ft³, US/Imperial gallons, quarts, pints, cups, 
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -750,6 +795,12 @@ Convert μg, mg, g, kg, tonnes, ounces, pounds, stone, US tons and Imperial tons
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -790,6 +841,12 @@ Convert mW, W, kW, MW, GW, mechanical hp, metric hp (PS) and BTU/h.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -830,6 +887,12 @@ Convert m/s, km/h, mph, ft/s, knots and Mach (at sea level).
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Type a value and every unit in the category updates at once; the right-hand box shows the one target unit you pick.
 - Values update as you type; a conversion is added to Recent history when you change the value or a unit (last 20, stored only in this browser).
 - Use ⇄ Swap to reverse the conversion, the ☆ star to pin favourite units to the top, and Precision / Scientific / Significant figures to control rounding.
@@ -863,6 +926,7 @@ Exact age in years, months and days between a birth date and any date.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Uses calendar months, not averages.
 - A 29 February birthday is counted on 28 February in non-leap years; month-end dates use the last day of shorter months.
 - Files stay on your device; nothing is uploaded.
@@ -898,6 +962,7 @@ Five percentage calculations with the formula and steps shown.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Total and Starting value cannot be zero.
 - Files stay on your device; nothing is uploaded.
 
@@ -934,6 +999,7 @@ Monthly loan EMI, interest, amortization schedule and prepayment savings, or com
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Amounts are shown in Indian Rupees format but the maths works for any currency.
 - Results are estimates; your lender’s rounding may differ slightly.
 - Files stay on your device; nothing is uploaded.
@@ -968,6 +1034,7 @@ Final price after one or two discounts and optional tax.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - 20 % + 10 % extra is 28 % effective, not 30 %.
 - Files stay on your device; nothing is uploaded.
 
@@ -1004,6 +1071,7 @@ Add or remove GST and split it into CGST + SGST or IGST, with a printable invoic
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Common Indian GST slabs are 5 %, 12 %, 18 % and 28 %; check the correct rate for your item.
 - Files stay on your device; nothing is uploaded.
 
@@ -1038,7 +1106,9 @@ Score how readable and complete a resume is, and how well it matches a job descr
 
 **Limits & tips**
 
-- Scanned (image) PDFs need OCR first.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Resumes under 30 words show “Your resume has only N words. Add at least M more words (minimum 30) to get a score.”
+- Scanned (image) PDFs with no readable text show “Not enough readable resume text to score… Scanned PDFs need OCR first.”
 - Multi-column layouts may extract in the wrong order; check the extracted text.
 - This is a readiness estimate, not an employer’s ATS result.
 - Files stay on your device; nothing is uploaded.
@@ -1067,12 +1137,16 @@ Pretty-print, minify and sort JSON, with exact error positions.
 | Indent | 2 spaces (default), 4 spaces or Compact. |
 | Sort keys | Sorts object keys alphabetically at every level. |
 | Minify | Removes all whitespace. |
+| Clear | Empties the input and result. |
 | Copy result / Download | Copy to clipboard or save formatted.json. |
+| Error location | Invalid JSON shows the line, column and the offending line with a ^ marker. |
+| Size & depth | The status line shows input and output size in bytes and the nesting depth. |
 
 **Output:** Formatted or minified JSON text.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Comments and trailing commas are not valid JSON and will be reported.
 - Files stay on your device; nothing is uploaded.
 
@@ -1093,12 +1167,16 @@ Check whether text is valid JSON and see where it breaks.
 | Option | What it does |
 |---|---|
 | Load sample | Inserts a small valid example. |
+| Clear | Empties the input and result. |
 | Copy result / Download | Copy the validation report or save json-validation.txt. |
+| Error location | Invalid JSON shows the line, column and the offending line with a ^ marker. |
+| Size & depth | The status line shows the size in bytes and the nesting depth. |
 
 **Output:** Validation report text.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Fix the first error reported, then re-check; later errors often disappear.
 - Files stay on your device; nothing is uploaded.
 
@@ -1128,6 +1206,7 @@ Encode text or a file to Base64, or decode Base64 back to text.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Errors (invalid Base64, or binary data that is not UTF-8 text) appear in the result panel.
 - Base64 is encoding, not encryption.
 - Files stay on your device; nothing is uploaded.
@@ -1158,6 +1237,7 @@ Percent-encode or decode URL components and full URLs.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - In Component decode, “+” is treated as a space.
 - A “%” must be followed by two hex digits, otherwise an error is shown in the result panel.
 - Files stay on your device; nothing is uploaded.
@@ -1188,6 +1268,7 @@ Generate strong random passwords with the browser’s secure random generator.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Look-alike characters (l, I, O, 0, 1) are excluded; symbols are ! @ # $ % ^ & * _ - + =.
 - Every chosen set appears at least once.
 - Nothing is stored or sent.
@@ -1215,12 +1296,15 @@ Live counts of words, characters, sentences, paragraphs and reading time.
 | Sentences / Paragraphs | Paragraphs are separated by blank lines. |
 | Read minutes / Speak minutes | At 200 and 130 words per minute. |
 | Clear | Empties the text. |
+| Unique words / Avg word length / Words per sentence | Extra readability figures that update as you type. |
+| Top keywords | The most repeated meaningful words with their count and share of all words. Common words such as “the” and “and” are ignored. |
 
 **Output:** Statistics on screen.
 
 **Limits & tips**
 
-- Emoji and accented letters count as single characters.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Emoji and accented letters count as single characters; emoji are not counted as words (“🙏 Namaste 🙏” = 1 word).
 - Files stay on your device; nothing is uploaded.
 
 ### Case Converter
@@ -1245,12 +1329,15 @@ Change text to upper, lower, title, sentence, camel, Pascal, snake, kebab or CON
 | Sentence | First letter capitalised. |
 | Camel / Pascal | camelCase / PascalCase. |
 | Snake / Kebab / Constant | snake_case, kebab-case, CONSTANT_CASE. |
+| Active case | The selected case button is highlighted with a ✓ (Upper by default). |
+| Clear | Empties the input and result. |
 | Copy result / Download | Saves converted-text.txt. |
 
 **Output:** Converted text.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Camel, Pascal, snake, kebab and constant remove punctuation between words.
 - Files stay on your device; nothing is uploaded.
 
@@ -1272,15 +1359,18 @@ Convert colours between HEX, RGB and HSL with a live preview and contrast check.
 | Option | What it does |
 |---|---|
 | HEX | 3, 4, 6 or 8 digits, with or without #. Tidied to #RRGGBB when you leave the field. |
-| Red / Green / Blue | 0–255. |
+| Red / Green / Blue | 0–255. Values outside the range are not clamped; the field is marked and “Red: 0–255 only.” (etc.) is shown. |
 | Hue / Saturation % / Lightness % | 0–360 and 0–100. |
 | Preview | Shows the colour with the more readable text colour (black or white) and its contrast ratio. |
 | Copy CSS values | Copies HEX, rgb() and hsl() lines. |
+| Contrast checker | Pick a text colour to test on the current background. Shows the contrast ratio and whether it passes WCAG AA/AAA for normal and large text. |
+| Palette | Tints and shades of the colour plus complementary, analogous and triadic hues. Click a swatch to load it. |
 
 **Output:** HEX, RGB, HSL and best text colour with contrast ratio.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Aim for a contrast of at least 4.5:1 for body text.
 - Files stay on your device; nothing is uploaded.
 
@@ -1310,38 +1400,48 @@ Convert Unix timestamps to dates and dates to timestamps.
 
 **Limits & tips**
 
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
 - Local time uses your device’s time zone.
 - Files stay on your device; nothing is uploaded.
 
 ### QR Code Generator
 
 **URL:** [https://tools.brandique.in/tools/qr-code-generator/](https://tools.brandique.in/tools/qr-code-generator/)  
-**Formats:** Text, URL, PNG, SVG
+**Formats:** URL, Wi-Fi, vCard, PNG, SVG, JPG
 
-Create a standard QR code for text or a link, as PNG or SVG.
+Create styled QR codes for links, text, Wi-Fi, phone, email, SMS, WhatsApp, contact cards (vCard), images and videos — with colours, gradients, dot and corner styles and a centre logo — and download PNG, SVG or JPG.
 
 **How to use**
 
-1. Type text or a URL (up to 2,000 characters).
-2. Choose size and error correction.
-3. The QR code is generated and validated automatically; download PNG or SVG.
+1. Step 1 · Content: pick a type (URL, Text, Wi-Fi, Phone, Email, SMS, WhatsApp, Contact, Image or Video) and fill in its fields.
+2. For Image or Video: either paste a public link, or upload the file — tick the consent box first, because the file is uploaded to a free public host to get a link (Litterbox: direct link that expires after 1–72 hours; or Gofile: a page link). Upload progress shows in the preview panel.
+3. Step 2 · Design: choose size, margin, dot style, colours or a gradient, corner frame/centre style and colour, an optional centre logo and the error-correction level.
+4. Step 3 · Preview & download: the code is drawn in the right panel and scan-tested in your browser, then download PNG, SVG or JPG.
 
 **Options and controls**
 
 | Option | What it does |
 |---|---|
-| Text or URL | Content of the code. |
-| Size | 256, 384 or 512 px (PNG). |
-| Error correction | Medium (default), Quartile, High or Low. Higher survives damage/logos but makes a denser code. |
-| Download PNG / Download SVG | PNG at the chosen size, or scalable SVG for print. |
+| Content types | URL, Text, Wi-Fi (WPA/WEP/open, hidden network), Phone, Email (subject/body), SMS, WhatsApp (wa.me link with message), Contact card (vCard 3.0), Image and Video. |
+| Image / Video upload | Up to 200 MB. Litterbox (catbox.moe) gives a direct link and deletes the file after 1, 12, 24 or 72 hours. Gofile (gofile.io) gives a page link; free files can be removed after a period without downloads. Nothing is uploaded unless you tick the consent box and press Upload. For a permanent code, paste a link to a file you host yourself. |
+| Size / Margin | 256 to 2048 px; margin (quiet zone) 0–80 px. |
+| Dot style | Square, Rounded, Dots, Classy, Classy rounded or Extra rounded. |
+| Colours & gradient | Dot colour, background colour or transparent background (PNG/SVG), and an optional linear or radial two-colour gradient with angle. |
+| Corner frame / centre | Square, rounded or circle frames and square or circle centres, each with its own colour. |
+| Centre logo | PNG, JPG, WebP or SVG up to 2 MB, small/medium/large. A logo switches error correction to High automatically. |
+| Error correction | Low 7%, Medium 15%, Quartile 25% or High 30%. |
+| Scan test | Every design is decoded in your browser at two sizes; a warning appears if it does not decode exactly. |
+| Download PNG / SVG / JPG | PNG keeps transparency, SVG is scalable for print, JPG uses a white background. |
 
-**Output:** brandique-qr.png or brandique-qr.svg, with version and module validation.
+**Output:** brandique-qr.png, brandique-qr.svg or brandique-qr.jpg.
 
 **Limits & tips**
 
-- The QR encoder is downloaded the first time (needs internet once); your content stays local.
-- Test the code with your phone camera before printing.
-- Colours are black on white for best scanning.
+- Every tool follows the same three steps shown above it — 1 Upload or enter input, 2 Choose options, 3 Preview & download — with a status line that says what to do next. On a computer the options sit on the left and middle and the preview & result panel stays on the right; progress (with % where available) is shown inside that panel. On phones the steps stack in order. Start over clears the tool.
+- Keep dark dots on a light background — light-on-dark and low-contrast codes are flagged.
+- If the scan test warns, raise contrast, use square corners, a smaller logo or higher error correction.
+- Litterbox links expire — do not print a QR made from a temporary upload. Use your own permanent link instead.
+- Test the printed size with your phone camera before ordering prints.
 - Files stay on your device; nothing is uploaded.
 
 ---
@@ -1357,7 +1457,7 @@ Limits depend on your device memory. Built-in limits: Resume ATS 10 MB (PDF ≤3
 **Why is video output WebM, not MP4?**  
 Browsers can record WebM natively but cannot reliably encode MP4. WebM plays in Chrome, Edge, Firefox, VLC and most editors.
 
-**Why did a tool say “This is not a video file” / “Only image files are supported”?**  
+**Why did a tool say “This is not a video file” / “Only image files are supported” / “This file is not a PDF”?**  
 Each tool checks the file type before processing. Choose a file of the type named in the message.
 
 **Why does the page ask before I leave?**  

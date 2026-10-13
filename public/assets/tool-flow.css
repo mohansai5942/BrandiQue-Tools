@@ -60,3 +60,69 @@
 .tf-contrast{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;font-size:12.5px;margin-top:8px}
 .tf-contrast span{padding:5px 8px;border-radius:7px;border:1px solid #333}.tf-contrast .ok{border-color:#2f7d4f;color:#8ff0b3}.tf-contrast .no{border-color:#7d2f2f;color:#ffb0b0}
 .tf-err-line{color:#ffb4b4}
+/* ===== Workspace layout: upload strip → options | more options | sticky preview & result ===== */
+.tf-ws{display:grid;gap:14px;margin-top:12px;align-items:start}
+.tf-col{min-width:0;display:grid;gap:12px;align-content:start;padding:12px;border:1px solid #2f2f2f;border-radius:12px;background:#121212}
+.tf-col-h{margin:0;font-size:11px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;color:var(--y,#f5df32)}
+.tf-col>:is(section,aside,main,div,fieldset){margin-top:0!important}
+.tf-col :is(.ir-pane,.media-card,.pdfw-settings,.pm-settings,.split-options,.split-plan,.format-options,.format-result){width:auto!important;max-width:none!important;position:static!important;margin:0!important}
+.tf-col .ir-actions{position:static}
+.tf-r{border-color:#3d3d22}
+.tf-proc{display:grid;gap:8px;padding:12px;border-radius:10px;border:1px solid #2c4b6e;background:#0e1823}
+.tf-proc[hidden]{display:none}
+.tf-proc-head{display:flex;align-items:center;gap:10px}
+.tf-proc-text{margin:0;flex:1;font-size:13px;font-weight:650;color:#dbeafe}
+.tf-proc-pct{font-size:18px;color:#93c5fd;font-variant-numeric:tabular-nums}
+.tf-spin{flex:none;width:22px;height:22px;border-radius:50%;border:3px solid #2c4b6e;border-top-color:#5aa9ff;animation:tf-rot .8s linear infinite}
+.tf-proc-bar{height:8px;border-radius:99px;background:#1d2b3a;overflow:hidden}
+.tf-proc-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5aa9ff,var(--y,#f5df32));transition:width .25s}
+.tf-proc-bar.is-indeterminate span{width:35%!important;animation:tf-slide 1.1s ease-in-out infinite}
+.tf-proc-tools{display:grid;gap:6px}.tf-proc-tools:empty{display:none}
+.tf-proc-tools :is(progress,.pdfw-meter,.pm-progress){width:100%}
+[data-tf-state=working] .tf-r .tf-proc~*:not(.tf-proc-tools){opacity:.45;transition:opacity .2s}
+@keyframes tf-rot{to{transform:rotate(360deg)}}
+@keyframes tf-slide{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+@media (prefers-reduced-motion:reduce){.tf-spin,.tf-proc-bar.is-indeterminate span{animation:none}}
+/* File chip: once a file is in, the upload area collapses to one line. */
+.tf-chip{display:flex;align-items:center;gap:10px;min-width:0;width:100%;text-align:left}
+.tf-chip-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650}
+.tf-chip-btn{flex:none;padding:6px 12px;font-size:12px;min-height:0}
+.tf-upload.tf-has-file{padding:10px 14px!important;min-height:0!important;display:block!important}
+.tf-upload.tf-has-file>:not(.tf-chip){display:none!important}
+/* Mobile & tablet: Upload → Options → More options → Preview, one column. */
+@media (max-width:1023px){
+ .tf-ws{display:flex;flex-direction:column}
+ .tf-col{padding:10px}
+}
+/* Desktop: the workspace fits about one screen; long option columns scroll inside themselves. */
+@media (min-width:1024px){
+ .tf-bar{grid-template-columns:auto 1fr;align-items:center;padding:10px 14px;gap:6px 14px}
+ .tf-bar .tf-steps{grid-column:1/-1}
+ .tf-help{display:none}
+ .tf-steps li{padding:6px 10px}
+ .tf-upload{padding:12px 16px!important;min-height:0!important}
+ .tf-upload:not(.tf-has-file) :is(h2,h3){font-size:16px;margin:0 0 4px}
+ .tf-upload:not(.tf-has-file) p{margin:2px 0;font-size:12.5px}
+ .tf-ws{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr)}
+ .tf-ws.tf-two{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)}
+ .tf-ws.tf-two>.tf-b{display:none}
+ .tf-col{max-height:calc(100vh - 110px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+ .tf-r{position:sticky;top:96px}
+ .tf-col-h{position:sticky;top:-12px;z-index:3;background:inherit;margin:-12px -12px 0;padding:10px 12px 6px}
+ .tf-col .ir-preview{max-height:calc(100vh - 330px)}
+ /* Two-column tools (text, calculators, converters): inputs left, sticky result right. */
+ .calc-grid>.calc-output,.uc-main>aside.uc-panel,.uw-grid>.uw-card:nth-child(2),.ats-workspace>section.panel:nth-child(2){position:sticky;top:96px;max-height:calc(100vh - 110px);overflow:auto;scrollbar-width:thin}
+ .media-grid:not(:has(.dropzone))>aside.media-card{position:sticky;top:96px}
+ /* Screenshot editor: tools | settings | canvas on the right. */
+ .tool-grid{grid-template-columns:170px 220px minmax(0,1fr)!important}
+ .tool-grid>.toolbox{order:1}.tool-grid>aside.editor-panel:not(.toolbox){order:2;max-height:calc(100vh - 110px);overflow:auto}.tool-grid>main.canvas-wrap{order:3;position:sticky;top:96px}
+}
+.tf-col .media-fields{grid-template-columns:minmax(0,1fr)!important}
+.tf-col .media-fields>*{grid-column:1/-1!important}
+.tf-proc:not([hidden])~.tf-proc-tools>:is(progress,.pdfw-meter,.pm-progress,.ir-queue-progress,.media-status,[data-status]){display:none!important}
+.tf-chip-ico{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#2b2b14;color:var(--y,#f5df32)}
+/* Option panels inside a workspace column are a single column; controls never overflow it. */
+.tf-col :is(.pm-settings,.pdfw-settings,.split-options,.format-options){grid-template-columns:minmax(0,1fr)!important}
+.tf-col :is(.pm-settings,.pdfw-settings)>*{grid-column:1/-1!important}
+.tf-col :is(select,input:not([type=checkbox]):not([type=radio]),textarea){max-width:100%;min-width:0}
+.tf-col .pdfw-actions{width:auto!important;flex-wrap:wrap}
