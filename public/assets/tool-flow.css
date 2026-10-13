@@ -166,3 +166,46 @@
 .tf-ws.tf-wide .tf-r .media-result{gap:10px}
 @media (min-width:1024px){.tf-ws.tf-wide>.tf-r{align-self:start}}
 .tf-ws.tf-wide .tf-col :is(.ir-settings,.media-fields)>label.field:has(>select){grid-column:1/-1!important}
+/* ===== Mobile & tablet (stacked, <1024px): Upload strip → Preview & result → Options → More options.
+   Desktop (≥1024px) is untouched. The preview moves up once a file is loaded. ===== */
+@media (max-width:1023px){
+ .tf-ws>.tf-r{order:-1}.tf-ws>.tf-a{order:1}.tf-ws>.tf-b{order:2}
+ [data-tf-state=idle] .tf-ws>.tf-r{order:3}
+ .tf-ws,.tf-r,.tf-upload{scroll-margin-top:72px}
+}
+/* ===== Phones (<768px): compact text, controls and boxes. ===== */
+@media (max-width:767px){
+ body:has([data-tool]) .head h1{font-size:clamp(26px,8vw,34px);margin:8px 0}
+ body:has([data-tool]) .head .lead{font-size:14px;line-height:1.45;margin:4px 0}
+ body:has([data-tool]) .tool{padding:10px;font-size:13px;line-height:1.45}
+ [data-tool] :is(h2,h3){font-size:15px;line-height:1.25;margin:4px 0}
+ [data-tool] :is(label,.field,.media-label){font-size:12px}
+ [data-tool] .field{gap:4px;margin:6px 0}
+ [data-tool] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select){min-height:36px;padding:5px 9px;font-size:13px}
+ [data-tool] textarea{font-size:13px;min-height:120px}
+ [data-tool] :is(button,.btn){min-height:36px;padding:7px 12px;font-size:13px}
+ [data-tool] :is(.chip,.size-chip,.tf-chip-btn,.tf-reset){min-height:32px;padding:4px 9px;font-size:12px}
+ [data-tool] p:is(.hint,.muted,.ir-help,.field-help,.tf-accept),[data-tool] small{font-size:11.5px}
+ .tf-bar{margin:0 0 8px;padding:6px 8px;gap:4px;border-radius:10px}
+ .tf-steps{gap:4px}
+ .tf-steps li{flex-direction:row;padding:4px 6px;gap:5px;font-size:10.5px;border-radius:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .tf-num{width:17px;height:17px;font-size:10px}
+ .tf-status{font-size:11.5px;padding-left:14px}.tf-status::before{width:7px;height:7px}
+ .tf-ws{gap:8px;margin-top:8px}
+ .tf-col{padding:8px;gap:6px;border-radius:10px}
+ .tf-col-h,.tf-col .tf-more{font-size:10.5px!important}
+ [data-tf-step]{margin-top:10px}
+ [data-tf-step]::before{font-size:9.5px;top:-8px}
+ .tf-upload:not(.tf-has-file){padding:12px!important;min-height:0!important}
+ .tf-upload:not(.tf-has-file) :is(h2,h3){font-size:14px;margin:0 0 2px}
+ .tf-upload:not(.tf-has-file) p{font-size:12px;margin:2px 0}
+ .tf-upload.tf-has-file{padding:6px 10px!important}
+ .tf-chip{gap:8px;font-size:12.5px}.tf-chip-ico{width:24px;height:24px}
+ .tf-proc{padding:8px;gap:6px}.tf-proc-text{font-size:12px}.tf-proc-pct{font-size:15px}
+ .tf-ws.tf-wide .tf-col :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select){min-height:36px;font-size:13px}
+ .tf-ws.tf-wide .tf-col :is(label.field,.media-label){font-size:12px}
+ .tf-ws.tf-wide .size-chip{padding:3px 8px;font-size:11.5px}
+ .cmp-stats{font-size:12px}.cmp-stats th,.cmp-stats td{padding:4px 6px}
+ .tf-swatches button{min-height:36px}
+}
+@media (max-width:767px){.tf-a :is(.ir-settings,.pm-settings,.pdfw-settings,.split-options,.format-options,.media-fields),.tf-b :is(.ir-settings,.pm-settings,.pdfw-settings,.split-options,.format-options,.media-fields){grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px 8px!important}}
