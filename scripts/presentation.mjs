@@ -64,6 +64,8 @@ async function enhance(dir) {
       } else if (html.includes('<section class="head wrap">')) {
         html = html.replace('<section class="head wrap">', `<section class="head wrap">${headBar}`);
       }
+      // Legacy plain-text breadcrumb duplicated the head bar (visible on mobile).
+      html = html.replace(/<p>Home \/ Tools \/[^<]*<\/p>/g, '');
     }
     await writeFile(file, html);
   }
