@@ -209,3 +209,42 @@
  .tf-swatches button{min-height:36px}
 }
 @media (max-width:767px){.tf-a :is(.ir-settings,.pm-settings,.pdfw-settings,.split-options,.format-options,.media-fields),.tf-b :is(.ir-settings,.pm-settings,.pdfw-settings,.split-options,.format-options,.media-fields){grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px 8px!important}}
+
+/* ===== Round 2 (mobile/tablet <1024px only; desktop untouched) ===== */
+@media (max-width:1023px){
+ /* Preview & result appears only once a file is added. */
+ [data-tf-state=idle] .tf-ws>.tf-r{display:none!important}
+ /* Nothing may overflow its card: border-box, shrinkable children, wrapping text. */
+ [data-tool],.tf-bar{max-width:100%;box-sizing:border-box}
+ [data-tool] :is(input,select,textarea,button,.btn,fieldset,table,img,canvas,video,pre){box-sizing:border-box;max-width:100%}
+ [data-tool] :is(div,label,section,aside,main,fieldset,form,article,details,li,p,span){min-width:0}
+ [data-tool] :is(p,label,legend,li,td,th,dd,dt,small,b,strong,span,a,h2,h3,h4,summary,code){overflow-wrap:anywhere}
+ [data-tool] :is(button,.btn,a.btn){white-space:normal;overflow-wrap:anywhere;height:auto;text-overflow:clip;line-height:1.25}
+ [data-tool] :is(.ir-row,.ir-actions,.media-actions,.pdfw-actions,.pm-actions,.pm-bar,.size-chips,.size-row,.iv-seg,.iv-zoom,.iv-actions,.calc-actions,.actions,.row,.tf-status-row){flex-wrap:wrap;min-width:0}
+ [data-tool] table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+ [data-tool] pre{overflow-x:auto}
+ .tf-steps li{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2;align-items:center;min-width:0}
+ .tf-chip{min-width:0;flex-wrap:wrap}.tf-chip-name{min-width:0;overflow-wrap:anywhere}
+ /* Image Resizer = Image Compressor layout: File type & file size → Pixel size → queue (only with 2+ files) → More options. */
+ .tf-ws[data-recipe=ir]>.tf-a{display:flex;flex-direction:column}
+ .tf-ws[data-recipe=ir]>.tf-a>.tf-col-h{order:-2}
+ .tf-ws[data-recipe=ir]>.tf-a>.ir-settings{order:1}
+ .tf-ws[data-recipe=ir]>.tf-a>aside.ir-pane:not(.ir-settings){order:2}
+ .tf-ws[data-recipe=ir]>.tf-a>aside.ir-pane:not(.ir-settings):not(:has(.ir-list>:nth-child(2))){display:none!important}
+ .tf-ws[data-recipe=ir] .tf-a .ir-settings>.tf-m-first{order:-1}
+ .tf-ws[data-recipe=ir] .tf-hn{display:none}
+ .tf-ws[data-recipe=ir] .ir-actions [data-cancel]:disabled{display:none}
+}
+/* Phones: smaller tool text so labels and buttons fit without cutting. */
+@media (max-width:767px){
+ body:has([data-tool]) .tool,[data-tool]{font-size:12.5px}
+ [data-tool] :is(label,.field,.media-label,legend,.editor-field),.tf-ws.tf-wide .tf-col :is(label.field,.media-label){font-size:11.5px}
+ [data-tool] p:is(.hint,.muted,.ir-help,.field-help,.tf-accept,.status),[data-tool] small,[data-tool] .ir-help{font-size:11.5px}
+ [data-tool] :is(button,.btn){font-size:12.5px;padding:6px 10px}
+ [data-tool] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select),.tf-ws.tf-wide .tf-col :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select){font-size:12.5px}
+ [data-tool] :is(h2,h3){font-size:14px}
+ .tf-steps li{font-size:10px;padding:4px 5px;gap:4px}
+}
+/* Ads never sit inside the tool workspace (between preview and options); placed units live above/below it. */
+[data-tool-workspace] :is(.google-auto-placed,ins.adsbygoogle:not(.ad-placement ins)),[data-tool] :is(.google-auto-placed,ins.adsbygoogle){display:none!important}
+@media (max-width:1023px){[data-tool] input[type=range]{margin-inline:0;width:100%;max-width:100%}}
