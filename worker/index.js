@@ -1,14 +1,13 @@
 // BrandiQue Tools Worker: serves the static site from ./dist (assets binding) and adds one small API,
 // POST /api/qr-upload, which forwards an image/video to a file host server-side. Uploading from the
 // browser straight to catbox.moe/Litterbox fails for many visitors (HTTP 403 HTML page), so the browser
-// talks to this same-origin endpoint and the Worker streams the file on (no buffering).
+// talks to this same-origin endpoint and the Worker pipes the form on (no buffering).
 export const MAX_BYTES = 95 * 1024 * 1024; // Workers free plan caps request bodies at 100 MB.
 const EXPIRY = new Set(['1h', '12h', '24h', '72h']);
 const ORIGINS = /^https:\/\/(tools\.brandique\.in|brandique-tools\.[a-z0-9-]+\.workers\.dev|[a-z0-9-]+-brandique-tools\.[a-z0-9-]+\.workers\.dev|localhost(:\d+)?)$/;
 const UA = 'BrandiQueTools/1.0 (+https://tools.brandique.in)';
 
 const json = (body, status = 200) => new Response(JSON.stringify(body), {status, headers: {'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff'}});
-const safeName = n => (String(n || 'file').normalize('NFKD').replace(/[^\w.\-]+/g, '_').replace(/^\.+/, '').slice(-80)) || 'file';
 
 export const HOSTS = {
   litterbox: {name: 'Litterbox', url: 'https://litterbox.catbox.moe/resources/internals/api.php', field: 'fileToUpload',
@@ -30,21 +29,19 @@ export async function handleUpload(request) {
   if (origin !== self && !ORIGINS.test(origin)) return json({error: 'Uploads are only accepted from tools.brandique.in.'}, 403);
   const p = new URL(request.url).searchParams, host = p.get('host') || 'litterbox', h = HOSTS[host];
   if (!h || !ENABLED.has(host)) return json({error: 'Unknown or unavailable host.'}, 400);
-  const type = (request.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+  // The browser sends the host's own multipart form; the Worker pipes it through untouched (native pipe,
+  // near-zero CPU, no buffering), so even large videos stay inside the free-plan CPU limit.
+  const ct = request.headers.get('content-type') || '';
+  if (!/^multipart\/form-data;\s*boundary=/i.test(ct)) return json({error: 'Send the file as multipart/form-data.'}, 415);
+  const type = String(p.get('type') || '').toLowerCase();
   if (!/^(image|video)\/[\w.+-]+$/.test(type)) return json({error: 'Only image and video files can be uploaded.'}, 415);
   const size = Number(request.headers.get('content-length'));
   if (!Number.isFinite(size) || size <= 0) return json({error: 'Empty file.'}, 411);
-  if (size > MAX_BYTES) return json({error: `Files up to ${MAX_BYTES / 1048576} MB can be uploaded.`}, 413);
-  // Build multipart/form-data around the streamed body, with an exact Content-Length.
-  const enc = new TextEncoder(), b = '----bq' + crypto.randomUUID().replace(/-/g, '');
-  let head = '';
-  for (const [k, v] of Object.entries(h.fields({expiry: p.get('expiry')}))) head += `--${b}\r\nContent-Disposition: form-data; name="${k}"\r\n\r\n${v}\r\n`;
-  head += `--${b}\r\nContent-Disposition: form-data; name="${h.field}"; filename="${safeName(p.get('name'))}"\r\nContent-Type: ${type}\r\n\r\n`;
-  const pre = enc.encode(head), post = enc.encode(`\r\n--${b}--\r\n`);
-  const {readable, writable} = new FixedLengthStream(pre.length + size + post.length);
-  (async () => { const w = writable.getWriter(); try { await w.write(pre); const r = request.body.getReader(); for (;;) { const {done, value} = await r.read(); if (done) break; await w.write(value); } await w.write(post); await w.close(); } catch (e) { await w.abort(e).catch(() => {}); } })();
+  if (size > MAX_BYTES + 65536) return json({error: `Files up to ${MAX_BYTES / 1048576} MB can be uploaded.`}, 413);
+  const {readable, writable} = new FixedLengthStream(size);
+  request.body.pipeTo(writable).catch(() => {});
   let res;
-  try { res = await fetch(h.url, {method: 'POST', body: readable, headers: {'content-type': `multipart/form-data; boundary=${b}`, 'user-agent': UA}}); }
+  try { res = await fetch(h.url, {method: 'POST', body: readable, headers: {'content-type': ct, 'user-agent': UA}}); }
   catch { return json({error: `${h.name} could not be reached. Try the other host.`}, 502); }
   const text = await res.text();
   try { return json({url: h.parse(res.status, text), host}); }

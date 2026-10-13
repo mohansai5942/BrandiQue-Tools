@@ -55,9 +55,11 @@ test('image/video uploads are checked and host answers parsed strictly', () => {
   assert.throws(() => Q.checkUpload({type: 'video/mp4', size: 10}, 'image'), /not an image/);
   assert.throws(() => Q.checkUpload({type: 'video/mp4', size: Q.MAX_UPLOAD + 1}, 'video'), /95 MB/);
   assert.ok(Q.MAX_UPLOAD <= 100 * 1024 * 1024); // Workers request-body limit
-  assert.equal(Q.uploadUrl('litterbox', {name: 'a b.png'}, '12h'), '/api/qr-upload?host=litterbox&name=a+b.png&expiry=12h');
-  assert.match(Q.uploadUrl('litterbox', {name: 'x.png'}, 'forever'), /expiry=72h/);
-  assert.doesNotMatch(Q.uploadUrl('gofile', {name: 'x.mp4'}), /expiry/);
+  assert.equal(Q.uploadUrl('litterbox', {type: 'image/png'}), '/api/qr-upload?host=litterbox&type=image%2Fpng');
+  const fd = Q.uploadForm('litterbox', new Blob(['x']), '12h');
+  assert.equal(fd.get('reqtype'), 'fileupload'); assert.equal(fd.get('time'), '12h'); assert.ok(fd.get('fileToUpload'));
+  assert.equal(Q.uploadForm('litterbox', new Blob(['x']), 'forever').get('time'), '72h');
+  assert.ok(Q.uploadForm('gofile', new Blob(['x'])).get('file'));
   assert.equal(Q.parseProxyResponse('litterbox', 200, '{"url":"https://litter.catbox.moe/ab12cd.png"}'), 'https://litter.catbox.moe/ab12cd.png');
   assert.throws(() => Q.parseProxyResponse('litterbox', 502, '{"error":"Litterbox did not accept the file (403)."}'), /did not accept/);
   assert.throws(() => Q.parseProxyResponse('gofile', 403, '<!doctype html><title>403'), /unexpected answer/);
@@ -95,7 +97,8 @@ test('legacy duplicate breadcrumb is stripped from tool pages', async () => {
 
 test('upload proxy Worker: same-origin, image/video only, size cap, forwards to the host', async () => {
   const W = await import('../worker/index.js');
-  const req = (o = {}) => new Request('https://tools.brandique.in/api/qr-upload?host=' + (o.host || 'litterbox') + '&name=a.png&expiry=1h', {method: 'POST', body: o.body ?? 'x', headers: {origin: o.origin ?? 'https://tools.brandique.in', 'content-type': o.type || 'image/png', ...(o.len ? {'content-length': o.len} : {})}});
+  const req = (o = {}) => new Request('https://tools.brandique.in/api/qr-upload?host=' + (o.host || 'litterbox') + '&type=' + encodeURIComponent(o.type || 'image/png'), {method: 'POST', body: 'x', headers: {origin: o.origin ?? 'https://tools.brandique.in', 'content-type': o.ct || 'multipart/form-data; boundary=abc'}});
+  assert.equal((await W.handleUpload(req({ct: 'image/png'}))).status, 415);
   assert.equal((await W.handleUpload(req({origin: 'https://evil.example'}))).status, 403);
   assert.equal((await W.handleUpload(req({type: 'text/html'}))).status, 415);
   assert.equal((await W.handleUpload(req({host: 'nope'}))).status, 400);

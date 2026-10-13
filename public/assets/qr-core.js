@@ -76,29 +76,33 @@ export function checkUpload(file,kind){
  if(!file.size)throw new Error('The file is empty.');
  return true;
 }
-export function uploadUrl(host,file,expiry='72h'){
+export function uploadUrl(host,file){
  if(!HOSTS[host])throw new Error('Unknown host.');
- const q=new URLSearchParams({host,name:String(file?.name||'file').slice(-120)});
- if(host==='litterbox')q.set('expiry',EXPIRY.some(([k])=>k===expiry)?expiry:'72h');
- return `${UPLOAD_ENDPOINT}?${q}`;
+ return `${UPLOAD_ENDPOINT}?${new URLSearchParams({host,type:String(file?.type||'')})}`;
+}
+// The multipart form each host expects; the proxy forwards it byte-for-byte.
+export function uploadForm(host,file,expiry='72h'){
+ const fd=new FormData();
+ if(host==='litterbox'){fd.append('reqtype','fileupload');fd.append('time',EXPIRY.some(([k])=>k===expiry)?expiry:'72h');fd.append('fileToUpload',file)}
+ else fd.append('file',file);
+ return fd;
 }
 export function parseProxyResponse(host,status,body){
  let j;try{j=JSON.parse(body)}catch{throw new Error(`The upload service returned an unexpected answer (HTTP ${status}). Try again or use the other host.`)}
  if(status===200&&typeof j.url==='string'&&/^https:\/\//.test(j.url))return j.url;
  throw new Error(j.error||`Upload failed (HTTP ${status}).`);
 }
-// Upload with XHR to the same-origin proxy: raw file body, so byte progress works for every host.
+// Upload with XHR to the same-origin proxy, so byte progress works for every host.
 export function uploadFile(file,host,{expiry,onProgress,signal}={}){
  return new Promise((resolve,reject)=>{
   if(!HOSTS[host])return reject(new Error('Unknown host.'));
-  const x=new XMLHttpRequest();x.open('POST',uploadUrl(host,file,expiry));x.timeout=30*60*1000;
-  x.setRequestHeader('Content-Type',file.type||'application/octet-stream');
+  const x=new XMLHttpRequest();x.open('POST',uploadUrl(host,file));x.timeout=30*60*1000;
   if(onProgress)x.upload.onprogress=e=>{if(e.lengthComputable)onProgress(e.loaded/e.total)};
   x.onload=()=>{try{resolve(parseProxyResponse(host,x.status,x.responseText))}catch(e){reject(e)}};
   x.onerror=()=>reject(new Error('Could not reach the upload service. Check your connection and try again.'));
   x.ontimeout=()=>reject(new Error('The upload timed out.'));x.onabort=()=>reject(new Error('Upload cancelled.'));
   signal?.addEventListener('abort',()=>x.abort(),{once:true});
-  x.send(file);
+  x.send(uploadForm(host,file,expiry));
  });
 }
 // Relative luminance contrast (WCAG) for #rrggbb colours.
