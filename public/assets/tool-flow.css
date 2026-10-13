@@ -142,3 +142,27 @@
 .tf-col .tf-more:focus-visible{outline:2px solid var(--y,#facc15);outline-offset:3px;border-radius:4px}
 @media (max-width:420px){.tf-a :is(.ir-settings,.pm-settings,.pdfw-settings,.split-options,.format-options,.media-fields),.tf-b :is(.ir-settings,.pm-settings,.pdfw-settings,.split-options,.format-options,.media-fields){grid-template-columns:minmax(0,1fr)!important}}
 .tf-ws>.tf-col{align-self:stretch}
+/* Wide image workspace (Image Resizer, Image Compressor): all main options in one compact column,
+   a large preview spanning the rest of the width. More options (advanced) tucks under the options. */
+@media (min-width:1024px){
+ .tf-ws.tf-wide,.tf-ws.tf-wide.tf-two,.tf-ws.tf-wide:not(.tf-two):has(>.tf-b.tf-closed){grid-template-columns:minmax(330px,390px) minmax(0,1fr);grid-template-rows:auto 1fr}
+ .tf-ws.tf-wide>.tf-a{grid-column:1;grid-row:1}
+ .tf-ws.tf-wide>.tf-b{grid-column:1;grid-row:2}
+ .tf-ws.tf-wide>.tf-r{grid-column:2;grid-row:1/span 2}
+ .tf-ws.tf-wide .iv-stage{height:clamp(300px,calc(100vh - 430px),720px)}
+}
+.tf-ws.tf-wide .tf-r .ir-pane{padding:0!important}
+.tf-ws.tf-wide .ir-list{max-height:none!important;overflow:visible!important}
+.tf-ws.tf-wide .size-target{margin:0;padding:8px 10px}
+.tf-ws.tf-wide .size-chips{gap:5px}.tf-ws.tf-wide .size-chip{padding:4px 9px;font-size:12px;min-height:0}
+.tf-ws.tf-wide .tf-r .media-result>img{display:none}
+/* Compact option fields in the wide image workspace so every main option fits without inner scrolling. */
+.tf-ws.tf-wide .tf-a{gap:8px}
+.tf-ws.tf-wide .tf-col :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select){min-height:38px;padding:6px 10px;font-size:14px}
+.tf-ws.tf-wide .tf-col :is(label.field,.media-label){gap:4px;font-size:13px}
+.tf-ws.tf-wide .tf-col :is(.ir-help,.field-help){font-size:11.5px;line-height:1.4}
+.tf-ws.tf-wide .tf-col .ir-h{margin:6px 0 0;font-size:13px}
+.tf-ws.tf-wide .tf-r>.media-card>h2,.tf-ws.tf-wide .tf-r .media-card>h2{display:none}
+.tf-ws.tf-wide .tf-r .media-result{gap:10px}
+@media (min-width:1024px){.tf-ws.tf-wide>.tf-r{align-self:start}}
+.tf-ws.tf-wide .tf-col :is(.ir-settings,.media-fields)>label.field:has(>select){grid-column:1/-1!important}

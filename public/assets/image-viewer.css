@@ -1,0 +1,45 @@
+/* Large before/after image viewer (Image Resizer, Image Compressor). */
+.iv{display:grid;gap:10px;min-width:0}
+.iv-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+.iv-seg,.iv-zoom{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:3px;border:1px solid #2f2f2f;border-radius:10px;background:#0d0d0d}
+.iv button{min-height:32px;padding:5px 11px;border-radius:7px;border:1px solid transparent;background:transparent;color:var(--t,#f1f2e9);font:600 12.5px/1.2 inherit;font-family:inherit;cursor:pointer;box-shadow:none}
+.iv button:hover:not(:disabled){border-color:#4a4a4a}
+.iv button[aria-pressed=true]{background:var(--y,#facc15);color:#151515;border-color:var(--y,#facc15)}
+.iv button:disabled{opacity:.4;cursor:not-allowed}
+.iv button:focus-visible,.iv-stage:focus-visible,.iv-handle:focus-visible{outline:2px solid var(--y,#facc15);outline-offset:2px}
+.iv-zl{min-width:78px;text-align:center;font-size:12px;font-weight:700;color:var(--y,#facc15);font-variant-numeric:tabular-nums}
+.iv-stage{position:relative;display:flex;gap:8px;height:clamp(300px,62vh,700px);border-radius:12px;border:1px solid #2f2f2f;overflow:hidden;touch-action:none;user-select:none;background:repeating-conic-gradient(#1f1f1f 0 25%,#2a2a2a 0 50%) 0 0/20px 20px}
+.iv-stage[data-bg=dark]{background:#050505}.iv-stage[data-bg=light]{background:#f4f4f0}
+.iv-stage.iv-pannable{cursor:grab}.iv-stage.iv-pannable:active{cursor:grabbing}
+.iv-stage[data-mode=compare]:not(.iv-pannable){cursor:ew-resize}
+.iv-pane{position:relative;flex:1 1 0;min-width:0;overflow:hidden}
+.iv-stage[data-mode=side] .iv-pane+.iv-pane{border-left:2px solid var(--y,#facc15)}
+.iv-frame{position:absolute;left:50%;top:50%;will-change:transform}
+.iv-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;max-width:none;pointer-events:none}
+.iv-px .iv-img{image-rendering:pixelated}
+.iv-clip{position:absolute;inset:0;clip-path:inset(0 0 0 var(--pos,50%))}
+.iv-handle{position:absolute;top:0;bottom:0;left:var(--pos,50%);width:2px;margin-left:-1px;background:var(--y,#facc15);box-shadow:0 0 0 1px #0008;cursor:ew-resize}
+.iv-handle span{position:absolute;top:50%;left:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:var(--y,#facc15);box-shadow:0 2px 10px #0009}
+.iv-handle span::before{content:'‹ ›';position:absolute;inset:0;display:grid;place-items:center;color:#151515;font:800 15px/1 system-ui;letter-spacing:2px}
+.iv-tag{position:absolute;top:10px;left:10px;padding:3px 9px;border-radius:6px;background:#000c;color:#fff;font-size:11.5px;font-weight:700;line-height:1.5;pointer-events:none}
+.iv-tag-r{left:auto;right:10px;background:var(--y,#facc15);color:#151515}
+.iv-empty{margin:auto;color:var(--m,#a2a2a2);font-size:14px;text-align:center;padding:20px}
+.iv-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.iv-stats:empty{display:none}
+.iv-stat{padding:9px 11px;border:1px solid #2f2f2f;border-radius:10px;background:#0f0f0f;min-width:0}
+.iv-stat small{display:block;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--m,#a2a2a2)}
+.iv-stat b{display:block;margin-top:3px;font-size:13.5px;color:var(--t,#f1f2e9);overflow-wrap:anywhere}
+.iv-stat i{font-style:normal;color:var(--y,#facc15)}
+.iv-stat.iv-good b{color:#4ade80}.iv-stat.iv-bad b{color:#fbbf24}
+.iv-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.iv-dl{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 18px;border-radius:10px;background:var(--y,#facc15);color:#151515!important;font-weight:750;text-decoration:none;cursor:pointer;overflow-wrap:anywhere}
+.iv-dl:hover{filter:brightness(1.06)}
+.iv-hint{font-size:11.5px;color:var(--m,#a2a2a2)}
+@media (max-width:720px){
+ .iv-stage{height:clamp(260px,58vh,520px)}
+ .iv-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .iv-bar{flex-direction:column;align-items:stretch}.iv-seg,.iv-zoom{justify-content:space-between}
+ .iv button{padding:5px 8px}
+ .iv-hint{display:none}
+ .iv-dl{width:100%}
+}
