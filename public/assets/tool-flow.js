@@ -177,3 +177,11 @@ export function mountFlow(root){
  render();
 }
 if(typeof document!=='undefined'){const go=()=>document.querySelectorAll('[data-tool]').forEach(mountFlow);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()}
+
+// Target-size chips follow the chosen unit: KB → 20 KB…500 KB, MB → 1 MB…50 MB (Mohan, 14 Oct 2026).
+(()=>{if(typeof document==='undefined')return;const KB=1024,MB=1048576;const SETS={KB:[20,50,100,200,500].map(n=>[`${n} KB`,n*KB]),MB:[1,3,5,10,20,50].map(n=>[`${n} MB`,n*MB])};
+const boxOf=el=>el.closest('[data-target-box],fieldset,.size-target,.ir-target,section,form')||el.parentElement;
+const valueOf=box=>box.querySelector('[data-target],[data-k="targetValue"]');
+const unitOf=box=>box.querySelector('[data-unit],[data-k="targetUnit"]');
+document.addEventListener('change',e=>{const sel=e.target;if(!sel.matches?.('[data-unit],[data-k="targetUnit"]'))return;const unit=String(sel.value).toUpperCase()==='MB'?'MB':'KB';let box=sel.parentElement,chips=null;while(box&&!(chips=box.querySelector('.size-chips')))box=box.parentElement;if(!chips)return;chips.innerHTML=SETS[unit].map(([l,b])=>`<button type="button" class="size-chip" data-chip="${b}" data-bq-chip>${l}</button>`).join('')},true);
+document.addEventListener('click',e=>{const b=e.target.closest?.('.size-chip[data-bq-chip]');if(!b)return;let box=b.parentElement,v=null,u=null;while(box&&!((v=valueOf(box))&&(u=unitOf(box))))box=box.parentElement;if(!v||!u)return;const n=+b.dataset.chip,mb=n>=MB;v.value=mb?n/MB:n/KB;u.value=mb?'MB':'KB';v.dispatchEvent(new Event('input',{bubbles:true}));v.dispatchEvent(new Event('change',{bubbles:true}))});})();
