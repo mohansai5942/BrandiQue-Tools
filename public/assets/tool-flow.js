@@ -150,17 +150,23 @@ export function mountFlow(root){
   if(ws&&!ws.dataset.own){const proc=ws.querySelector('.tf-proc'),pct=state==='working'?percentOf(root):null;proc.hidden=state!=='working';
    if(state==='working'){proc.querySelector('.tf-proc-text').textContent=statusText(root)||MSG[kind].working;proc.querySelector('.tf-proc-pct').textContent=pct==null?'':pct+'%';proc.querySelector('.tf-proc-bar').classList.toggle('is-indeterminate',pct==null);proc.querySelector('.tf-proc-bar span').style.width=pct==null?'':pct+'%';if(!poll)poll=setInterval(schedule,300)}
    else if(poll){clearInterval(poll);poll=0}}
-  if(state===current)return;current=state;
+  if(state===current)return;const prev=current;current=state;
+  if(kind==='file'&&state==='done'&&prev&&prev!=='done')toResult();
   const active=state==='done'?3:state==='idle'?1:state==='error'?(loaded?2:1):kind==='file'?(state==='working'?3:2):3;
   bar.dataset.state=state;
   bar.querySelectorAll('li').forEach(li=>{const n=+li.dataset.n;li.classList.toggle('is-active',n===active);li.classList.toggle('is-done',n<active||state==='done');if(n===active)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current')});
   bar.querySelector('.tf-status').textContent=MSG[kind][state];
  };
+ // Mobile/tablet only: bring the preview into view after a file is added, and the download once done.
+ let userAt=0;['touchmove','wheel'].forEach(t=>addEventListener(t,()=>{userAt=Date.now()},{passive:true}));
+ const jump=(pick,delay)=>setTimeout(()=>{try{if(!matchMedia('(max-width:1023px)').matches||Date.now()-userAt<900)return;const el=pick();if(!el)return;const r=el.getBoundingClientRect();if(r.top>=56&&r.bottom<=innerHeight)return;el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})}catch{}},delay);
+ const toPreview=()=>jump(()=>{const R=root.querySelector('.tf-ws .tf-r');return R&&R.offsetParent?R:root.querySelector('.tf-ws')},450);
+ const toResult=()=>jump(()=>{const R=root.querySelector('.tf-ws .tf-r')||root;return [...R.querySelectorAll('.iv-dl,a[download][href],.iv,.media-result,.result')].find(e=>e.offsetParent)||null},300);
  let queued=false;const schedule=()=>{if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;try{render()}catch{}})}};
- root.addEventListener('change',e=>{if(e.target.type==='file'&&e.target.files?.length){loaded=true;names=[...e.target.files].map(f=>f.name)}schedule()});
+ root.addEventListener('change',e=>{if(e.target.type==='file'&&e.target.files?.length){loaded=true;names=[...e.target.files].map(f=>f.name);toPreview()}schedule()});
  root.addEventListener('click',e=>{const b=e.target.closest?.('button');if(b&&/^(clear( all| queue)?|start over|reset|remove all)$/i.test(b.textContent.trim())){names=[];setTimeout(schedule,50)}});
  root.addEventListener('input',e=>{if(e.target.type!=='file'&&e.target.value)loaded=true;schedule()});
- root.addEventListener('drop',e=>{loaded=true;const f=[...(e.dataTransfer?.files||[])].map(f=>f.name);if(f.length)names=f;setTimeout(schedule,50)});
+ root.addEventListener('drop',e=>{loaded=true;const f=[...(e.dataTransfer?.files||[])].map(f=>f.name);if(f.length){names=f;toPreview()}setTimeout(schedule,50)});
  root.addEventListener('dragenter',e=>{const z=e.target.closest?.('[data-tf-step="1"]');if(z)z.classList.add('tf-dragover')});
  root.addEventListener('dragleave',e=>{const z=e.target.closest?.('[data-tf-step="1"]');if(z&&!z.contains(e.relatedTarget))z.classList.remove('tf-dragover')});
  root.addEventListener('drop',()=>root.querySelectorAll('.tf-dragover').forEach(z=>z.classList.remove('tf-dragover')));
