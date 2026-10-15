@@ -11,6 +11,9 @@ test('drop-zone hints describe accepted types', () => {
   assert.match(describeAccept('image/*'), /JPG, PNG/);
   assert.equal(describeAccept('.pdf,application/pdf'), 'PDF');
   assert.match(describeAccept(''), /Any file/);
+  // UTIL-10: no raw MIME text in the accepted-files hint
+  assert.equal(describeAccept('image/png,image/jpeg,image/webp,image/svg+xml'), 'PNG, JPG, WebP, SVG');
+  assert.equal(describeAccept('.pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain'), 'PDF, DOCX, TXT');
 });
 test('word counter keywords ignore stop words and rank by frequency', () => {
   const k = keywordStats('The brand and the Brand website. BrandiQue builds a website!');

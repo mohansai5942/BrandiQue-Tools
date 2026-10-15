@@ -20,9 +20,9 @@ const PANELS=[
  ['.calc-grid>.calc-card:first-child,.uw-grid>.uw-card:first-child',1,'Step 1 · Input & options'],
  ['.calc-output,.uw-grid>.uw-card:nth-child(2)',3,'Step 3 · Result']
 ];
-const ACCEPT={'image/*':'Images (JPG, PNG, WebP, GIF, HEIC…)','video/*':'Videos (MP4, WebM, MOV…)','audio/*':'Audio files','application/pdf':'PDF'};
+const ACCEPT={'image/*':'Images (JPG, PNG, WebP, GIF, HEIC…)','video/*':'Videos (MP4, WebM, MOV…)','audio/*':'Audio files','application/pdf':'PDF','image/svg+xml':'SVG','image/jpeg':'JPG','image/png':'PNG','image/webp':'WebP','text/plain':'TXT','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'DOCX','application/msword':'DOC','text/csv':'CSV','application/json':'JSON','text/html':'HTML','text/markdown':'MD'};
 export function describeAccept(accept=''){
- const parts=[...new Set(String(accept).split(',').map(s=>s.trim()).filter(Boolean).map(s=>ACCEPT[s]||(s.startsWith('.')?s.slice(1).toUpperCase():s.includes('/')?s.split('/')[1].toUpperCase():s)))];
+ const parts=[...new Set(String(accept).split(',').map(s=>s.trim()).filter(Boolean).map(s=>ACCEPT[s]||(s.startsWith('.')?s.slice(1).toUpperCase():s.includes('/')?s.split('/')[1].replace(/\+xml$/,'').replace(/^(x-|vnd\.)/,'').toUpperCase():s)))];
  return parts.length?parts.join(', '):'Any file your browser can open';
 }
 export function kindOf(root){if(root.querySelector('input[type=file]'))return'file';if(root.querySelector('.calc-shell,.uc'))return'calc';return'text'}
