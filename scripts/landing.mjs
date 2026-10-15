@@ -14,6 +14,9 @@ for(const l of landings){
   .replace(/<meta (property="og:description"|name="twitter:description") content="[^"]*">/g,(_,a)=>`<meta ${a} content="${esc(l.desc)}">`)
   .replace(/<h1>[\s\S]*?<\/h1>(<p class="lead">)[\s\S]*?(<\/p>)/,`<h1>${esc(l.h1)}</h1>$1${esc(l.desc)}$2`);
  if(l.size)h=h.replace(/<body\b/,`<body data-preset-size="${l.size[0]}" data-preset-unit="${l.size[1]}"`);
+ if(l.fields)h=h.replace(/<body\b/,`<body data-preset-fields="${esc(JSON.stringify(l.fields))}"`);
+ // IMG-02: the guide heading names the landing page, not the generic tool.
+ h=h.replace(/(<h2 id="guide-[^"]+">)How to use [^<]*(<\/h2>)/,`$1How to use ${esc(l.h1)}$2`);
  h=h.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/,(_,j)=>{const d=JSON.parse(j);d['@graph']=d['@graph'].filter(x=>!['FAQPage','HowTo'].includes(x['@type'])).map(x=>{const s=JSON.stringify(x).split(`${origin}/tools/${l.tool}/`).join(url);const o=JSON.parse(s);if(o['@type']==='WebPage')Object.assign(o,{name:title,description:l.desc});if(o['@type']==='WebApplication')Object.assign(o,{name:l.h1,description:l.desc});if(o['@type']==='BreadcrumbList')o.itemListElement=[{name:'Home',item:origin+'/'},{name:toolName,item:`${origin}/tools/${l.tool}/`},{name:l.h1,item:url}].map((x,i)=>({'@type':'ListItem',position:i+1,...x}));return o});d['@graph'].push({'@type':'FAQPage','@id':url+'#faq',mainEntity:l.q.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))});return `<script type="application/ld+json">${JSON.stringify(d).replace(/</g,'\\u003c')}</script>`});
  const faq=`<section class="section wrap landing-faq"><h2>${esc(l.h1)}: questions</h2>${l.q.map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}<p>More options: <a href="/tools/${l.tool}/">${esc(toolName)}</a>.</p></section>`;
  h=h.replace('</main>',faq+'</main>');

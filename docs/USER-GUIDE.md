@@ -54,7 +54,7 @@ Resize one or many images to exact pixels, a percentage or a scale factor — an
 | Keep proportions | Keeps the original shape so nothing is stretched (on by default). |
 | Size preset | Instagram square 1080×1080, portrait 1080×1350, story 1080×1920, YouTube thumbnail 1280×720, LinkedIn post 1200×627, X post 1600×900, Facebook post 1200×630. Choosing one turns off Keep proportions. |
 | Save as | JPG (default, best for photos and forms), PNG (lossless, larger) or WebP (small, modern). AVIF appears only if your browser can encode it. |
-| Target file size | Optional. Type any size and choose KB or MB (1 KB = 1024 bytes), or tap 20 KB / 50 KB / 100 KB / 200 KB / 500 KB / 1 MB. The tool searches quality (and, if allowed, pixel size) so the file is never above your target. Sizes bigger than the original are allowed. |
+| Target file size | Optional. Type any size and choose KB or MB (1 KB = 1024 bytes), or tap a quick size: with KB selected 20, 50, 100, 200, 500 KB; with MB selected 1, 3, 5, 10, 20, 50 MB. The tool searches quality (and, if allowed, pixel size) so the file is never above your target. Sizes bigger than the original are allowed. |
 | Match | Exact size (default): the file is exactly the size you typed — any small gap is filled with harmless padding that image viewers ignore. Up to this size: the file is at most your target, with no padding. WebP files always have an even byte count, so an odd target ends 1 byte under; AVIF cannot be padded. |
 | If the size can’t be reached | Shrink pixel size if needed (default), Shrink or enlarge pixel size, or Keep my pixel size exactly. With “Keep”, a target that is too small for those pixels shows an amber message instead of a bigger file. |
 | Quality | 10–100 % (default 86 %) for JPG/WebP/AVIF when no target size is set. PNG is lossless. With a target size, quality is chosen automatically. |
@@ -95,7 +95,7 @@ Make an image an exact file size you type — 5 KB to 5 MB and beyond — or com
 
 1. Choose or drop one image.
 2. Pick Save as: JPG (best for photos and forms), WebP or PNG.
-3. Keep “How to compress” on “To a file size I choose”, then type the size and choose KB or MB — or tap a chip (20 KB, 50 KB, 100 KB, 200 KB, 500 KB, 1 MB).
+3. Keep “How to compress” on “To a file size I choose”, then type the size and choose KB or MB — or tap a chip (KB: 20–500 KB; MB: 1, 3, 5, 10, 20, 50 MB).
 4. The image is processed automatically. The result says what happened (e.g. “Compressed from 4.3 MB to 20.0 KB”), with the size in bytes, pixel size, quality and a green “Matches target” note.
 5. Click Download. The file name includes the size, e.g. photo-20KB.jpg.
 
@@ -191,7 +191,7 @@ Change a video’s resolution and frame rate, and optionally make it an exact fi
 
 | Option | What it does |
 |---|---|
-| Target file size | Optional. Any size in KB or MB (1 MB = 1024 × 1024 bytes); chips for 1, 5, 10 and 25 MB. The bitrate is worked out from the video length, then the video is re-recorded once or twice if the first pass misses. The file is never above your target. |
+| Target file size | Optional. Any size in KB or MB (1 MB = 1024 × 1024 bytes); chips follow the unit: KB 20–500 KB, MB 1, 3, 5, 10, 20, 50 MB. The bitrate is worked out from the video length, then the video is re-recorded once or twice if the first pass misses. The file is never above your target. |
 | Match | Exact size (default) adds a harmless WebM “Void” block so the file is exactly your target and still plays. Up to this size skips the padding. |
 | Lower the resolution automatically | Off by default here. When on, small targets also get a smaller frame so they stay watchable. |
 | Width / Height | Output size in pixels (rounded to even numbers; max 16 megapixels). |
@@ -306,6 +306,7 @@ Put several images into one PDF, one image per page, in the order you choose.
 
 | Option | What it does |
 |---|---|
+| Maximum PDF size (optional) | Type a size in KB or MB (pre-set to 100 KB on “Photo to PDF Under 100KB”). Image quality and resolution are lowered until the PDF fits; the page size stays the same. If it cannot fit, the result says so. |
 | Page size | Match each image (page = image size), A4 or US Letter. |
 | Orientation | Auto (follows each image), Portrait or Landscape. |
 | Fit | Contain (whole image visible, no crop) or Cover (fills the page, edges cropped). |
@@ -422,6 +423,7 @@ Make a PDF smaller: keep text sharp (lossless, small savings) or turn pages into
 
 | Option | What it does |
 |---|---|
+| Target file size (optional) | Type a size in KB or MB (pre-set on the “Compress PDF to 100KB / 1MB” pages). Lossless is tried first; if it is too big, pages become images and DPI, quality and then grayscale are lowered until the file fits. If it cannot fit, the result says so and gives the smallest file it could make. |
 | Compression method | Keep text sharp (lossless: keeps text, links, forms; may save little) or Turn pages into images (lossy: much smaller, text becomes part of a picture). |
 | Image sharpness (DPI) | 72–240 (default 120). Lower = smaller, less sharp. Only for “Turn pages into images”. |
 | Image quality | 35–92 % (default 72 %). Only for “Turn pages into images”. |

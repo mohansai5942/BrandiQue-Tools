@@ -23,3 +23,6 @@ export function decodeTextBytes(bytes){bytes=bytes instanceof Uint8Array?bytes:n
  // UTF-16 without BOM: many zero bytes in alternating positions.
  const sample=bytes.subarray(0,Math.min(bytes.length,2000));let evenZero=0,oddZero=0;for(let i=0;i<sample.length;i++)if(sample[i]===0)(i%2?oddZero++:evenZero++);if(sample.length>8&&oddZero>sample.length*.3&&evenZero<sample.length*.05)return new TextDecoder('utf-16le').decode(bytes);if(sample.length>8&&evenZero>sample.length*.3&&oddZero<sample.length*.05)return new TextDecoder('utf-16be').decode(bytes);
  const utf8=new TextDecoder('utf-8').decode(bytes);if(!utf8.includes('\ufffd'))return utf8;return new TextDecoder('windows-1252').decode(bytes)}
+// DOC-03/DOC-04: turn raw pdf.js / pdf-lib errors into messages people can act on.
+export const PDF_MESSAGES={locked:'This PDF is password-protected. Unlock it first, then try again.',broken:'This PDF is damaged or not a valid PDF, so it cannot be read. Try re-saving or re-downloading it.'};
+export function pdfErrorMessage(e,fallback='This PDF could not be read.'){const t=`${e?.name||''} ${e?.message||e||''}`;if(/password|encrypt/i.test(t))return PDF_MESSAGES.locked;if(/invalid pdf|invalidpdf|formaterror|bad xref|no pdf header|unexpected (end|server response)|failed to parse|corrupt/i.test(t))return PDF_MESSAGES.broken;return e?.message||fallback}

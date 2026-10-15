@@ -150,7 +150,8 @@ export async function fitImageToTarget({encode,width,height,mime,target,exact=tr
  let steps=0;const enc=async(w,h,q,levels=0)=>{steps++;onStep?.(steps);const bytes=await encode({width:w,height:h,quality:q,levels});return{bytes,width:w,height:h,quality:q,levels}};
  const dims=s=>({w:Math.max(1,Math.round(width*s)),h:Math.max(1,Math.round(height*s))});
  const minScale=Math.min(1,minSide/Math.min(width,height));
- const upScale=Math.min(maxScale,Math.sqrt(maxPixels/(width*height)));
+ // IMG-06: never enlarge tiny images (under 64 px on the short side) just to fill a byte budget.
+ const upScale=Math.min(width,height)<64?1:Math.min(maxScale,Math.sqrt(maxPixels/(width*height)));
  // Chrome encodes WebP at quality 1.0 as lossless (often 5–10× bigger), so cap lossy WebP at 0.99.
  const QMIN=0.01,QMAX=/webp/.test(mime)?0.99:1;
  // Largest quality whose output fits (lossy). Returns null if even QMIN is too big.

@@ -13,3 +13,6 @@
 .ad-after-tool{margin-top:48px;min-height:140px}
 body[data-tool-page]{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
 @media(max-width:600px){.ad-after-tool{min-height:100px;margin-top:32px}}
+/* IMG-08: an ad iframe wider than the phone must never cause horizontal page scroll. */
+.ad-placement{max-width:100%;overflow:hidden}
+.ad-placement ins,.ad-placement iframe,.ad-placement ins>div{max-width:100%!important}

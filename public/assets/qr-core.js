@@ -110,11 +110,16 @@ export function contrast(a,b){
  const lum=h=>{const n=parseInt(h.slice(1),16),c=[n>>16&255,n>>8&255,n&255].map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
  const [x,y]=[lum(a),lum(b)].sort((p,q)=>q-p);return(x+.05)/(y+.05);
 }
+// UTIL-01: qr-code-styling's encoder keeps only the low byte of each UTF-16 code unit, which
+// corrupted Telugu, Hindi and emoji. Hand it the UTF-8 bytes as a one-byte-per-char string so the
+// code is written in byte mode as UTF-8 (ASCII payloads are unchanged).
+export function toQrBytes(text){return Array.from(new TextEncoder().encode(String(text)),b=>String.fromCharCode(b)).join('')}
+export function fromQrBytes(bin){return new TextDecoder().decode(Uint8Array.from(String(bin),c=>c.charCodeAt(0)&255))}
 // Options object for qr-code-styling from the form state.
 export function styleOptions(s,data){
  const fill=s.gradient?{gradient:{type:s.gradientType||'linear',rotation:(+s.rotation||0)*Math.PI/180,colorStops:[{offset:0,color:s.dark},{offset:1,color:s.dark2}]}}:{color:s.dark};
  const size=Math.max(128,Math.min(2048,+s.size||512));
- return{width:size,height:size,type:'canvas',data,margin:Math.max(0,Math.min(80,+s.margin||0)),
+ return{width:size,height:size,type:'canvas',data:toQrBytes(data),margin:Math.max(0,Math.min(80,+s.margin||0)),
   qrOptions:{errorCorrectionLevel:s.logo?'H':(s.level||'M')},
   image:s.logo||undefined,imageOptions:{hideBackgroundDots:true,imageSize:Math.max(.1,Math.min(.4,+s.logoSize||.3)),margin:4,crossOrigin:'anonymous'},
   dotsOptions:{type:s.dots||'square',...fill},

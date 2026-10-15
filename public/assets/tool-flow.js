@@ -20,9 +20,9 @@ const PANELS=[
  ['.calc-grid>.calc-card:first-child,.uw-grid>.uw-card:first-child',1,'Step 1 · Input & options'],
  ['.calc-output,.uw-grid>.uw-card:nth-child(2)',3,'Step 3 · Result']
 ];
-const ACCEPT={'image/*':'Images (JPG, PNG, WebP, GIF, HEIC…)','video/*':'Videos (MP4, WebM, MOV…)','audio/*':'Audio files','application/pdf':'PDF'};
+const ACCEPT={'image/*':'Images (JPG, PNG, WebP, GIF, HEIC…)','video/*':'Videos (MP4, WebM, MOV…)','audio/*':'Audio files','application/pdf':'PDF','image/svg+xml':'SVG','image/jpeg':'JPG','image/png':'PNG','image/webp':'WebP','text/plain':'TXT','application/vnd.openxmlformats-officedocument.wordprocessingml.document':'DOCX','application/msword':'DOC','text/csv':'CSV','application/json':'JSON','text/html':'HTML','text/markdown':'MD'};
 export function describeAccept(accept=''){
- const parts=[...new Set(String(accept).split(',').map(s=>s.trim()).filter(Boolean).map(s=>ACCEPT[s]||(s.startsWith('.')?s.slice(1).toUpperCase():s.includes('/')?s.split('/')[1].toUpperCase():s)))];
+ const parts=[...new Set(String(accept).split(',').map(s=>s.trim()).filter(Boolean).map(s=>ACCEPT[s]||(s.startsWith('.')?s.slice(1).toUpperCase():s.includes('/')?s.split('/')[1].replace(/\+xml$/,'').replace(/^(x-|vnd\.)/,'').toUpperCase():s)))];
  return parts.length?parts.join(', '):'Any file your browser can open';
 }
 export function kindOf(root){if(root.querySelector('input[type=file]'))return'file';if(root.querySelector('.calc-shell,.uc'))return'calc';return'text'}
@@ -187,4 +187,6 @@ document.addEventListener('change',e=>{const sel=e.target;if(!sel.matches?.('[da
 document.addEventListener('click',e=>{const b=e.target.closest?.('.size-chip[data-bq-chip]');if(!b)return;let box=b.parentElement,v=null,u=null;while(box&&!((v=valueOf(box))&&(u=unitOf(box))))box=box.parentElement;if(!v||!u)return;const n=+b.dataset.chip,mb=n>=MB;v.value=mb?n/MB:n/KB;u.value=mb?'MB':'KB';v.dispatchEvent(new Event('input',{bubbles:true}));v.dispatchEvent(new Event('change',{bubbles:true}))});})();
 
 // Landing pages pre-fill the target size (e.g. /compress-image-to-50kb/).
+// IMG-02: landing pages can preselect other controls too (e.g. the passport preset), as [[selector,value],…].
+(()=>{if(typeof document==='undefined')return;let list;try{list=JSON.parse(document.body?.dataset.presetFields||'[]')}catch{list=[]}if(!list.length)return;let tries=0;const t=setInterval(()=>{const els=list.map(([sel])=>document.querySelector(sel));if(els.every(Boolean)){clearInterval(t);list.forEach(([,v],i)=>{const e=els[i];e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}))})}else if(++tries>50)clearInterval(t)},100)})();
 (()=>{if(typeof document==='undefined')return;const b=document.body,n=b?.dataset.presetSize;if(!n)return;let tries=0;const t=setInterval(()=>{const v=document.querySelector('[data-k="targetValue"],[data-target]'),u=document.querySelector('[data-k="targetUnit"],[data-unit]');if(v&&u){clearInterval(t);u.value=b.dataset.presetUnit||'KB';u.dispatchEvent(new Event('change',{bubbles:true}));v.value=n;v.dispatchEvent(new Event('input',{bubbles:true}));v.dispatchEvent(new Event('change',{bubbles:true}))}else if(++tries>50)clearInterval(t)},100)})();
